@@ -1,5 +1,8 @@
 #pragma once
+
 #include "Piece.h"
+
+#include <string>
 
 /*
 初始化
@@ -16,6 +19,8 @@ struct Position {
     int col;
 };
 
+std::string pngPosition(const Position pos);
+
 class Board {
 public: 
     Board();
@@ -26,8 +31,9 @@ public:
     Piece at(Position pos) const;
     void set(Position pos, Piece p);
 
-    bool whiteToMove;
+    bool isInBoard(Position pos) const;
 
+    bool whiteToMove;
 private:
 
     Piece board[8][8];

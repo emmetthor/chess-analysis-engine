@@ -10,10 +10,6 @@ enum Piece {
 char pieceToChar(Piece p);
 
 
-inline bool isWhite (Piece p) {
-    return p >= WPAWN && p <= WKING;
-}
-
-inline bool isBlack (Piece p) {
-    return p >= BPAWN && p <= BKING;
-}
+int isWhite (Piece p);
+int isBlack (Piece p);
+int isSameColor (Piece p1, Piece p2);

@@ -18,3 +18,15 @@ struct Move {
 };
 
 void makeMove(Board &board, Move &move);
+
+bool isPawnMoveLegal(const Board &board, const Move &move);
+
+bool isKnightMoveLegal(const Board &board, const Move &move);
+
+bool isBishopMoveLegal(const Board &board, const Move &move);
+
+bool isRookMoveLegal(const Board &board, const Move &move);
+
+bool isQueenMoveLegal(const Board &board, const Move &move);
+
+bool isKingMoveLegal(const Board &board, const Move &move);

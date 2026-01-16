@@ -1,7 +1,11 @@
 #include <iostream>
+#include <string>
 
 #include "board/Board.h"
 #include "board/Piece.h"
+
+char colToCharMap[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+char rowToCorrectMap[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 
 Board::Board() {
     init();
@@ -33,13 +37,28 @@ void Board::init() {
     board[7][3] = WQUEEN;
     board[7][4] = WKING;
     for (int c = 0; c < 8; c++) {
-        board[6][c] = BPAWN;
+        board[6][c] = WPAWN;
     }
 }
 
 void Board::debugPrint() const {
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
+    for (int r = 0; r < 9; r++) {
+        for (int c = -1; c < 8; c++) {
+            if (r == 8 && c == -1) {
+                std::cout << "_ ";
+                continue;
+            }
+
+            if (c == -1) {
+                std::cout << rowToCorrectMap[r] << ' ';
+                continue;
+            }
+
+            if (r == 8) {
+                std::cout << colToCharMap[c] << " \n"[c == 8 - 1];
+                continue;
+            }
+
             std::cout << pieceToChar(board[r][c]) << " \n"[c == 8 - 1];
         }
     }
@@ -51,4 +70,15 @@ Piece Board::at(Position pos) const {
 
 void Board::set(Position pos, Piece p) {
     board[pos.row][pos.col] = p;
+}
+
+bool Board::isInBoard(Position pos) const {
+    return 0 <= pos.row && pos.row < 8 && 0 <= pos.col && pos.col < 8;
+}
+
+std::string pngPosition(const Position pos) {
+    std::string result = "";
+    result += colToCharMap[pos.col];
+    result += rowToCorrectMap[pos.row];
+    return result;
 }
