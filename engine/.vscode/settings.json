@@ -1,0 +1,7 @@
+{
+    "cmake.ignoreCMakeListsMissing": false,
+    "cmake.cmakePath": "C:/Program Files/CMake/bin/cmake.exe",
+    "cmake.configureSettings": {
+        "CMAKE_BUILD_TYPE": "Debug"
+    },
+}

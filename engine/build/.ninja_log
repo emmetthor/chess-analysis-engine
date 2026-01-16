@@ -1,0 +1,12 @@
+# ninja log v7
+3	305	7902692814434215	CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj	23860ebdb517481b
+15	515	7902690773128893	CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj	81a666737331e009
+3	307	7902693612250460	CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj	8e6d507ed2934a3e
+308	432	7902693615297262	chess-analysis-engine.exe	4e1f2e07f5edd21d
+32	359	7902710132486541	CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj	8e6d507ed2934a3e
+15	500	7902710132316603	CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj	e3b40ec45b18c79d
+3	514	7902710132193771	CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj	81a666737331e009
+514	654	7902710137297979	chess-analysis-engine.exe	dfac936968e44295
+17	338	7902713711097583	CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj	8e6d507ed2934a3e
+4	432	7902713710962415	CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj	e3b40ec45b18c79d
+432	564	7902713715240000	chess-analysis-engine.exe	dfac936968e44295

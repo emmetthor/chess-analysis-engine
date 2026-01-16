@@ -1,0 +1,3 @@
+D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir
+D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/edit_cache.dir
+D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/rebuild_cache.dir

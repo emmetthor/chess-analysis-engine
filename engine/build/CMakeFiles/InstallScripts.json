@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/chess-analysis-engine/chess-analysis-engine/engine/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
