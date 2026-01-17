@@ -7,7 +7,6 @@ struct Move {
     Position from;
     Position to;
     Piece movePiece;
-    Piece capturedPiece;
 
     bool isPromotion;
     Piece promotionPiece;

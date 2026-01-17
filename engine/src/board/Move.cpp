@@ -40,13 +40,16 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
     //檢查是否吃同色棋子
     if (toPiece != EMPTY && isSameColor(move.movePiece, board.at(move.to))) {
-        std::cout << "You can't capture your piece: " << pieceToChar(fromPiece) << " !# " << pieceToChar(move.movePiece) << '\n';
+        std::cout << "You can't capture your piece: " << pieceToChar(move.movePiece) << " !# " << pieceToChar(toPiece) << '\n';
         return false;
     }
 
     switch (move.movePiece) {
         case WPAWN: return isPawnMoveLegal(board, move);
         case BPAWN: return isPawnMoveLegal(board, move);
+
+        case WKNIGHT: return isKnightMoveLegal(board, move);
+        case BKNIGHT: return isKnightMoveLegal(board, move);
 
         default:
         break;
@@ -57,11 +60,6 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
 // 檢查兵走子
 bool isPawnMoveLegal(const Board &board, const Move &move) {
-    if (move.movePiece != WPAWN && move.movePiece != BPAWN) {
-        std::cout << "This is not a pawn, this is a " << pieceToChar(move.movePiece) << '\n';
-        return false;
-    }
-
     int moveForWard = abs(move.from.row - move.to.row);
     int moveSideward = abs(move.from.col - move.to.col);
 
@@ -124,6 +122,24 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
     }
 
     std::cout << "HOW DID YOU GET HERE\n";
+    return false;
+}
+
+// 檢查騎士走子
+bool isKnightMoveLegal(const Board &board, const Move &move) {
+    int moveForWard = abs(move.from.row - move.to.row);
+    int moveSideward = abs(move.from.col - move.to.col);
+
+    if (moveForWard == 1 && moveSideward == 2) {
+        return true;
+    }
+
+    if (moveForWard == 2 && moveSideward == 1) {
+        return true;
+    }
+
+    std::cout << "Knight can't move like that\n";
+
     return false;
 }
 

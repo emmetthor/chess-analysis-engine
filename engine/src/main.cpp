@@ -24,6 +24,10 @@ int main() {
 
     aMove(board, 1, 2, 2, 2, BPAWN);
 
-    aMove(board, 3, 3, 2, 4, WPAWN);
+    aMove(board, 7, 6, 5, 7, WKNIGHT);
+
+    aMove(board, 0, 6, 4, 7, BKNIGHT);
+
+    aMove(board, 5, 7, 6, 5, WKNIGHT);
     return 0;
 }
