@@ -3,7 +3,17 @@
 #include "Board.h"
 #include "Piece.h"
 
+enum Castle {
+    NOT, SHORT_CASTLE, LONG_CASTLE
+};
+
+enum Player {
+    PLAYER_WHITE, PLAYER_BLACK
+};
+
 struct Move {
+    Player player;
+
     Position from;
     Position to;
     Piece movePiece;
@@ -11,7 +21,7 @@ struct Move {
     bool isPromotion;
     Piece promotionPiece;
 
-    bool isCastling;
+    Castle castle;
 
     bool isEnPassant;
 };

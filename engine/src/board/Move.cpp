@@ -11,6 +11,10 @@ void printMove(const Move &move) {
 
 // 通用檢查走子
 bool isMoveLegal(const Board &board, const Move &move) {
+    if (move.castle != NOT) {
+        return true;
+    }
+
     // 檢查是否超出棋盤
     if (!board.isInBoard(move.from)) {
         std::cout << "There are no pieces outside the board\n";
@@ -50,6 +54,15 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
         case WKNIGHT: return isKnightMoveLegal(board, move);
         case BKNIGHT: return isKnightMoveLegal(board, move);
+
+        case WBISHOP: return isBishopMoveLegal(board, move);
+        case BBISHOP: return isBishopMoveLegal(board, move);
+
+        case WROOK: return isRookMoveLegal(board, move);
+        case BROOK: return isRookMoveLegal(board, move);
+
+        case WQUEEN: return isQueenMoveLegal(board, move);
+        case BQUEEN: return isQueenMoveLegal(board, move);
 
         default:
         break;
@@ -143,6 +156,56 @@ bool isKnightMoveLegal(const Board &board, const Move &move) {
     return false;
 }
 
+// 檢查主教走子
+bool isBishopMoveLegal(const Board &board, const Move &move) {
+    int moveForWard = abs(move.from.row - move.to.row);
+    int moveSideward = abs(move.from.col - move.to.col);
+
+    if (moveForWard != moveSideward) {
+        std::cout << "Bishop can't move like that\n";
+        return false;
+    }
+
+    return true;
+}
+
+// 檢查城堡走子
+bool isRookMoveLegal(const Board &board, const Move &move) {
+    int moveForWard = abs(move.from.row - move.to.row);
+    int moveSideward = abs(move.from.col - move.to.col);
+
+    if (moveForWard != 0 && moveSideward != 0) {
+        std::cout << "Rook can't move like that\n";
+        return false;
+    }
+
+    return true;
+}
+
+// 檢查皇后走子
+bool isQueenMoveLegal(const Board &board, const Move &move) {
+    int moveForWard = abs(move.from.row - move.to.row);
+    int moveSideward = abs(move.from.col - move.to.col);
+
+    if (moveForWard == 0 || moveSideward == 0) {
+        return true;
+    }
+
+    if (moveForWard == moveSideward) {
+        return true;
+    }
+
+    std::cout << "Queen can't move like that\n";
+    return false;
+}
+
+// 入堡的原王城位置與新王城位置
+int castlePosition[2][2][4] = {};
+
+void castleMove(Board &board, Move &move) {
+
+}
+
 // 執行 move
 void makeMove(Board &board, Move &move) {
     std::cout << "making move:\n";
@@ -152,10 +215,15 @@ void makeMove(Board &board, Move &move) {
         return;
     }
 
-    board.set(move.from, EMPTY);
-    board.set(move.to, move.movePiece);
-}
+    switch (move.castle) {
+    case SHORT_CASTLE:
+    case LONG_CASTLE:
+        castleMove(board, move);
+        break;
 
-void pgnToMove(std::string pgn) {
-
+    case NOT:
+        board.set(move.from, EMPTY);
+        board.set(move.to, move.movePiece);
+        break;
+    }
 }

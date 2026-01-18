@@ -76,6 +76,15 @@ build CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj: CXX_COMPILER_
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
+build CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Pgn_Parser.cpp || cmake_object_order_depends_target_chess-analysis-engine
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\pgn\Pgn_Parser.cpp.obj.d
+  FLAGS = -g -std=gnu++17
+  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
+  OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\pgn
+  TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
+
 build CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/main.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\main.cpp.obj.d
@@ -93,7 +102,7 @@ build CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj: CXX_COMPILER__chess
 #############################################
 # Link the executable chess-analysis-engine.exe
 
-build chess-analysis-engine.exe: CXX_EXECUTABLE_LINKER__chess-analysis-engine_Debug CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj
+build chess-analysis-engine.exe: CXX_EXECUTABLE_LINKER__chess-analysis-engine_Debug CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32

@@ -34,6 +34,7 @@ public:
     bool isInBoard(Position pos) const;
 
     bool whiteToMove;
+    
 private:
 
     Piece board[8][8];

@@ -11,6 +11,7 @@ set(SOURCE_FILES
     src/board/Piece.cpp
     src/board/Board.cpp
     src/board/Move.cpp
+    src/pgn/Pgn_Parser.cpp
     src/main.cpp
 )
 
