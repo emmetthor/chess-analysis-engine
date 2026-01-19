@@ -199,11 +199,32 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
     return false;
 }
 
-// 入堡的原王城位置與新王城位置
-int castlePosition[2][2][4] = {};
-
 void castleMove(Board &board, Move &move) {
-
+    if (move.player == PLAYER_WHITE) {
+        if (move.castle == SHORT_CASTLE) {
+            board.set({7, 4}, EMPTY);
+            board.set({7, 6}, WKING);
+            board.set({7, 7}, EMPTY);
+            board.set({7, 5}, WROOK);
+        } else {
+            board.set({7, 4}, EMPTY);
+            board.set({7, 2}, WKING);
+            board.set({7, 0}, EMPTY);
+            board.set({7, 3}, WROOK);
+        }
+    } else {
+        if (move.castle == SHORT_CASTLE) {
+            board.set({0, 4}, EMPTY);
+            board.set({0, 6}, BKING);
+            board.set({0, 7}, EMPTY);
+            board.set({0, 5}, BROOK);
+        } else {
+            board.set({0, 4}, EMPTY);
+            board.set({0, 2}, BKING);
+            board.set({0, 0}, EMPTY);
+            board.set({0, 3}, BROOK);
+        }
+    }
 }
 
 // 執行 move

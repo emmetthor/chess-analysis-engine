@@ -6,11 +6,10 @@
 
 class PGN {
 public:
-    void cinPgnToMove();
+    void cinPgnToSan();
 
 private:
-    std::string whiteName, blackName, result;
-    int whiteElo, blackElo;
+    std::string whiteName, blackName, result, whiteElo, blackElo;
 
-    std::vector<Move> moves;
+    std::vector<std::string> san_moves;
 };

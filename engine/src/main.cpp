@@ -16,7 +16,7 @@ void aMove(Board &board, int fromX, int fromY, int toX, int toY, Piece piece) {
 
 int main() {
     PGN pgn;
-    pgn.cinPgnToMove();
+    pgn.cinPgnToSan();
 
     return 0;
 }
