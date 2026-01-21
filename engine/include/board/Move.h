@@ -7,10 +7,6 @@ enum Castle {
     NOT, SHORT_CASTLE, LONG_CASTLE
 };
 
-enum Player {
-    PLAYER_WHITE, PLAYER_BLACK
-};
-
 struct Move {
     Player player;
 

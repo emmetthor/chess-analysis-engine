@@ -7,6 +7,7 @@
 class PGN {
 public:
     void cinPgnToSan();
+    void SantoMove();
 
 private:
     std::string whiteName, blackName, result, whiteElo, blackElo;

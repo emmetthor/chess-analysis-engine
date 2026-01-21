@@ -14,10 +14,21 @@
 是否白方先手
 */
 
+enum Player {
+    PLAYER_WHITE, PLAYER_BLACK
+};
+
 struct Position {
     int row;
     int col;
 };
+
+Position invalidPosition = {-1, -1};
+
+bool samePosition(Position a, Position b) {
+    if (a.row == b.row && a.col == b.col) return true;
+    else return false;
+}
 
 std::string pngPosition(const Position pos);
 
