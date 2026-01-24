@@ -3,9 +3,7 @@
 
 #include "board/Board.h"
 #include "board/Piece.h"
-
-char colToCharMap[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-char rowToCorrectMap[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
+#include "pgn/Pgn_Transformer.h"
 
 Board::Board() {
     init();
@@ -50,12 +48,12 @@ void Board::debugPrint() const {
             }
 
             if (c == -1) {
-                std::cout << rowToCorrectMap[r] << ' ';
+                std::cout << rowToPgn[r] << ' ';
                 continue;
             }
 
             if (r == 8) {
-                std::cout << colToCharMap[c] << " \n"[c == 8 - 1];
+                std::cout << colToPgn[c] << " \n"[c == 8 - 1];
                 continue;
             }
 
@@ -78,7 +76,12 @@ bool Board::isInBoard(Position pos) const {
 
 std::string pngPosition(const Position pos) {
     std::string result = "";
-    result += colToCharMap[pos.col];
-    result += rowToCorrectMap[pos.row];
+    result += colToPgn[pos.col];
+    result += rowToPgn[pos.row];
     return result;
+}
+
+bool samePosition(Position a, Position b) {
+    if (a.row == b.row && a.col == b.col) return true;
+    else return false;
 }

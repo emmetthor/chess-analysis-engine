@@ -14,15 +14,21 @@ struct Move {
     Position to;
     Piece movePiece;
 
-    bool isPromotion;
+    bool isPromotion = false;
     Piece promotionPiece;
 
-    Castle castle;
+    Castle castle = NOT;
 
     bool isEnPassant;
 };
 
+void printMove(const Move &move);
+
 void makeMove(Board &board, Move &move);
+
+void moveDebugPrint(const Move &move);
+
+bool isMoveLegal(const Board &board, const Move &move);
 
 bool isPawnMoveLegal(const Board &board, const Move &move);
 

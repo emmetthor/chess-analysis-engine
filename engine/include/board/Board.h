@@ -3,6 +3,8 @@
 #include "Piece.h"
 
 #include <string>
+#include <set>
+#include <vector>
 
 /*
 初始化
@@ -19,16 +21,11 @@ enum Player {
 };
 
 struct Position {
-    int row;
-    int col;
+    int row = -1;
+    int col = -1;
 };
 
-Position invalidPosition = {-1, -1};
-
-bool samePosition(Position a, Position b) {
-    if (a.row == b.row && a.col == b.col) return true;
-    else return false;
-}
+bool samePosition(Position a, Position b);
 
 std::string pngPosition(const Position pos);
 

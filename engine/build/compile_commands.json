@@ -25,6 +25,24 @@
 },
 {
   "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Valid_Piece.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\pgn\\Valid_Piece.cpp",
+  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Valid_Piece.cpp",
+  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj"
+},
+{
+  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Pgn_Transformer.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\pgn\\Pgn_Transformer.cpp",
+  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Pgn_Transformer.cpp",
+  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj"
+},
+{
+  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\San_Parser.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\pgn\\San_Parser.cpp",
+  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/San_Parser.cpp",
+  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/San_Parser.cpp.obj"
+},
+{
+  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
   "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\main.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\main.cpp",
   "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/main.cpp",
   "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj"

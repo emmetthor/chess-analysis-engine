@@ -1,6 +1,7 @@
 #include "pgn/Pgn_Parser.h"
 #include "board/Board.h"
 #include "pgn/Valid_Piece.h"
+#include "pgn/Pgn_Transformer.h"
 
 #include <iostream>
 #include <string>
@@ -23,6 +24,14 @@ std::map<std::string, Header> headerTypeMap = {
     {"[Black", BLACK},
     {"[WhiteElo", WHITEELO},
     {"[BlackElo", BLACKELO}
+};
+
+std::map<char, bool> specialPiece = {
+    {'K', 1},
+    {'Q', 1},
+    {'N', 1},
+    {'B', 1},
+    {'R', 1},
 };
 
 void PGN::cinPgnToSan() {
@@ -86,25 +95,6 @@ void PGN::cinPgnToSan() {
     for (auto s : san_moves) std::cout << s << '\n';
 }
 
-std::map<char, bool> specialPiece = {
-    {'K', 1},
-    {'Q', 1},
-    {'N', 1},
-    {'B', 1},
-    {'R', 1},
-};
-
-bool isStringAPosition(std::string s) {
-    if (s.size() != 2) {
-        return 0;
-    }
-
-    if (0 <= s[0] - 'a' && s[0] - 'a' <= 26 && 0 <= s[1] - '0' && s[1] - '0' <= 9) {
-        return 1;
-    } else 
-        return 0;
-}
-
 bool isCapture(std::string s) {
     bool res = 0;
 
@@ -115,16 +105,107 @@ bool isCapture(std::string s) {
     return res;
 }
 
-Position pgnToPosition(std::string s) {
-    if (!isStringAPosition(s)) {
-        std::cout << "Invalid input: " << s << '\n';
-        return {-1, -1};
+SAN parsePieceSan(std::string strSan, Board &board, Player player) {
+    SAN san;
+
+    san.piece = playerPieceCharToPiece(player, strSan[0]);
+
+    int sanSize = strSan.size();
+
+    // skip strSan[0]
+    int i = 1;
+
+    if (sanSize > 3 && strSan[i] != 'x' && isalpha(strSan[i])) {
+        san.fromPos.col = strSan[i] - 'a';
+        i++;
     }
 
-    int col = 8 - (s[1] - '0');
-    int rol = s[0] - 'a';
+    if (strSan[i] != 'x' && isdigit(strSan[i])) {
+        san.fromPos.col = 8 - (strSan[i] - '0');
+        i++;
+    }
 
-    return {rol, col};
+    if (strSan[i] == 'x') {
+        san.isCapture = true;
+        i++;
+    }
+
+    san.toPos = pgnToPosition(strSan.substr(i, 2));
+
+    return san;
+}
+
+Move parsePieceMove(SAN &san, Board &board) {
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            if (board.at({r, c}) != san.piece) continue;
+            if (san.fromPos.row != -1 && r != san.fromPos.row) continue;
+            if (san.fromPos.col != -1 && c != san.fromPos.col) continue;
+
+            Move move;
+            move.from = {r, c};
+            move.movePiece = san.piece;
+            move.player = isWhite(san.piece) ? PLAYER_WHITE : PLAYER_BLACK;
+            move.to = san.toPos;
+
+            if (isMoveLegal(board, move)) {
+                return move;
+            }
+        }
+    }
+
+    std::cout << "No valid move\n";
+
+    return Move();
+}
+
+void PGN::parsePawnSan(std::string san, Board &board, Player player) {
+    // pawn
+    Move move;
+
+    Piece piece = playerPieceCharToPiece(player, 'P');
+    Position toPos = pgnToPosition(san);
+
+    if (isCapture(san)) {
+        
+    } else {
+        std::vector<Position> validPieces = findValidPieceWithColume(board, piece, toPos.col);
+
+        for (auto pos : validPieces) {
+            Move _move;
+            _move.from = pos;
+            _move.to = toPos;
+            _move.movePiece = piece;
+
+            printMove(_move);
+
+            if (isMoveLegal(board, _move)) {
+                move.from = pos;
+                move.to = toPos;
+                move.movePiece = piece;
+                break;
+            }
+        }
+
+        moves.emplace_back(move);
+
+        makeMove(board, move);
+    }
+}
+
+Move parseCastleSan(std::string san, Player player) {
+        Move move;
+    move.player = player;
+
+    if (san == "O-O") {
+        move.castle = SHORT_CASTLE;
+    }
+
+    else if (san == "O-O-O") {
+        move.castle = LONG_CASTLE;
+    }
+
+    return move;
 }
 
 void PGN::SantoMove() {
@@ -133,27 +214,34 @@ void PGN::SantoMove() {
     Board board;
 
     for (auto san : san_moves) {
-        Move move;
-
+        std::cout << san << '\n';
+        
         if (specialPiece.find(san[0]) != specialPiece.end()) {
-            // 存在 special piece
+            SAN pieceSan = parsePieceSan(san, board, player);
+            Move pieceMove = parsePieceMove(pieceSan, board);
 
+            makeMove(board, pieceMove);
+
+            moves.emplace_back(pieceMove);
         }
 
         else if (san[0] == 'O') {
             // castle
+            Move castleMove = parseCastleSan(san, player);
+
+            makeMove(board, castleMove);
+
+            moves.emplace_back(castleMove);
         }
 
         else {
             // pawn
-
-            if (isCapture(san)) {
-                int col = san[0] - 'a';
-                Piece piece = playerPieceCharToPiece(player, 'P');
-                Position fromPosition = findValidPieceWithColume(board, piece, col);
-            } else {
-
-            }
+            parsePawnSan(san, board, player);
         }
+
+        board.debugPrint();
+        std::cout << '\n';
+
+        player = (player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE);
     }
 }

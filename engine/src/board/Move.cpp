@@ -4,16 +4,19 @@
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "board/Move.h"
+#include "pgn/Pgn_Transformer.h"
 
 void printMove(const Move &move) {
+    if (move.castle == SHORT_CASTLE) std::cout << "O-O\n";
+    else if (move.castle == LONG_CASTLE) std::cout << "O-O-O\n";
+
     std::cout << pieceToChar(move.movePiece) << pngPosition(move.from) << pngPosition(move.to) << '\n';
 }
 
 // 通用檢查走子
 bool isMoveLegal(const Board &board, const Move &move) {
-    if (move.castle != NOT) {
-        return true;
-    }
+    // 排除 castle
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) return true;
 
     // 檢查是否超出棋盤
     if (!board.isInBoard(move.from)) {
@@ -47,6 +50,8 @@ bool isMoveLegal(const Board &board, const Move &move) {
         std::cout << "You can't capture your piece: " << pieceToChar(move.movePiece) << " !# " << pieceToChar(toPiece) << '\n';
         return false;
     }
+
+    std::cout << move.movePiece << '\n';
 
     switch (move.movePiece) {
         case WPAWN: return isPawnMoveLegal(board, move);
@@ -161,6 +166,8 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
     int moveForWard = abs(move.from.row - move.to.row);
     int moveSideward = abs(move.from.col - move.to.col);
 
+    std::cerr << moveForWard << ' ' << moveSideward << '\n';
+
     if (moveForWard != moveSideward) {
         std::cout << "Bishop can't move like that\n";
         return false;
@@ -229,7 +236,7 @@ void castleMove(Board &board, Move &move) {
 
 // 執行 move
 void makeMove(Board &board, Move &move) {
-    std::cout << "making move:\n";
+    //std::cout << "making move:\n";
     printMove(move);
 
     if (!isMoveLegal(board, move)) {
@@ -243,6 +250,7 @@ void makeMove(Board &board, Move &move) {
         break;
 
     case NOT:
+    default:
         board.set(move.from, EMPTY);
         board.set(move.to, move.movePiece);
         break;

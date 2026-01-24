@@ -18,5 +18,7 @@ int main() {
     PGN pgn;
     pgn.cinPgnToSan();
 
+    pgn.SantoMove();
+
     return 0;
 }

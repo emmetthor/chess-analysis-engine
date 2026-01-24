@@ -13,6 +13,8 @@ set(SOURCE_FILES
     src/board/Move.cpp
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp
+    src/pgn/Pgn_Transformer.cpp
+    src/pgn/San_Parser.cpp
     src/main.cpp
 )
 
