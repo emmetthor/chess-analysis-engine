@@ -1,4 +1,5 @@
 #include "pgn/Pgn_Transformer.h"
+#include "debug.h"
 
 #include <iostream>
 #include <map>
@@ -42,7 +43,7 @@ bool isStringAPosition(std::string s) {
 
 Position pgnToPosition(std::string s) {
     if (!isStringAPosition(s)) {
-        std::cout << "Invalid input: " << s << '\n';
+        debug::log("pgnToPosition: Invalid input: ", s, '\n');
         return {-1, -1};
     }
 

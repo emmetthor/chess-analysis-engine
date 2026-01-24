@@ -17,12 +17,11 @@ private:
     std::vector<std::string> san_moves;
 
     std::vector<Move> moves;
-
-    void parsePawnSan(std::string san, Board &board, Player player);
 };
 
 struct SAN {
-    Piece piece;
+    Piece piece, promorePiece;
     bool isCapture = false;
+    bool isPromote = false;
     Position toPos, fromPos;
 };

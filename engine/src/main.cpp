@@ -2,6 +2,7 @@
 #include "board/Piece.h"
 #include "board/Move.h"
 #include "pgn/Pgn_Parser.h"
+#include "debug.h"
 
 void aMove(Board &board, int fromX, int fromY, int toX, int toY, Piece piece) {
     Move m;
@@ -15,6 +16,8 @@ void aMove(Board &board, int fromX, int fromY, int toX, int toY, Piece piece) {
 }
 
 int main() {
+    debug::ScopedEnable _(true);
+    
     PGN pgn;
     pgn.cinPgnToSan();
 

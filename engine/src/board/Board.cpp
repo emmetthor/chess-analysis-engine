@@ -4,6 +4,7 @@
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "pgn/Pgn_Transformer.h"
+#include "debug.h"
 
 Board::Board() {
     init();
@@ -48,18 +49,20 @@ void Board::debugPrint() const {
             }
 
             if (c == -1) {
-                std::cout << rowToPgn[r] << ' ';
+                debug::log(rowToPgn[r], ' ');
                 continue;
             }
 
             if (r == 8) {
-                std::cout << colToPgn[c] << " \n"[c == 8 - 1];
+                debug::log(colToPgn[c], ' ');
                 continue;
             }
 
-            std::cout << pieceToChar(board[r][c]) << " \n"[c == 8 - 1];
+            debug::log(pieceToChar(board[r][c]), " \n"[c == 8 - 1]);
         }
     }
+
+    debug::log('\n');
 }
 
 Piece Board::at(Position pos) const {
