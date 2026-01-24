@@ -39,7 +39,7 @@ std::string sanClearer(std::string strSan) {
     int sanSize = strSan.size();
     std::string res = "";
     for (int i = 0; i < sanSize; i++) {
-        if (isdigit(strSan[i]) || isalpha(strSan[i]) || strSan[i] == '=') {
+        if (isdigit(strSan[i]) || isalpha(strSan[i]) || strSan[i] == '=' || strSan[i] == '-') {
             res += strSan[i];
         }
     }
@@ -250,7 +250,7 @@ Move parsePawnMove(SAN &san, Board &board) {
 }
 
 Move parseCastleSan(std::string san, Player player) {
-        Move move;
+    Move move;
     move.player = player;
 
     if (san == "O-O") {
@@ -272,7 +272,7 @@ void PGN::SantoMove() {
     for (auto san : san_moves) {
         debug::ScopedEnable _(true);
         debug::log("SantoMove: ", san, '\n');
-        debug::ScopedEnable __(false);
+        //debug::ScopedEnable __(false);
         
         if (specialPiece.find(san[0]) != specialPiece.end()) {
             SAN pieceSan = parsePieceSan(san, player);

@@ -77,8 +77,24 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
 // 檢查兵走子
 bool isPawnMoveLegal(const Board &board, const Move &move) {
-    int moveForWard = abs(move.from.row - move.to.row);
+    int moveForWard = move.from.row - move.to.row;
     int moveSideward = abs(move.from.col - move.to.col);
+
+    if (move.player == PLAYER_WHITE) {
+        if (moveForWard < 0) {
+            debug::log("isPawnMoveLegal: Pawn can't move backward\n");
+            return false;
+        }
+    }
+
+    if (move.player == PLAYER_BLACK) {
+        if (moveForWard > 0) {
+            debug::log("isPawnMoveLegal: Pawn can't move backward\n");
+            return false;
+        }
+
+        moveForWard *= -1;
+    }
 
     // 直走
     if (moveSideward == 0) {
@@ -129,6 +145,11 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
             return false;
         }
 
+        if (moveForWard != 1) {
+            debug::log("isPawnMoveLegal: Pawn can only take the piece a block diagonally\n");
+            return false;
+        }
+
         return true;
     }
 
@@ -167,7 +188,7 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
     int moveForWard = abs(move.from.row - move.to.row);
     int moveSideward = abs(move.from.col - move.to.col);
 
-    std::cerr << moveForWard << ' ' << moveSideward << '\n';
+    debug::log("isBishopMoveLegal: from: ", move.from.row, ", ", move.from.col, " to ", move.to.row, ", ", move.to.col, '\n');
 
     if (moveForWard != moveSideward) {
         debug::log("isBishopMoveLegal: bishop can't move like that\n");
@@ -175,11 +196,12 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
     }
 
     int fromRow = move.from.row, fromCol = move.from.col, toRow = move.to.row, toCol = move.to.col;
-    if (fromRow > toRow) std::swap(fromRow, toRow);
-    if (fromCol > toCol) std::swap(fromCol, toCol);
+    int dr = (toRow - fromRow > 0 ? 1 : -1);
+    int dc = (toCol - fromCol > 0 ? 1 : -1);
 
     bool allEmpty = true;
-    for (int r = fromRow, c = fromCol; r <= toRow, c <= toCol; r++, c++) {
+    for (int r = fromRow + dr, c = fromCol + dc; r != toRow, c != toCol; r += dr, c += dc) {
+        debug::log(r, ", ", c, '\n');
         if (board.at({r, c}) != EMPTY) {
             allEmpty = false;
             break;
@@ -293,11 +315,11 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
 
     if (moveForWard == moveSideward) {
         int fromRow = move.from.row, fromCol = move.from.col, toRow = move.to.row, toCol = move.to.col;
-        if (fromRow > toRow) std::swap(fromRow, toRow);
-        if (fromCol > toCol) std::swap(fromCol, toCol);
+        int dr = (toRow - fromRow > 0 ? 1 : -1);
+        int dc = (toCol - fromCol > 0 ? 1 : -1);
 
         bool allEmpty = true;
-        for (int r = fromRow, c = fromCol; r <= toRow, c <= toCol; r++, c++) {
+        for (int r = fromRow + dr, c = fromCol + dc; r != toRow, c != toCol; r += dr, c += dc) {
             if (board.at({r, c}) != EMPTY) {
                 allEmpty = false;
                 break;
