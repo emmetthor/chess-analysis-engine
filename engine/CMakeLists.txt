@@ -15,6 +15,7 @@ set(SOURCE_FILES
 
     src/evaluate/Material_Point.cpp
     src/evaluate/Evaluate.cpp
+    src/evaluate/Control_Center.cpp
 
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp

@@ -104,3 +104,31 @@ void printAttackMap(const Board &board, const Player player) {
 
     debug::log('\n');
 }
+
+int countPawnAttacks(const Board &board, Position pos, const Player player) {
+    int cnt = 0;
+    // pawn
+    int pdr = (player == PLAYER_WHITE ? -1 : 1);
+    for (int pdc : {-1, 1}) {
+        Position p = {pos.row - pdr, pos.col + pdc};
+        if (!board.isInBoard(p)) continue;
+
+        if (board.at(p) == playerPieceCharToPiece(player, 'P')) cnt++;
+    }
+
+    return cnt;
+}
+
+int countKnightAttacks(const Board &board, Position pos, const Player player) {
+    int cnt = 0;
+    // knight
+    static const int ndr[] = {1, 2, 2, 1, -1, -2, -2, -1}, ndc[] = {2, 1, -1, -2, -2, -1, 1, 2};
+    for (int i = 0; i < 8; i++) {
+        Position p = {pos.row + ndr[i], pos.col + ndc[i]};
+        if (!board.isInBoard(p)) continue;
+
+        if (board.at(p) == playerPieceCharToPiece(player, 'N')) cnt++;
+    }
+
+    return cnt;
+}

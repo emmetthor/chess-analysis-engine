@@ -37,8 +37,9 @@ int main() {
     for (int i = 0; i < pgn.getMovesCount(); i++) {
         makeMove(board, moves[i]);
 
+        std::cout << evaluate(board) << '\n';
+
         board.debugPrint();
-        printAttackMap(board, moves[i].player);
     }
 
     return 0;
