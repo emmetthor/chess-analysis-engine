@@ -2,6 +2,7 @@
 #include "board/Piece.h"
 #include "board/Move.h"
 #include "pgn/Pgn_Parser.h"
+#include "evaluate/Evaluate.h"
 #include "debug.h"
 
 void aMove(Board &board, int fromX, int fromY, int toX, int toY, Piece piece) {
@@ -16,12 +17,27 @@ void aMove(Board &board, int fromX, int fromY, int toX, int toY, Piece piece) {
 }
 
 int main() {
-    debug::ScopedEnable _(true);
-    
+    debug::set(1);
+    debug::log("cinPgnToSan: please input your game with PGN:\n");
+    debug::set(0);
+
     PGN pgn;
     pgn.cinPgnToSan();
-
     pgn.SantoMove();
+
+    debug::set(1);
+    debug::log("Pgn transform finished.\n");
+    debug::set(0);
+
+    Board board;
+    std::vector<Move> moves = pgn.getMoves();
+
+    for (int i = 0; i < pgn.getMovesCount(); i++) {
+        makeMove(board, moves[i]);
+
+        std::cout << i + 1 << ": ";
+        std::cout << evaluate(board) << '\n';
+    }
 
     return 0;
 }

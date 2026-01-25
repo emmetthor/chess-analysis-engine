@@ -47,10 +47,7 @@ std::string sanClearer(std::string strSan) {
     return res;
 }
 
-
 void PGN::cinPgnToSan() {
-    debug::log("cinPgnToSan: please input your game with PGN:\n");
-
     std::string input;
     int headerType = NONE;
 
@@ -270,9 +267,7 @@ void PGN::SantoMove() {
     Board board;
 
     for (auto san : san_moves) {
-        debug::ScopedEnable _(true);
         debug::log("SantoMove: ", san, '\n');
-        //debug::ScopedEnable __(false);
         
         if (specialPiece.find(san[0]) != specialPiece.end()) {
             SAN pieceSan = parsePieceSan(san, player);
@@ -302,11 +297,18 @@ void PGN::SantoMove() {
             moves.emplace_back(pawnMove);
         }
 
-        
-        debug::ScopedEnable ___(true);
         board.debugPrint();
         debug::log('\n');
 
         player = (player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE);
     }
 }
+
+std::vector<Move> PGN::getMoves() {
+    return moves;
+}
+
+int PGN::getMovesCount() {
+    return moves.size();
+}
+

@@ -44,7 +44,7 @@ void Board::debugPrint() const {
     for (int r = 0; r < 9; r++) {
         for (int c = -1; c < 8; c++) {
             if (r == 8 && c == -1) {
-                std::cout << "_ ";
+                debug::log("_ ");
                 continue;
             }
 

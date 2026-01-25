@@ -11,9 +11,14 @@ set(SOURCE_FILES
     src/board/Piece.cpp
     src/board/Board.cpp
     src/board/Move.cpp
+
+    src/evaluate/Material_Point.cpp
+    src/evaluate/Evaluate.cpp
+
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp
     src/pgn/Pgn_Transformer.cpp
+
     src/debug.cpp
     src/main.cpp
 )

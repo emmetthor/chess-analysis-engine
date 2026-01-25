@@ -10,6 +10,8 @@ class PGN {
 public:
     void cinPgnToSan();
     void SantoMove();
+    std::vector<Move> getMoves();
+    int getMovesCount();
 
 private:
     std::string whiteName, blackName, result, whiteElo, blackElo;
