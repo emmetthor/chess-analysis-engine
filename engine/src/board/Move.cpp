@@ -1,79 +1,13 @@
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "board/Move.h"
+#include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"
 #include "debug.h"
 
 #include <iostream>
 #include <string>
 #include <algorithm>
-
-void printMove(const Move &move) {
-    if (move.castle == SHORT_CASTLE) debug::log("move: O-O\n");
-    else if (move.castle == LONG_CASTLE) debug::log("move: O-O-O\n");
-    else debug::log("move: ", pieceToChar(move.movePiece), pngPosition(move.from), pngPosition(move.to), '\n');
-}
-
-// 通用檢查走子
-bool isMoveLegal(const Board &board, const Move &move) {
-    // 排除 castle
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) return true;
-
-    // 檢查是否超出棋盤
-    if (!board.isInBoard(move.from)) {
-        debug::log("isMoveLegal: from postition: (", move.from.row, ", ", move.from.col, ") is out of board\n");
-        return false;
-    }
-
-    if (!board.isInBoard(move.to)) {
-        debug::log("isMoveLegal: to postition: (", move.to.row, ", ", move.to.col, ") is out of board\n");
-        return false;
-    }
-
-    Piece fromPiece = board.at(move.from);
-
-    // 檢查移動棋子是否為空
-    if (fromPiece == EMPTY) {
-        debug::log("isMoveLegal: moving EMPTY\n");
-        return false;
-    }
-
-    // 檢查移動棋子是否正確
-    if (fromPiece != move.movePiece) {
-        debug::log("isMoveLegal: moving piece: ", pieceToChar(fromPiece), " is not correct. it should be: ", pieceToChar(move.movePiece), '\n');
-        return false;
-    }
-
-    Piece toPiece = board.at(move.to);
-
-    //檢查是否吃同色棋子
-    if (toPiece != EMPTY && isSameColor(move.movePiece, board.at(move.to))) {
-        debug::log("isMoveLegal: ", pieceToChar(move.movePiece), " can't capture the same color pieces: ", pieceToChar(toPiece), '\n');
-        return false;
-    }
-
-    switch (move.movePiece) {
-        case WPAWN: return isPawnMoveLegal(board, move);
-        case BPAWN: return isPawnMoveLegal(board, move);
-
-        case WKNIGHT: return isKnightMoveLegal(board, move);
-        case BKNIGHT: return isKnightMoveLegal(board, move);
-
-        case WBISHOP: return isBishopMoveLegal(board, move);
-        case BBISHOP: return isBishopMoveLegal(board, move);
-
-        case WROOK: return isRookMoveLegal(board, move);
-        case BROOK: return isRookMoveLegal(board, move);
-
-        case WQUEEN: return isQueenMoveLegal(board, move);
-        case BQUEEN: return isQueenMoveLegal(board, move);
-
-        default:
-        break;
-    }
-
-    return true;
-}
 
 // 檢查兵走子
 bool isPawnMoveLegal(const Board &board, const Move &move) {
@@ -337,6 +271,51 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
     return false;
 }
 
+// 檢查國王走子
+bool isKingMoveLegal(const Board &board, const Move &move) {
+    int moveForWard = abs(move.from.row - move.to.row);
+    int moveSideward = abs(move.from.col - move.to.col);
+
+    if (moveForWard > 1 || moveSideward > 1) {
+        debug::log("King can't move two steps\n");
+        return false;
+    }
+
+    if (isSquareAttacked(board, move.to, (move.player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE))) {
+        debug::log("King can't move to a attacked square\n");
+        return false;
+    }
+
+    return true;
+}
+
+// 檢查入堡
+bool isCastleLegal(const Board &board, const Move &move) {
+    if (move.player == PLAYER_WHITE) {
+        if (move.castle == SHORT_CASTLE) {
+            if (board.at({7, 5}) == EMPTY && board.at({7, 6}) == EMPTY) {
+                return true;
+            }
+        } else {
+            if (board.at({7, 2}) == EMPTY && board.at({7, 3}) == EMPTY) {
+                return true;
+            }
+        }
+    } else {
+        if (move.castle == SHORT_CASTLE) {
+            if (board.at({0, 5}) == EMPTY && board.at({0, 6}) == EMPTY) {
+                return true;
+            }
+        } else {
+            if (board.at({0, 2}) == EMPTY && board.at({0, 3}) == EMPTY) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 // 入堡走子
 void castleMove(Board &board, Move &move) {
     if (move.player == PLAYER_WHITE) {
@@ -364,6 +343,84 @@ void castleMove(Board &board, Move &move) {
             board.set({0, 3}, BROOK);
         }
     }
+}
+
+void printMove(const Move &move) {
+    if (move.castle == SHORT_CASTLE) debug::log("move: O-O\n");
+    else if (move.castle == LONG_CASTLE) debug::log("move: O-O-O\n");
+    else debug::log("move: ", pieceToChar(move.movePiece), pngPosition(move.from), pngPosition(move.to), '\n');
+}
+
+// 通用檢查走子
+bool isMoveLegal(const Board &board, const Move &move) {
+    // 檢查入堡
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+        return isCastleLegal(board, move);
+    }
+
+    // 檢查是否超出棋盤
+    if (!board.isInBoard(move.from)) {
+        debug::log("isMoveLegal: from postition: (", move.from.row, ", ", move.from.col, ") is out of board\n");
+        return false;
+    }
+
+    if (!board.isInBoard(move.to)) {
+        debug::log("isMoveLegal: to postition: (", move.to.row, ", ", move.to.col, ") is out of board\n");
+        return false;
+    }
+
+    Piece fromPiece = board.at(move.from);
+
+    // 檢查移動棋子是否為空
+    if (fromPiece == EMPTY) {
+        debug::log("isMoveLegal: moving EMPTY\n");
+        return false;
+    }
+
+    // 檢查移動棋子是否正確
+    if (fromPiece != move.movePiece) {
+        debug::log("isMoveLegal: moving piece: ", pieceToChar(fromPiece), " is not correct. it should be: ", pieceToChar(move.movePiece), '\n');
+        return false;
+    }
+
+    Piece toPiece = board.at(move.to);
+
+    //檢查是否吃同色棋子
+    if (toPiece != EMPTY && isSameColor(move.movePiece, board.at(move.to))) {
+        debug::log("isMoveLegal: ", pieceToChar(move.movePiece), " can't capture the same color pieces: ", pieceToChar(toPiece), '\n');
+        return false;
+    }
+
+    switch (move.movePiece) {
+    case WPAWN:
+    case BPAWN:
+        return isPawnMoveLegal(board, move);
+
+    case WKNIGHT:
+    case BKNIGHT:
+        return isKnightMoveLegal(board, move);
+
+    case WBISHOP:
+    case BBISHOP:
+        return isBishopMoveLegal(board, move);
+
+    case WROOK:
+    case BROOK:
+        return isRookMoveLegal(board, move);
+
+    case WQUEEN:
+    case BQUEEN:
+        return isQueenMoveLegal(board, move);
+
+    case WKING:
+    case BKING:
+        return isKingMoveLegal(board, move);
+
+    default:
+        break;
+    }
+
+    return true;
 }
 
 // 執行 move
@@ -399,3 +456,4 @@ void makeMove(Board &board, Move &move) {
     board.set(move.from, EMPTY);
     board.set(move.to, move.movePiece);
 }
+

@@ -1,6 +1,7 @@
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "board/Move.h"
+#include "board/Attack.h"
 #include "pgn/Pgn_Parser.h"
 #include "evaluate/Evaluate.h"
 #include "debug.h"
@@ -32,11 +33,12 @@ int main() {
     Board board;
     std::vector<Move> moves = pgn.getMoves();
 
+    debug::set(1);
     for (int i = 0; i < pgn.getMovesCount(); i++) {
         makeMove(board, moves[i]);
 
-        std::cout << i + 1 << ": ";
-        std::cout << evaluate(board) << '\n';
+        board.debugPrint();
+        printAttackMap(board, moves[i].player);
     }
 
     return 0;
