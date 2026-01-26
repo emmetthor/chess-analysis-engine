@@ -4,7 +4,7 @@
 
 int evaluate(const Board &board) {
     int res = 0;
-    res += evaluateMaterial(board);
-    res += evaluateCenterControl(board);
+    // res += evaluateMaterial(board);
+    // res += evaluateCenterControl(board);
     return res;
 }

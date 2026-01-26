@@ -1,6 +1,7 @@
 #include "board/Attack.h"
 #include "board/Board.h"
 #include "board/Move.h"
+#include "board/Generate_Position.h"
 #include "pgn/Pgn_Transformer.h"
 #include "debug.h"
 
@@ -19,57 +20,25 @@ int countSquareAttacks(const Board &board, Position pos, const Player player) {
     }
 
     // knight
-    static const int ndr[] = {1, 2, 2, 1, -1, -2, -2, -1}, ndc[] = {2, 1, -1, -2, -2, -1, 1, 2};
-    for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + ndr[i], pos.col + ndc[i]};
-        if (!board.isInBoard(p)) continue;
-
-        if (board.at(p) == playerPieceCharToPiece(player, 'N')) cnt++;
+    for (Position nPos : generatePosFromPosWithKnight(board, pos)) {
+        if (board.at(nPos) == playerPieceCharToPiece(player, 'N')) cnt++;
     }
 
     // 直線
-    static const int rqdr[] = {1, -1, 0 , 0}, rqdc[] = {0, 0, 1, -1};
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + rqdr[i], pos.col + rqdc[i]};
-
-        while (true) {
-            if (!board.isInBoard(p)) break;
-
-            if (board.at(p) == playerPieceCharToPiece(player, 'R')) cnt++;
-            if (board.at(p) == playerPieceCharToPiece(player, 'Q')) cnt++;
-
-            if (board.at(p) != EMPTY) break;
-
-            p.row += rqdr[i];
-            p.col += rqdc[i];
-        }
-    } 
+    for (Position straightPos : generatePosFromPosWithStraight(board, pos)) {
+        if (board.at(straightPos)== playerPieceCharToPiece(player, 'R')) cnt++;
+        if (board.at(straightPos)== playerPieceCharToPiece(player, 'Q')) cnt++;
+    }
 
     // 斜線
-    static const int bqdr[] = {1, 1, -1 , -1}, bqdc[] = {1, -1, 1, -1};
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + bqdr[i], pos.col + bqdc[i]};
-
-        while (true) {
-            if (!board.isInBoard(p)) break;
-
-            if (board.at(p) == playerPieceCharToPiece(player, 'B')) cnt++;
-            if (board.at(p) == playerPieceCharToPiece(player, 'Q')) cnt++;
-
-            if (board.at(p) != EMPTY) break;    
-
-            p.row += bqdr[i];
-            p.col += bqdc[i];
-        }
+    for (Position diagonalPos : generatePosFromPosWithDiagonal(board, pos)) {
+        if (board.at(diagonalPos)== playerPieceCharToPiece(player, 'B')) cnt++;
+        if (board.at(diagonalPos)== playerPieceCharToPiece(player, 'Q')) cnt++;
     }
 
     // king
-    static const int kdr[] = {1, 1, 1, 0, -1, -1, -1, 0}, kdc[] = {1, 0, -1, -1, -1, 0, 1, 1};
-    for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + kdr[i], pos.col + kdc[i]};
-        if (!board.isInBoard(p)) continue;
-
-        if (board.at(p) == playerPieceCharToPiece(player, 'K')) cnt++;
+    for (Position kPos : generatePosFromPosWithKing(board, pos)) {
+        if (board.at(kPos) == playerPieceCharToPiece(player, 'K')) cnt++;
     }
 
     return cnt;
@@ -121,13 +90,9 @@ int countPawnAttacks(const Board &board, Position pos, const Player player) {
 
 int countKnightAttacks(const Board &board, Position pos, const Player player) {
     int cnt = 0;
-    // knight
-    static const int ndr[] = {1, 2, 2, 1, -1, -2, -2, -1}, ndc[] = {2, 1, -1, -2, -2, -1, 1, 2};
-    for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + ndr[i], pos.col + ndc[i]};
-        if (!board.isInBoard(p)) continue;
-
-        if (board.at(p) == playerPieceCharToPiece(player, 'N')) cnt++;
+    
+    for (Position nPos : generatePosFromPosWithKnight(board, pos)) {
+        if (board.at(nPos) == playerPieceCharToPiece(player, 'N')) cnt++;
     }
 
     return cnt;

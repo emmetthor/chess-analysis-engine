@@ -12,6 +12,7 @@ set(SOURCE_FILES
     src/board/Board.cpp
     src/board/Move.cpp
     src/board/Attack.cpp
+    src/board/Generate_Position.cpp
 
     src/evaluate/Material_Point.cpp
     src/evaluate/Evaluate.cpp
