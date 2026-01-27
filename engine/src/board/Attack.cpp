@@ -20,25 +20,33 @@ int countSquareAttacks(const Board &board, Position pos, const Player player) {
     }
 
     // knight
-    for (Position nPos : generatePosFromPosWithKnight(board, pos)) {
-        if (board.at(nPos) == playerPieceCharToPiece(player, 'N')) cnt++;
+    Piece knight = playerPieceCharToPiece(player, 'N');
+    for (Position knightPos : generatePiecePosFromPos(board, pos, knight)) {
+        if (board.at(knightPos) == knight) cnt++;
     }
 
-    // 直線
-    for (Position straightPos : generatePosFromPosWithStraight(board, pos)) {
-        if (board.at(straightPos)== playerPieceCharToPiece(player, 'R')) cnt++;
-        if (board.at(straightPos)== playerPieceCharToPiece(player, 'Q')) cnt++;
+    // bishop
+    Piece bishop = playerPieceCharToPiece(player, 'B');
+    for (Position bishopPos : generatePiecePosFromPos(board, pos, bishop)) {
+        if (board.at(bishopPos) == bishop) cnt++;
     }
 
-    // 斜線
-    for (Position diagonalPos : generatePosFromPosWithDiagonal(board, pos)) {
-        if (board.at(diagonalPos)== playerPieceCharToPiece(player, 'B')) cnt++;
-        if (board.at(diagonalPos)== playerPieceCharToPiece(player, 'Q')) cnt++;
+    // rook
+    Piece rook = playerPieceCharToPiece(player, 'R');
+    for (Position rookPos : generatePiecePosFromPos(board, pos, rook)) {
+        if (board.at(rookPos) == rook) cnt++;
+    }
+
+    // queen
+    Piece queen = playerPieceCharToPiece(player, 'Q');
+    for (Position queenPos : generatePiecePosFromPos(board, pos, queen)) {
+        if (board.at(queenPos) == queen) cnt++;
     }
 
     // king
-    for (Position kPos : generatePosFromPosWithKing(board, pos)) {
-        if (board.at(kPos) == playerPieceCharToPiece(player, 'K')) cnt++;
+    Piece king = playerPieceCharToPiece(player, 'K');
+    for (Position kingPos : generatePiecePosFromPos(board, pos, king)) {
+        if (board.at(kingPos) == king) cnt++;
     }
 
     return cnt;
@@ -91,8 +99,8 @@ int countPawnAttacks(const Board &board, Position pos, const Player player) {
 int countKnightAttacks(const Board &board, Position pos, const Player player) {
     int cnt = 0;
     
-    for (Position nPos : generatePosFromPosWithKnight(board, pos)) {
-        if (board.at(nPos) == playerPieceCharToPiece(player, 'N')) cnt++;
+    for (Position knightPos : generatePiecePosFromPos(board, pos, WKNIGHT)) {
+        if (board.at(knightPos) == playerPieceCharToPiece(player, 'N')) cnt++;
     }
 
     return cnt;

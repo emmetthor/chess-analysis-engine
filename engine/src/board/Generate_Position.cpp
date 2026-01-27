@@ -3,6 +3,11 @@
 #include "board/Move.h"
 #include "pgn/Pgn_Transformer.h"
 
+static const std::vector<int> ndr = {1, 2, 2, 1, -1, -2, -2, -1}, ndc = {2, 1, -1, -2, -2, -1, 1, 2};
+static const std::vector<int> rqdr = {1, -1, 0 , 0}, rqdc = {0, 0, 1, -1};
+static const std::vector<int> bqdr = {1, 1, -1 , -1}, bqdc = {1, -1, 1, -1};
+static const std::vector<int> kdr = {1, 1, 1, 0, -1, -1, -1, 0}, kdc = {1, 0, -1, -1, -1, 0, 1, 1};
+
 std::vector<Position> generatePosFromPosWithJumpPiece(
     const Board &board,
     const Position &pos,
@@ -47,27 +52,42 @@ std::vector<Position> generatePosFromPosWithSlidePiece(
     return res;
 }
 
-std::vector<Position> generatePosFromPosWithKnight(const Board &board, const Position &pos) {
-    static const std::vector<int> ndr = {1, 2, 2, 1, -1, -2, -2, -1}, ndc = {2, 1, -1, -2, -2, -1, 1, 2};
+std::vector<Position> generatePiecePosFromPos(
+    const Board &board,
+    const Position &pos,
+    Piece p
+) {
+    std::vector<Position> res, straight, diagonal;
+    switch (p) {
+    case WKNIGHT:
+    case BKNIGHT:
+        res = generatePosFromPosWithJumpPiece(board, pos, ndr, ndc);
+        break;
 
-    return generatePosFromPosWithJumpPiece(board, pos, ndr, ndc);
+    case WBISHOP:
+    case BBISHOP:
+        res = generatePosFromPosWithSlidePiece(board, pos, bqdr, bqdc);
+        break;
+
+    case WROOK:
+    case BROOK:
+        res = generatePosFromPosWithSlidePiece(board, pos, rqdr, rqdc);
+        break;
+
+    case WQUEEN:
+    case BQUEEN:
+        straight = generatePosFromPosWithSlidePiece(board, pos, rqdr, rqdc),
+        diagonal = generatePosFromPosWithSlidePiece(board, pos, bqdr, bqdc);
+
+        std::copy(diagonal.begin(), diagonal.end(), std::back_inserter(res));
+        std::copy(straight.begin(), straight.end(), std::back_inserter(res));
+        break;
+
+    case WKING:
+    case BKING:
+        res = generatePosFromPosWithJumpPiece(board, pos, kdr, kdc);
+        break;
+    }
+
+    return res;
 }
-
-std::vector<Position> generatePosFromPosWithStraight(const Board &board, const Position &pos) {
-    static const std::vector<int> rqdr = {1, -1, 0 , 0}, rqdc = {0, 0, 1, -1};
-
-    return generatePosFromPosWithSlidePiece(board, pos, rqdr, rqdc);
-}
-
-std::vector<Position> generatePosFromPosWithDiagonal(const Board &board, const Position &pos) {
-    static const std::vector<int> bqdr = {1, 1, -1 , -1}, bqdc = {1, -1, 1, -1};
-
-    return generatePosFromPosWithSlidePiece(board, pos, bqdr, bqdc);
-}
-
-std::vector<Position> generatePosFromPosWithKing(const Board &board, const Position &pos) {
-    static const std::vector<int> kdr = {1, 1, 1, 0, -1, -1, -1, 0}, kdc = {1, 0, -1, -1, -1, 0, 1, 1};
-
-    return generatePosFromPosWithJumpPiece(board, pos, kdr, kdc);
-}
-

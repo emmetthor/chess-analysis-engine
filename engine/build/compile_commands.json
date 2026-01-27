@@ -31,6 +31,12 @@
 },
 {
   "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Generate_Move.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Generate_Move.cpp",
+  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Generate_Move.cpp",
+  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj"
+},
+{
+  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
   "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Material_Point.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Material_Point.cpp",
   "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Material_Point.cpp",
   "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj"
