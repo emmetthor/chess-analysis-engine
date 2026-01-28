@@ -130,6 +130,7 @@ std::vector<Move> filterMoves(
 
         makeMove(copyBoard, move);
         if (!isInCheck(copyBoard, player)) {
+            debug::log("#####valid\n");
             res.emplace_back(move);
         } else {
             debug::log("check\n");

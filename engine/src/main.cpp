@@ -3,6 +3,7 @@
 #include "board/Move.h"
 #include "board/Attack.h"
 #include "board/Generate_Move.h"
+#include "board/Check.h"
 #include "pgn/Pgn_Parser.h"
 #include "evaluate/Evaluate.h"
 #include "debug.h"
@@ -35,6 +36,7 @@ int main() {
     std::vector<Move> moves = pgn.getMoves(), allLegalMoves;
 
     for (int i = 0; i < pgn.getMovesCount(); i++) {
+        Player player = moves[i].player;
         makeMove(board, moves[i]);
 
         std::cout << evaluate(board) << '\n';
