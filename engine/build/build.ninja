@@ -103,6 +103,15 @@ build CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj: CXX_
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
+build CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Check.cpp || cmake_object_order_depends_target_chess-analysis-engine
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Check.cpp.obj.d
+  FLAGS = -g -std=gnu++17
+  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
+  OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
+  TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
+
 build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Material_Point.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\Material_Point.cpp.obj.d
@@ -183,7 +192,7 @@ build CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj: CXX_COMPILER__chess
 #############################################
 # Link the executable chess-analysis-engine.exe
 
-build chess-analysis-engine.exe: CXX_EXECUTABLE_LINKER__chess-analysis-engine_Debug CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj
+build chess-analysis-engine.exe: CXX_EXECUTABLE_LINKER__chess-analysis-engine_Debug CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32

@@ -12,10 +12,10 @@ struct Move {
 
     Position from;
     Position to;
-    Piece movePiece;
+    Piece movePiece, capturePiece = EMPTY;
 
     bool isPromotion = false;
-    Piece promotionPiece;
+    Piece promotionPiece = EMPTY;
 
     Castle castle = NOT;
 
@@ -25,6 +25,8 @@ struct Move {
 void printMove(const Move &move);
 
 void makeMove(Board &board, Move &move);
+
+void undoMove(Board &board, Move &move);
 
 void moveDebugPrint(const Move &move);
 

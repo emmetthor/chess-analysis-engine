@@ -70,6 +70,9 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
 
             return true;
         }
+
+        debug::log("Pawn should move\n");
+        return false;
     }
 
     // 斜吃
@@ -92,8 +95,6 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
         debug::log("isPawnMoveLegal: Pawn can't move like that\n");
         return false;
     }
-
-
 
     debug::log("isPawnMoveLegal: HOW DID YOU GET HERE?\n");
     return false;
@@ -316,6 +317,17 @@ bool isCastleLegal(const Board &board, const Move &move) {
     return false;
 }
 
+bool isPromoteLegal(const Board &board, const Move &move) {
+    if (!isPawnMoveLegal(board, move)) return false;
+
+    if (move.promotionPiece == EMPTY) return false;
+
+    if (move.player == PLAYER_WHITE && move.to.row == 0) return true;
+    if (move.player == PLAYER_BLACK && move.to.row == 7) return true;
+
+    return false;
+}
+
 // 入堡走子
 void castleMove(Board &board, Move &move) {
     if (move.player == PLAYER_WHITE) {
@@ -345,6 +357,34 @@ void castleMove(Board &board, Move &move) {
     }
 }
 
+void undoCastleMove(Board &board, Move &move) {
+    if (move.player == PLAYER_WHITE) {
+        if (move.castle == SHORT_CASTLE) {
+            board.set({7, 4}, WKING);
+            board.set({7, 6}, EMPTY);
+            board.set({7, 7}, WROOK);
+            board.set({7, 5}, EMPTY);
+        } else {
+            board.set({7, 4}, WKING);
+            board.set({7, 2}, EMPTY);
+            board.set({7, 0}, WROOK);
+            board.set({7, 3}, EMPTY);
+        }
+    } else {
+        if (move.castle == SHORT_CASTLE) {
+            board.set({0, 4}, BKING);
+            board.set({0, 6}, EMPTY);
+            board.set({0, 7}, BROOK);
+            board.set({0, 5}, EMPTY);
+        } else {
+            board.set({0, 4}, BKING);
+            board.set({0, 2}, EMPTY);
+            board.set({0, 0}, BROOK);
+            board.set({0, 3}, EMPTY);
+        }
+    }
+}
+
 void printMove(const Move &move) {
     if (move.castle == SHORT_CASTLE) debug::log("move: O-O\n");
     else if (move.castle == LONG_CASTLE) debug::log("move: O-O-O\n");
@@ -356,6 +396,11 @@ bool isMoveLegal(const Board &board, const Move &move) {
     // 檢查入堡
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
         return isCastleLegal(board, move);
+    }
+
+    // 檢查升變
+    if (move.isPromotion) {
+        return isPromoteLegal(board, move);
     }
 
     // 檢查是否超出棋盤
@@ -457,3 +502,28 @@ void makeMove(Board &board, Move &move) {
     board.set(move.to, move.movePiece);
 }
 
+void undoMove(Board &board, Move &move) {
+    switch (move.castle) {
+    case SHORT_CASTLE:
+    case LONG_CASTLE:
+        undoCastleMove(board, move);
+        return;
+
+    case NOT:
+    default:
+        break;
+    }
+
+    switch (move.isPromotion) {
+    case true: 
+        board.set(move.from, move.movePiece);
+        board.set(move.to, move.capturePiece);
+        return;
+        
+    case false:
+        break;
+    }
+
+    board.set(move.from, move.movePiece);
+    board.set(move.to, move.capturePiece);
+}

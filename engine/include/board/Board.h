@@ -27,6 +27,8 @@ struct Position {
 
 bool samePosition(Position a, Position b);
 
+Player opponent(Player player);
+
 std::string pngPosition(const Position pos);
 
 class Board {

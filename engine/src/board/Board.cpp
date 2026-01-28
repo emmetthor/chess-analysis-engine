@@ -88,3 +88,7 @@ bool samePosition(Position a, Position b) {
     if (a.row == b.row && a.col == b.col) return true;
     else return false;
 }
+
+Player opponent(Player player) {
+    return player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE;
+}
