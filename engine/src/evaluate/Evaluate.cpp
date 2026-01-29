@@ -5,6 +5,7 @@
 #include "evaluate/Negamax.h"
 #include "evaluate/Tempo.h"
 #include "evaluate/PST.h"
+#include "evaluate/King_Safety.h"
 
 #include <iostream>
 
@@ -19,6 +20,9 @@ int boardEvaluate(const Board &board, const Player player) {
     res += evaluateMaterial(board);
     res += evaluateTempo(board, player);
     res += evaluatePieceSquare(board);
+
+    res += evaluateKingSafety(board, PLAYER_WHITE);
+    res -= evaluateKingSafety(board, PLAYER_BLACK);
     
     return res;
 }

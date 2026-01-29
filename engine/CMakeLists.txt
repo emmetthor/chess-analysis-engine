@@ -22,6 +22,7 @@ set(SOURCE_FILES
     src/evaluate/Negamax.cpp
     src/evaluate/Tempo.cpp
     src/evaluate/PST.cpp
+    src/evaluate/King_Safety.cpp
 
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp
