@@ -4,4 +4,4 @@
 
 int evaluate(Board &board, const Player player);
 
-int boardEvaluate(const Board &board);
+int boardEvaluate(const Board &board, const Player player);

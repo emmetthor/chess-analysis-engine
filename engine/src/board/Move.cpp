@@ -291,13 +291,17 @@ bool isKingMoveLegal(const Board &board, const Move &move) {
 
 // 檢查入堡
 bool isCastleLegal(const Board &board, const Move &move) {
-    if (move.player == PLAYER_WHITE) {
+    Player player = move.player;
+    if (player == PLAYER_WHITE) {
         if (move.castle == SHORT_CASTLE) {
             if (
                 board.at({7, 4}) == WKING &&
                 board.at({7, 6}) == EMPTY &&
                 board.at({7, 7}) == WROOK &&
-                board.at({7, 5}) == EMPTY
+                board.at({7, 5}) == EMPTY &&
+                isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
+                isSquareAttacked(board, {7, 6}, opponent(player)) == false &&
+                isSquareAttacked(board, {7, 5}, opponent(player)) == false
             ) {
                 return true;
             }
@@ -307,7 +311,10 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 board.at({7, 2}) == EMPTY &&
                 board.at({7, 0}) == WROOK &&
                 board.at({7, 3}) == EMPTY &&
-                board.at({7, 1}) == EMPTY
+                board.at({7, 1}) == EMPTY &&
+                isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
+                isSquareAttacked(board, {7, 2}, opponent(player)) == false &&
+                isSquareAttacked(board, {7, 3}, opponent(player)) == false 
             ) {
                 return true;
             }
@@ -318,7 +325,10 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 board.at({0, 4}) == BKING &&
                 board.at({0, 6}) == EMPTY &&
                 board.at({0, 7}) == BROOK &&
-                board.at({0, 5}) == EMPTY
+                board.at({0, 5}) == EMPTY &&
+                isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
+                isSquareAttacked(board, {0, 6}, opponent(player)) == false &&
+                isSquareAttacked(board, {0, 5}, opponent(player)) == false
             ) {
                 return true;
             }
@@ -328,7 +338,10 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 board.at({0, 2}) == EMPTY &&
                 board.at({0, 0}) == BROOK &&
                 board.at({0, 3}) == EMPTY &&
-                board.at({0, 1}) == EMPTY
+                board.at({0, 1}) == EMPTY &&
+                isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
+                isSquareAttacked(board, {0, 2}, opponent(player)) == false &&
+                isSquareAttacked(board, {0, 3}, opponent(player)) == false
             ) {
                 return true;
             }

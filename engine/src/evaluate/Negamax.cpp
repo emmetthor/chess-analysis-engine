@@ -12,7 +12,7 @@ static const int INF = 1e9;
 
 int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     if (depth == 0) {
-        return (player == PLAYER_WHITE ? 1 : -1) * boardEvaluate(board);
+        return (player == PLAYER_WHITE ? 1 : -1) * boardEvaluate(board, player);
     }
 
     std::vector<Move> moves = generateAllLegalMoves(board, player);

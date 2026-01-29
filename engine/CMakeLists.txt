@@ -20,6 +20,8 @@ set(SOURCE_FILES
     src/evaluate/Evaluate.cpp
     src/evaluate/Control_Center.cpp
     src/evaluate/Negamax.cpp
+    src/evaluate/Tempo.cpp
+    src/evaluate/PST.cpp
 
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp
