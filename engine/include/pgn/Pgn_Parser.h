@@ -12,6 +12,7 @@ public:
     void SantoMove();
     std::vector<Move> getMoves();
     int getMovesCount();
+    Move SantoMoveSingle(Board &board, std::string strSan, Player player);
 
 private:
     std::string whiteName, blackName, result, whiteElo, blackElo;

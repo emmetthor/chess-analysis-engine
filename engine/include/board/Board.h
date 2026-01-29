@@ -40,6 +40,7 @@ public:
 
     Piece at(Position pos) const;
     void set(Position pos, Piece p);
+    void change(std::vector<std::vector<Piece>> p);
 
     bool isInBoard(Position pos) const;
 

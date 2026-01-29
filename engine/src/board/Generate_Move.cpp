@@ -28,7 +28,7 @@ void generatePieceMoves(
 
             for (auto piecePos : generatePiecePosFromPos(board, pos, movePiece)) {
                 move.to = piecePos;
-                move.capturePiece = board.at({piecePos});
+                move.capturePiece = board.at({move.to});
 
                 if (!isMoveLegal(board, move)) continue;
 
@@ -96,9 +96,11 @@ std::vector<Move> generateAllMoves(
             // capture
             for (auto dc : {-1, 1}) {
                 Move moveCapture;
+                moveCapture.player = player;
                 moveCapture.from = {r, c};
                 moveCapture.to = {r + dr,  c + dc};
                 moveCapture.movePiece = pawn;
+                moveCapture.capturePiece = board.at(moveCapture.to);
 
                 moves.emplace_back(moveCapture);
 
@@ -111,6 +113,14 @@ std::vector<Move> generateAllMoves(
                 }
             }
         }
+    }
+
+    // castle
+    for (auto len: {SHORT_CASTLE, LONG_CASTLE}) {
+        Move moveCastle;
+        moveCastle.castle = len;
+        moveCastle.player = player;
+        moves.emplace_back(moveCastle);
     }
 
     return moves;

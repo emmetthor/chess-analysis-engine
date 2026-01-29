@@ -30,7 +30,7 @@ int evaluateCenterControl(const Board &board) {
         else if (isBlack(p)) blackOccupy++;
     }
 
-    std::cout << whitePawnControl << ' ' << whiteKnightControl << ' ' << whiteOccupy << '\n';
+    //std::cout << whitePawnControl << ' ' << whiteKnightControl << ' ' << whiteOccupy << '\n';
 
     return whitePawnControl * 10 + whiteKnightControl * 8 + whiteOccupy * 8
         - blackPawnControl * 10 - blackKnightControl * 8 - blackOccupy * 8;

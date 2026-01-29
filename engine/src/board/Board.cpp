@@ -92,3 +92,12 @@ bool samePosition(Position a, Position b) {
 Player opponent(Player player) {
     return player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE;
 }
+
+void Board::change(std::vector<std::vector<Piece>> p) {
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            board[r][c] = p[r][c];
+        }
+    }
+}
+

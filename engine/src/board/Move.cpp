@@ -8,7 +8,6 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-
 // 檢查兵走子
 bool isPawnMoveLegal(const Board &board, const Move &move) {
     int moveForWard = move.from.row - move.to.row;
@@ -54,7 +53,7 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
             // 兩格中間那格
             midPos = (move.from.row + move.to.row) / 2;
 
-            if (board.at(move.to) != EMPTY || board.at({move.to.row, midPos}) != EMPTY) {
+            if (board.at(move.to) != EMPTY || board.at({midPos, move.to.col}) != EMPTY) {
                 debug::log("isPawnMoveLegal: Pawn can't capture a piece in front of it\n");
                 return false;
             }
@@ -294,21 +293,43 @@ bool isKingMoveLegal(const Board &board, const Move &move) {
 bool isCastleLegal(const Board &board, const Move &move) {
     if (move.player == PLAYER_WHITE) {
         if (move.castle == SHORT_CASTLE) {
-            if (board.at({7, 5}) == EMPTY && board.at({7, 6}) == EMPTY) {
+            if (
+                board.at({7, 4}) == WKING &&
+                board.at({7, 6}) == EMPTY &&
+                board.at({7, 7}) == WROOK &&
+                board.at({7, 5}) == EMPTY
+            ) {
                 return true;
             }
         } else {
-            if (board.at({7, 2}) == EMPTY && board.at({7, 3}) == EMPTY) {
+            if (
+                board.at({7, 4}) == WKING &&
+                board.at({7, 2}) == EMPTY &&
+                board.at({7, 0}) == WROOK &&
+                board.at({7, 3}) == EMPTY &&
+                board.at({7, 1}) == EMPTY
+            ) {
                 return true;
             }
         }
     } else {
         if (move.castle == SHORT_CASTLE) {
-            if (board.at({0, 5}) == EMPTY && board.at({0, 6}) == EMPTY) {
+            if (
+                board.at({0, 4}) == BKING &&
+                board.at({0, 6}) == EMPTY &&
+                board.at({0, 7}) == BROOK &&
+                board.at({0, 5}) == EMPTY
+            ) {
                 return true;
             }
         } else {
-            if (board.at({0, 2}) == EMPTY && board.at({0, 3}) == EMPTY) {
+            if (
+                board.at({0, 4}) == BKING &&
+                board.at({0, 2}) == EMPTY &&
+                board.at({0, 0}) == BROOK &&
+                board.at({0, 3}) == EMPTY &&
+                board.at({0, 1}) == EMPTY
+            ) {
                 return true;
             }
         }
@@ -388,7 +409,15 @@ void undoCastleMove(Board &board, Move &move) {
 void printMove(const Move &move) {
     if (move.castle == SHORT_CASTLE) debug::log("move: O-O\n");
     else if (move.castle == LONG_CASTLE) debug::log("move: O-O-O\n");
-    else debug::log("move: ", pieceToChar(move.movePiece), pngPosition(move.from), pngPosition(move.to), '\n');
+    else {
+        debug::log("move: ", pieceToChar(move.movePiece), pngPosition(move.from), pngPosition(move.to), '\n');
+        // std::cerr
+        //     << "move: "
+        //     << pieceToChar(move.movePiece)
+        //     << pngPosition(move.from)
+        //     << pngPosition(move.to)
+        //     << '\n';
+    }
 }
 
 // 通用檢查走子
@@ -472,6 +501,7 @@ bool isMoveLegal(const Board &board, const Move &move) {
 void makeMove(Board &board, Move &move) {
     //std::cout << "making move:\n";
     printMove(move);
+    move.capturePiece = board.at(move.to);
 
     if (!isMoveLegal(board, move)) {
         return;
@@ -490,8 +520,8 @@ void makeMove(Board &board, Move &move) {
 
     switch (move.isPromotion) {
     case true: 
-        board.set(move.from, EMPTY);
-        board.set(move.to, move.promotionPiece);
+        board.set(move.from, move.capturePiece);
+        board.set(move.to, move.movePiece);
         return;
         
     case false:

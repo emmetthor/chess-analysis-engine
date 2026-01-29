@@ -4,7 +4,7 @@ int pieceValue(const Piece p) {
     switch (p) {
     case WKING:
     case BKING:
-        return 100000;
+        break;
 
     case WQUEEN:
     case BQUEEN:

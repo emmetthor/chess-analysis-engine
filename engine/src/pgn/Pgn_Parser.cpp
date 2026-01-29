@@ -167,6 +167,7 @@ Move parsePieceMove(SAN &strSan, Board &board) {
             move.movePiece = strSan.piece;
             move.player = isWhite(strSan.piece) ? PLAYER_WHITE : PLAYER_BLACK;
             move.to = strSan.toPos;
+            move.capturePiece = board.at(move.to);
 
             if (isMoveLegal(board, move)) {
                 return move;
@@ -232,6 +233,7 @@ Move parsePawnMove(SAN &san, Board &board) {
             move.movePiece = san.piece;
             move.player = isWhite(san.piece) ? PLAYER_WHITE : PLAYER_BLACK;
             move.to = san.toPos;
+            move.capturePiece = board.at(move.to);
             move.isPromotion = san.isPromote;
             move.promotionPiece = san.promorePiece;
 
@@ -301,6 +303,38 @@ void PGN::SantoMove() {
         debug::log('\n');
 
         player = (player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE);
+    }
+}
+
+Move PGN::SantoMoveSingle(Board &board, std::string strSan, Player player) {
+    debug::log("SantoMove: ", strSan, '\n');
+    
+    if (specialPiece.find(strSan[0]) != specialPiece.end()) {
+        SAN pieceSan = parsePieceSan(strSan, player);
+        Move pieceMove = parsePieceMove(pieceSan, board);
+
+        makeMove(board, pieceMove);
+
+        return pieceMove;
+    }
+
+    else if (strSan[0] == 'O') {
+        // castle
+        Move castleMove = parseCastleSan(strSan, player);
+
+        makeMove(board, castleMove);
+
+        return castleMove;
+    }
+
+    else {
+        // pawn
+        SAN pawnSan = parsePawnSan(strSan, player);
+        Move pawnMove = parsePawnMove(pawnSan, board);
+
+        makeMove(board, pawnMove);
+
+        return pawnMove;
     }
 }
 
