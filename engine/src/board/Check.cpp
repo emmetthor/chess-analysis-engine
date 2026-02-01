@@ -15,6 +15,8 @@ bool isInCheck(
 
             if (isSquareAttacked(board, {r, c}, opponent(player))) {
                 return true;
+            } else {
+                return false;
             }
         }
     }

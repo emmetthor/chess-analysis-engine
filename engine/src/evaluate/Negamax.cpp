@@ -45,13 +45,13 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
 }
 
 int negamax(Board &board, int depth, int alpha, int beta, Player player) {
-    int standerdPoint = (player == PLAYER_WHITE ? 1 : -1) * boardEvaluate(board, (depth == 0 ? 1 : 0));
-    if (standerdPoint >= beta) return beta;
-    if (standerdPoint > alpha) alpha = standerdPoint;
-
     if (depth == 0) {
         return quietscence(board, alpha, beta, player);
     }
+
+    int standerdPoint = (player == PLAYER_WHITE ? 1 : -1) * boardEvaluate(board, 0);
+    if (standerdPoint >= beta) return beta;
+    if (standerdPoint > alpha) alpha = standerdPoint;
 
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, player, moves);

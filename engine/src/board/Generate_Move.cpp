@@ -30,7 +30,6 @@ int generatePieceMoves(
 
             if (p != movePiece) continue;
 
-            
             move.from = pos;
 
             int n = generatePiecePosFromPos(board, pos, movePiece, posBuffer);
@@ -54,12 +53,12 @@ int generateAllMoves(
 ) {
     int cnt = 0;
     Piece 
-        pawn = playerPieceCharToPiece(player, 'P'),
-        knight = playerPieceCharToPiece(player, 'N'),
-        bishop = playerPieceCharToPiece(player, 'B'),
-        rook = playerPieceCharToPiece(player, 'R'),
-        queen = playerPieceCharToPiece(player, 'Q'),
-        king = playerPieceCharToPiece(player, 'K');
+        pawn =      playerPieceCharToPiece(player, 'P'),
+        knight =    playerPieceCharToPiece(player, 'N'),
+        bishop =    playerPieceCharToPiece(player, 'B'),
+        rook =      playerPieceCharToPiece(player, 'R'),
+        queen =     playerPieceCharToPiece(player, 'Q'),
+        king =      playerPieceCharToPiece(player, 'K');
 
     cnt += generatePieceMoves(board, player, knight, buffer);
     cnt += generatePieceMoves(board, player, bishop, buffer + cnt);
@@ -85,22 +84,29 @@ int generateAllMoves(
             // 一步
             move.to = {r + dr, c};
             move.capturePiece = board.at(move.to);
-            if (move.to.row == promoteRank) {
-                for (auto promo : {knight, bishop, rook, queen}) {
-                    move.isPromotion = 1;
-                    move.promotionPiece = promo;
+
+            if (board.isInBoard(move.to) && move.capturePiece == EMPTY) {
+                if (move.to.row == promoteRank) {
+                    for (auto promo : {knight, bishop, rook, queen}) {
+                        move.isPromotion = 1;
+                        move.promotionPiece = promo;
+                        buffer[cnt++] = move;
+                    }
+                    move.isPromotion = 0;
+                } else {
                     buffer[cnt++] = move;
                 }
-                move.isPromotion = 0;
-            } else {
-                buffer[cnt++] = move;
             }
 
             // 兩步
             if (r == startRank) {
                 move.to = {r + 2 * dr, c};
-                move.capturePiece = EMPTY; // 兩步不能 capture
-                buffer[cnt++] = move;
+                Position mid = {r + dr, c};
+
+                if (board.isInBoard(move.to) && board.at(move.to) == EMPTY && board.at(mid) == EMPTY) {
+                    move.capturePiece = EMPTY; // 兩步不能 capture
+                    buffer[cnt++] = move;
+                }
             }
 
             // capture
@@ -108,6 +114,7 @@ int generateAllMoves(
                 Position to = {r + dr, c + dc};
                 if (!board.isInBoard(to)) continue;
                 if (board.at(to) == EMPTY) continue;
+                if (isSameColor(board.at(to), pawn)) continue;
 
                 move.to = to;
                 move.capturePiece = board.at(to);
@@ -123,7 +130,7 @@ int generateAllMoves(
                 }
             }
         }
-}
+    }
 
     // castle
     for (auto len: {SHORT_CASTLE, LONG_CASTLE}) {
@@ -148,15 +155,16 @@ int filterLegalMoves(
 
     for (int i = 0; i < nAllMoves; i++) {
         Move &move = allMoves[i];
-        if (!isMoveLegal(board, move)) continue;
+        //if (!isMoveLegal(board, move)) continue; 已經是正確的
+
+        if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+            if (!isCastleLegal(board, move)) continue;
+        }
 
         makeMove(copyBoard, move);
 
         if (!isInCheck(copyBoard, player)) {
-            debug::log("#####valid\n");
             buffer[cnt++] = move;
-        } else {
-            debug::log("check\n");
         }
 
         undoMove(copyBoard, move);
@@ -165,22 +173,27 @@ int filterLegalMoves(
     return cnt;
 }
 
-int filterQuiteMoves(
+
+
+int filterQSRelevantMoves(
     const Board &board,
     const Player player,
-    Move *legalMoves,
+    Move *LegalMoves,
     int nLegalMoves,
     Move *buffer
 ) {
     int cnt = 0;
     Board copyBoard = board;
+    Position opponentKingPos;
 
     for (int i = 0; i < nLegalMoves; i++) {
-        Move &move = legalMoves[i];
+        Move &move = LegalMoves[i];
+        //if (!isMoveLegal(board, move)) continue; 已經是正確的
 
-        if (move.capturePiece != EMPTY || move.isPromotion || move.movePiece == playerPieceCharToPiece(player, 'K')) {
+        if (move.isPromotion || move.capturePiece != EMPTY) {
             buffer[cnt++] = move;
         }
+
     }
 
     return cnt;
@@ -204,11 +217,11 @@ int generateCaptureMoves(
     const Player player,
     Move *buffer
 ) {
-    Move legalMoves[256];
-    int nLegalMoves = generateAllLegalMoves(board, player, legalMoves);
+    Move LegalMoves[256];
+    int nLegalMoves = generateAllLegalMoves(board, player, LegalMoves);
 
     Move captureMoves[256];
-    int nCapturMoves = filterQuiteMoves(board, player, legalMoves, nLegalMoves, buffer);
+    int nCapturMoves = filterQSRelevantMoves(board, player, LegalMoves, nLegalMoves, buffer);
 
     return nCapturMoves;
 }

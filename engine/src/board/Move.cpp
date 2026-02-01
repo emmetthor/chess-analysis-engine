@@ -398,7 +398,6 @@ CastleMove getCastleMove(Move &move) {
     return res;
 }
 
-
 // 入堡走子
 void castleMove(Board &board, Move &move) {
     CastleMove c = getCastleMove(move);
