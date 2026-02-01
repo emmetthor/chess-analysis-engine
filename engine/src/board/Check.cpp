@@ -21,14 +21,3 @@ bool isInCheck(
 
     return false;
 }
-
-bool isCheckmate(
-    const Board &board,
-    const Player player
-) {
-    if (isInCheck(board, player) && generateAllLegalMoves(board, player).empty()) {
-        return true;
-    } else {
-        return false;
-    }
-}

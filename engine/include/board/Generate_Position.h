@@ -5,8 +5,9 @@
 
 #include <vector>
 
-std::vector<Position> generatePiecePosFromPos(
+int generatePiecePosFromPos(
     const Board &board,
     const Position &pos,
-    Piece p
+    Piece p,
+    Position *buffer
 );

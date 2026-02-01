@@ -29,20 +29,3 @@ int pieceValue(const Piece p) {
 
     return 0;
 }
-
-int evaluateMaterial(const Board &board) {
-    int res = 0;
-
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            Piece p = board.at({r, c});
-
-            if (p == EMPTY) continue;
-
-            if (isWhite(p)) res += pieceValue(p);
-            else res -= pieceValue(p);
-        }
-    }
-
-    return res;
-}

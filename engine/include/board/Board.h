@@ -23,6 +23,12 @@ enum Player {
 struct Position {
     int row = -1;
     int col = -1;
+
+    bool operator==(const Position &other) const {
+        return
+            row == other.row &&
+            col == other.col;
+    }
 };
 
 bool samePosition(Position a, Position b);
@@ -43,10 +49,13 @@ public:
     void change(std::vector<std::vector<Piece>> p);
 
     bool isInBoard(Position pos) const;
-
     bool whiteToMove;
+
+    void updateMaterialScore(int d);
     
 private:
 
     Piece board[8][8];
+    int materialScore = 0;
+    int PSTScore = 0;
 };

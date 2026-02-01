@@ -4,5 +4,3 @@
 #include "board/Board.h"
 
 int pieceValue(const Piece p);
-
-int evaluateMaterial(const Board &board);

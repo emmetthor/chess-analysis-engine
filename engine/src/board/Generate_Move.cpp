@@ -3,17 +3,26 @@
 #include "board/Move.h"
 #include "board/Generate_Position.h"
 #include "board/Check.h"
+#include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"
 #include "debug.h"
 
 #include <vector>
 
-void generatePieceMoves(
+int generatePieceMoves(
     const Board &board,
     Player player,
-    std::vector<Move> &toVec,
-    Piece movePiece
+    Piece movePiece,
+    Move *buffer
 ) {
+    int cnt = 0;
+
+    Move move;
+    move.player = player;
+    move.movePiece = movePiece;
+
+    Position posBuffer[30];
+            
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
             Position pos = {r, c};
@@ -21,29 +30,29 @@ void generatePieceMoves(
 
             if (p != movePiece) continue;
 
-            Move move;
+            
             move.from = pos;
-            move.movePiece = p;
-            move.player = player;
 
-            for (auto piecePos : generatePiecePosFromPos(board, pos, movePiece)) {
-                move.to = piecePos;
+            int n = generatePiecePosFromPos(board, pos, movePiece, posBuffer);
+
+            for (int i = 0; i < n; i++) {
+                move.to = posBuffer[i];
                 move.capturePiece = board.at({move.to});
 
-                if (!isMoveLegal(board, move)) continue;
-
-                toVec.emplace_back(move);
+                buffer[cnt++] = move;
             }
         }
     }
+
+    return cnt;
 }
 
-std::vector<Move> generateAllMoves(
+int generateAllMoves(
     const Board &board,
-    const Player player
+    const Player player,
+    Move *buffer
 ) {
-    std::vector<Move> moves;
-
+    int cnt = 0;
     Piece 
         pawn = playerPieceCharToPiece(player, 'P'),
         knight = playerPieceCharToPiece(player, 'N'),
@@ -52,108 +61,154 @@ std::vector<Move> generateAllMoves(
         queen = playerPieceCharToPiece(player, 'Q'),
         king = playerPieceCharToPiece(player, 'K');
 
-    generatePieceMoves(board, player, moves, knight);
-    generatePieceMoves(board, player, moves, bishop);
-    generatePieceMoves(board, player, moves, rook);
-    generatePieceMoves(board, player, moves, queen);
-    generatePieceMoves(board, player, moves, king);
+    cnt += generatePieceMoves(board, player, knight, buffer);
+    cnt += generatePieceMoves(board, player, bishop, buffer + cnt);
+    cnt += generatePieceMoves(board, player, rook, buffer + cnt);
+    cnt += generatePieceMoves(board, player, queen, buffer + cnt);
+    cnt += generatePieceMoves(board, player, king, buffer + cnt);
 
     // pawn
     int dr = (player == PLAYER_WHITE ? -1 : 1);
+    int startRank = (player == PLAYER_WHITE ? 6 : 1);
+    int promoteRank = (player == PLAYER_WHITE ? 0 : 7);
 
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
             if (board.at({r, c}) != pawn) continue;
 
+            Move move;
+            move.player = player;
+            move.from = {r, c};
+            move.movePiece = pawn;
+            move.isPromotion = 0;
+
             // 一步
-            Move moveAStep;
-            moveAStep.player = player;
-            moveAStep.from = {r, c};
-            moveAStep.to = {r + dr, c};
-            moveAStep.movePiece = pawn;
-            moveAStep.capturePiece = board.at(moveAStep.to);
-
-            moves.emplace_back(moveAStep);
-
-            // promote
-            for (auto promotePiece : {knight, bishop, rook, queen}) {
-                moveAStep.isPromotion = 1;
-                moveAStep.promotionPiece = promotePiece;
-
-                moves.emplace_back(moveAStep);
+            move.to = {r + dr, c};
+            move.capturePiece = board.at(move.to);
+            if (move.to.row == promoteRank) {
+                for (auto promo : {knight, bishop, rook, queen}) {
+                    move.isPromotion = 1;
+                    move.promotionPiece = promo;
+                    buffer[cnt++] = move;
+                }
+                move.isPromotion = 0;
+            } else {
+                buffer[cnt++] = move;
             }
 
             // 兩步
-            Move moveTwoStep;
-            moveTwoStep.player = player;
-            moveTwoStep.from = {r, c};
-            moveTwoStep.to = {r + 2 * dr, c};
-            moveTwoStep.movePiece = pawn;
-            moveTwoStep.capturePiece = board.at(moveTwoStep.to);
-
-            moves.emplace_back(moveTwoStep);
+            if (r == startRank) {
+                move.to = {r + 2 * dr, c};
+                move.capturePiece = EMPTY; // 兩步不能 capture
+                buffer[cnt++] = move;
+            }
 
             // capture
-            for (auto dc : {-1, 1}) {
-                Move moveCapture;
-                moveCapture.player = player;
-                moveCapture.from = {r, c};
-                moveCapture.to = {r + dr,  c + dc};
-                moveCapture.movePiece = pawn;
-                moveCapture.capturePiece = board.at(moveCapture.to);
+            for (int dc : {-1, 1}) {
+                Position to = {r + dr, c + dc};
+                if (!board.isInBoard(to)) continue;
+                if (board.at(to) == EMPTY) continue;
 
-                moves.emplace_back(moveCapture);
-
-                // promote
-                for (auto promotePiece : {knight, bishop, rook, queen}) {
-                    moveCapture.isPromotion = 1;
-                    moveCapture.promotionPiece = promotePiece;
-
-                    moves.emplace_back(moveCapture);
+                move.to = to;
+                move.capturePiece = board.at(to);
+                if (to.row == promoteRank) {
+                    for (auto promo : {knight, bishop, rook, queen}) {
+                        move.isPromotion = 1;
+                        move.promotionPiece = promo;
+                        buffer[cnt++] = move;
+                    }
+                    move.isPromotion = 0;
+                } else {
+                    buffer[cnt++] = move;
                 }
             }
         }
-    }
+}
 
     // castle
     for (auto len: {SHORT_CASTLE, LONG_CASTLE}) {
         Move moveCastle;
         moveCastle.castle = len;
         moveCastle.player = player;
-        moves.emplace_back(moveCastle);
+        buffer[cnt++] = moveCastle;
     }
 
-    return moves;
+    return cnt;
 }
 
-std::vector<Move> filterMoves(
+int filterLegalMoves(
     const Board &board,
     const Player player,
-    std::vector<Move> allMoves
+    Move *allMoves,
+    int nAllMoves,
+    Move *buffer
 ) {
-    std::vector<Move> res;
+    int cnt = 0;
     Board copyBoard = board;
-    for (auto move : allMoves) {
+
+    for (int i = 0; i < nAllMoves; i++) {
+        Move &move = allMoves[i];
         if (!isMoveLegal(board, move)) continue;
 
-        debug::log("here\n");
-
         makeMove(copyBoard, move);
+
         if (!isInCheck(copyBoard, player)) {
             debug::log("#####valid\n");
-            res.emplace_back(move);
+            buffer[cnt++] = move;
         } else {
             debug::log("check\n");
         }
+
         undoMove(copyBoard, move);
     }
 
-    return res;
+    return cnt;
 }
 
-std::vector<Move> generateAllLegalMoves(
+int filterQuiteMoves(
     const Board &board,
-    const Player player
+    const Player player,
+    Move *legalMoves,
+    int nLegalMoves,
+    Move *buffer
 ) {
-    return filterMoves(board, player, generateAllMoves(board, player));
+    int cnt = 0;
+    Board copyBoard = board;
+
+    for (int i = 0; i < nLegalMoves; i++) {
+        Move &move = legalMoves[i];
+
+        if (move.capturePiece != EMPTY || move.isPromotion || move.movePiece == playerPieceCharToPiece(player, 'K')) {
+            buffer[cnt++] = move;
+        }
+    }
+
+    return cnt;
+}
+
+int generateAllLegalMoves(
+    const Board &board,
+    const Player player,
+    Move *buffer
+) {
+    Move allMoves[2000];
+    int nAll = generateAllMoves(board, player, allMoves);
+
+    int nLegalMoves = filterLegalMoves(board, player, allMoves, nAll, buffer);
+
+    return nLegalMoves;
+}
+
+int generateCaptureMoves(
+    const Board &board,
+    const Player player,
+    Move *buffer
+) {
+    Move legalMoves[256];
+    int nLegalMoves = generateAllMoves(board, player, legalMoves);
+
+    Move captureMoves[256];
+    int nCapturMoves = filterQuiteMoves(board, player, legalMoves, nLegalMoves, buffer);
+
+    return nCapturMoves;
 }

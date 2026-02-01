@@ -101,3 +101,7 @@ void Board::change(std::vector<std::vector<Piece>> p) {
     }
 }
 
+void Board::updateMaterialScore(int d) {
+    materialScore += d;
+}
+

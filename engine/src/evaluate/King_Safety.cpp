@@ -2,21 +2,18 @@
 #include "evaluate/King_Safety.h"
 #include "pgn/Pgn_Transformer.h"
 
-int evaluateKingSafety(const Board &board, Player player) {
-    Position kingPos;
-
+Position findKing(const Board &board, Player player) {
+    Piece king = playerPieceCharToPiece(player, 'K');
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
-            if (board.at({r, c}) == playerPieceCharToPiece(player, 'K')) {
-                kingPos = {r, c};
-                goto findKing;
-            }
+            if (board.at({r, c}) == king) return {r, c};
         }
     }
+    return {-1,-1}; // 沒找到
+}
 
-    return 0;
-
-    findKing:
+int evaluateKingSafety(const Board &board, Player player) {
+    Position kingPos = findKing(board, player);
 
     int danger = 0;
 

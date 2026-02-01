@@ -7,7 +7,14 @@
 
 #include <vector>
 
-std::vector<Move> generateAllLegalMoves(
+int generateAllLegalMoves(
     const Board &board,
-    const Player Player
+    const Player player,
+    Move *buffer
+);
+
+int generateCaptureMoves(
+    const Board &board,
+    const Player player,
+    Move *buffer
 );

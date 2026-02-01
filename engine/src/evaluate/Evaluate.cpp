@@ -9,16 +9,20 @@
 
 #include <iostream>
 
+const int INF = 1e9;
+
 int evaluate(Board &board, const Player player) {
-    return negamax(board, 2, 0, 0, player);
 }
 
-int boardEvaluate(const Board &board, const Player player) {
+int boardEvaluate(const Board &board, bool quick = false) {
+    if (quick == 1) {
+        return evaluateMaterial(board);
+    }
+
     int res = 0;
 
-    //res += evaluateCenterControl(board);
+    res += evaluateCenterControl(board);
     res += evaluateMaterial(board);
-    res += evaluateTempo(board, player);
     res += evaluatePieceSquare(board);
 
     res += evaluateKingSafety(board, PLAYER_WHITE);

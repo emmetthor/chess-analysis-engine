@@ -3,6 +3,7 @@
 #include "board/Move.h"
 #include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"
+#include "evaluate/Material_Point.h"
 #include "debug.h"
 
 #include <iostream>
@@ -281,7 +282,7 @@ bool isKingMoveLegal(const Board &board, const Move &move) {
         return false;
     }
 
-    if (isSquareAttacked(board, move.to, (move.player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE))) {
+    if (isSquareAttacked(board, move.to, opponent(move.player))) {
         debug::log("King can't move to a attacked square\n");
         return false;
     }
@@ -512,37 +513,34 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
 // 執行 move
 void makeMove(Board &board, Move &move) {
-    //std::cout << "making move:\n";
     printMove(move);
-    move.capturePiece = board.at(move.to);
 
-    if (!isMoveLegal(board, move)) {
-        return;
-    }
+    // 執行 move
+    Piece captured = board.at(move.to);
+    Piece moved = move.movePiece;
+    move.capturePiece = captured;
 
-    switch (move.castle) {
-    case SHORT_CASTLE:
-    case LONG_CASTLE:
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
         castleMove(board, move);
-        return;
-
-    case NOT:
-    default:
-        break;
     }
 
-    switch (move.isPromotion) {
-    case true: 
-        board.set(move.from, move.capturePiece);
-        board.set(move.to, move.movePiece);
-        return;
-        
-    case false:
-        break;
+    else if (move.isPromotion) {
+        board.set(move.from, EMPTY);
+        board.set(move.to, moved);
     }
 
-    board.set(move.from, EMPTY);
-    board.set(move.to, move.movePiece);
+    else {
+        board.set(move.from, EMPTY);
+        board.set(move.to, moved);
+    }
+
+    // 更新 material score
+    if (captured != EMPTY) {
+        board.updateMaterialScore(pieceValue(captured) * (isWhite(captured) ? -1 : 1));
+    }
+
+    // 更新 PST
+    
 }
 
 void undoMove(Board &board, Move &move) {

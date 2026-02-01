@@ -9,16 +9,8 @@
 #include "evaluate/Negamax.h"
 #include "debug.h"
 
-void aMove(Board &board, int fromX, int fromY, int toX, int toY, Piece piece) {
-    Move m;
-    m.from = {fromX, fromY};
-    m.to = {toX, toY};
-    m.movePiece = piece;
-
-    makeMove(board, m);
-
-    board.debugPrint();
-}
+#include <chrono>
+#include <algorithm>
 
 int main() {
     // debug::set(1);
@@ -36,6 +28,7 @@ int main() {
     // Board board;
     // std::vector<Move> moves = pgn.getMoves(), allLegalMoves;
 
+    // int maxDuration = 0;
     // int cnt = 1;
     // for (auto &move : moves) {
     //     Player player = move.player;
@@ -44,7 +37,13 @@ int main() {
     //     board.debugPrint();
     //     debug::set(0);
 
-    //     SearchResult res = negamaxRoot(board, 3, player);
+    //     auto start = std::chrono::high_resolution_clock::now();
+    //     SearchResult res = negamaxRoot(board, 4, player);
+    //     auto searchEnd = std::chrono::high_resolution_clock::now();
+    //     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
+        
+    //     if (duration > maxDuration) maxDuration = duration;
+
     //     Move best = res.bestMove;
     //     int score = res.bestScore;
 
@@ -69,32 +68,36 @@ int main() {
     //     makeMove(board, move);
     // }
 
+    // std::cout << "max duration: " << maxDuration << "ms\n";
+
     int cnt = 1;
     PGN pgn;
     Board board;
     Player player = PLAYER_WHITE;
+    // debug::set(1);
+    // attackMap.debugPrint();
     
-    std::string s;
+    std::string s = "";
     while (s != "end") {
         debug::set(1);
         board.debugPrint();
         debug::set(0);
 
-        SearchResult res = negamaxRoot(board, 4, player);
+        auto start = std::chrono::high_resolution_clock::now();
+        SearchResult res = negamaxRoot(board, 5, player);
+        auto searchEnd = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
+
         Move best = res.bestMove;
         int score = res.bestScore;
 
-        std::cerr
-            << "best move: "
-            << pieceToChar(best.movePiece)
-            << pngPosition(best.from)
-            << pngPosition(best.to)
-            << " score: "
-            << score
-            <<  '\n';
+        debug::set(1);
+        debug::log("best move: ");
+        printMove(best);
+        debug::log("score: ", score, '\n', "duration: ", duration, "ms\n");
+        debug::set(0);
 
         makeMove(board, best);
-
 
         std::cin >> s;
         Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));

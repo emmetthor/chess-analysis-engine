@@ -13,6 +13,8 @@ Position center[] = {
 };
 
 int evaluateCenterControl(const Board &board) {
+    return 0;
+
     int whitePawnControl = 0, blackPawnControl = 0;
     int whiteKnightControl = 0, blackKnightControl = 0;
     int whiteOccupy = 0, blackOccupy = 0;
