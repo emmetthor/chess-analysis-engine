@@ -9,6 +9,8 @@
 
 #include <vector>
 #include <algorithm>
+#include <thread>
+#include <chrono>
 
 static const int INF = 1e9;
 
@@ -24,6 +26,12 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
 
     for (int i = 0; i < nCaptureMoves; i++) {
         Move move = captureMoves[i];
+        
+        // debug::set(1);
+        // printMove(move);
+        // board.debugPrint();
+        // debug::set(0);
+        // std::this_thread::sleep_for(std::chrono::seconds(1));
 
         makeMove(board, move);
         int score = -quietscence(board, -beta, -alpha, opponent(player));
@@ -31,7 +39,6 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
 
         if (score >= beta) return beta;
         if (score > alpha) alpha = score;
-
     }
 
     return alpha;
@@ -58,6 +65,13 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
+
+        // debug::set(1);
+        // debug::log("negamax move: ");
+        // printMove(move);
+        // board.debugPrint();
+        // debug::set(0);
+        // std::this_thread::sleep_for(std::chrono::seconds(1));
 
         makeMove(board, move);
         int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
@@ -86,6 +100,12 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         for (int i = 0; i < nMoves; i++) {
             Move move = moves[i];
 
+            // debug::set(1);
+            // debug::log("negamaxRoot move: ");
+            // printMove(move);
+            // debug::set(0);
+            // std::this_thread::sleep_for(std::chrono::seconds(1));
+
             makeMove(board, move);
             int score = -negamax(board, d - 1, -INF, INF, opponent(player));
             undoMove(board, move);
@@ -94,11 +114,6 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
                 res.bestMove = move;
                 res.bestScore = score;
             }
-
-            // debug::set(1);
-            // printMove(move);
-            // debug::log("score: ", score, '\n');
-            // debug::set(0);
         }
 
         for (int i = 0; i < nMoves; i++) {

@@ -14,9 +14,18 @@ const int INF = 1e9;
 int evaluate(Board &board, const Player player) {
 }
 
+int cnt = 0;
+
 int boardEvaluate(const Board &board, bool quick = false) {
+    // std::cout << "here x" << cnt++ << " times.\n";
     int res = 0;
 
+    res += board.getMaterialScore();
+    res += board.getPSTScore();
+
+    if (quick) return res;
+
+    // slow
     res += evaluateKingSafety(board, PLAYER_WHITE);
     res -= evaluateKingSafety(board, PLAYER_BLACK);
     

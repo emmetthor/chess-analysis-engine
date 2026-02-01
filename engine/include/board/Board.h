@@ -53,6 +53,9 @@ public:
 
     void updateMaterialScore(int d, Player player);
     void updatePSTScore(int d, Player player);
+
+    int getMaterialScore() const;
+    int getPSTScore() const;
     
 private:
 

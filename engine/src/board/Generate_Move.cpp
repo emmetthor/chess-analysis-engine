@@ -205,7 +205,7 @@ int generateCaptureMoves(
     Move *buffer
 ) {
     Move legalMoves[256];
-    int nLegalMoves = generateAllMoves(board, player, legalMoves);
+    int nLegalMoves = generateAllLegalMoves(board, player, legalMoves);
 
     Move captureMoves[256];
     int nCapturMoves = filterQuiteMoves(board, player, legalMoves, nLegalMoves, buffer);

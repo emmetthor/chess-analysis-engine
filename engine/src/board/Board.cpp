@@ -109,3 +109,6 @@ void Board::updatePSTScore(int d, Player player) {
     PSTScore += d * (player == PLAYER_WHITE ? 1 : -1);
 }
 
+int Board::getMaterialScore() const { return materialScore; }
+
+int Board::getPSTScore() const { return PSTScore; }
