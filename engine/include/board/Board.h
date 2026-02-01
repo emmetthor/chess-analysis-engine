@@ -51,7 +51,8 @@ public:
     bool isInBoard(Position pos) const;
     bool whiteToMove;
 
-    void updateMaterialScore(int d);
+    void updateMaterialScore(int d, Player player);
+    void updatePSTScore(int d, Player player);
     
 private:
 

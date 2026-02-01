@@ -15,15 +15,7 @@ int evaluate(Board &board, const Player player) {
 }
 
 int boardEvaluate(const Board &board, bool quick = false) {
-    if (quick == 1) {
-        return evaluateMaterial(board);
-    }
-
     int res = 0;
-
-    res += evaluateCenterControl(board);
-    res += evaluateMaterial(board);
-    res += evaluatePieceSquare(board);
 
     res += evaluateKingSafety(board, PLAYER_WHITE);
     res -= evaluateKingSafety(board, PLAYER_BLACK);

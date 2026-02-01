@@ -4,6 +4,7 @@
 #include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"
 #include "evaluate/Material_Point.h"
+#include "evaluate/PST.h"
 #include "debug.h"
 
 #include <iostream>
@@ -363,61 +364,72 @@ bool isPromoteLegal(const Board &board, const Move &move) {
     return false;
 }
 
+const Position castleMoveMap[2][3][4] {
+    // white
+    {
+        {},
+        // short
+        {{7, 4}, {7, 6}, {7, 7}, {7, 5}},
+        // long
+        {{7, 4}, {7, 2}, {7, 0}, {7, 3}},
+    },
+    // black
+    {
+        {},
+        // short
+        {{0, 4}, {0, 6}, {0, 7}, {0, 5}},
+        // long
+        {{0, 4}, {0, 2}, {0, 0}, {0, 3}},
+    }
+};
+
+CastleMove getCastleMove(Move &move) {
+    Player player = move.player;
+    CastleMove res;
+
+    res.kingFrom    = castleMoveMap[player][move.castle][0];
+    res.kingTo      = castleMoveMap[player][move.castle][1];
+    res.rookFrom    = castleMoveMap[player][move.castle][2];
+    res.rookTo      = castleMoveMap[player][move.castle][3];
+
+    res.kingPiece = playerPieceCharToPiece(player, 'K');
+    res.rookPiece = playerPieceCharToPiece(player, 'R');
+
+    return res;
+}
+
+
 // 入堡走子
 void castleMove(Board &board, Move &move) {
-    if (move.player == PLAYER_WHITE) {
-        if (move.castle == SHORT_CASTLE) {
-            board.set({7, 4}, EMPTY);
-            board.set({7, 6}, WKING);
-            board.set({7, 7}, EMPTY);
-            board.set({7, 5}, WROOK);
-        } else {
-            board.set({7, 4}, EMPTY);
-            board.set({7, 2}, WKING);
-            board.set({7, 0}, EMPTY);
-            board.set({7, 3}, WROOK);
-        }
-    } else {
-        if (move.castle == SHORT_CASTLE) {
-            board.set({0, 4}, EMPTY);
-            board.set({0, 6}, BKING);
-            board.set({0, 7}, EMPTY);
-            board.set({0, 5}, BROOK);
-        } else {
-            board.set({0, 4}, EMPTY);
-            board.set({0, 2}, BKING);
-            board.set({0, 0}, EMPTY);
-            board.set({0, 3}, BROOK);
-        }
-    }
+    CastleMove c = getCastleMove(move);
+    Player player = move.player;
+
+    board.set(c.kingFrom,   EMPTY);
+    board.set(c.kingTo,     c.kingPiece);
+    board.set(c.rookFrom,   EMPTY);
+    board.set(c.rookTo,     c.rookPiece);
+
+    board.updatePSTScore(-1 * evaluatePieceSquare(c.kingPiece, c.kingFrom), player);
+    board.updatePSTScore(+1 * evaluatePieceSquare(c.kingPiece, c.kingTo), player);
+
+    board.updatePSTScore(-1 * evaluatePieceSquare(c.rookPiece, c.rookFrom), player);
+    board.updatePSTScore(+1 * evaluatePieceSquare(c.rookPiece, c.rookTo), player);
 }
 
 void undoCastleMove(Board &board, Move &move) {
-    if (move.player == PLAYER_WHITE) {
-        if (move.castle == SHORT_CASTLE) {
-            board.set({7, 4}, WKING);
-            board.set({7, 6}, EMPTY);
-            board.set({7, 7}, WROOK);
-            board.set({7, 5}, EMPTY);
-        } else {
-            board.set({7, 4}, WKING);
-            board.set({7, 2}, EMPTY);
-            board.set({7, 0}, WROOK);
-            board.set({7, 3}, EMPTY);
-        }
-    } else {
-        if (move.castle == SHORT_CASTLE) {
-            board.set({0, 4}, BKING);
-            board.set({0, 6}, EMPTY);
-            board.set({0, 7}, BROOK);
-            board.set({0, 5}, EMPTY);
-        } else {
-            board.set({0, 4}, BKING);
-            board.set({0, 2}, EMPTY);
-            board.set({0, 0}, BROOK);
-            board.set({0, 3}, EMPTY);
-        }
-    }
+    CastleMove c = getCastleMove(move);
+    Player player = move.player;
+
+    board.set(c.kingFrom,   c.kingPiece);
+    board.set(c.kingTo,     EMPTY);
+    board.set(c.rookFrom,   c.rookPiece);
+    board.set(c.rookTo,     EMPTY);
+
+    board.updatePSTScore(+1 * evaluatePieceSquare(c.kingPiece, c.kingFrom), player);
+    board.updatePSTScore(-1 * evaluatePieceSquare(c.kingPiece, c.kingTo), player);
+
+    board.updatePSTScore(+1 * evaluatePieceSquare(c.rookPiece, c.rookFrom), player);
+    board.updatePSTScore(-1 * evaluatePieceSquare(c.rookPiece, c.rookTo), player);
 }
 
 void printMove(const Move &move) {
@@ -518,6 +530,8 @@ void makeMove(Board &board, Move &move) {
     // 執行 move
     Piece captured = board.at(move.to);
     Piece moved = move.movePiece;
+    Player player = move.player;
+
     move.capturePiece = captured;
 
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
@@ -536,35 +550,74 @@ void makeMove(Board &board, Move &move) {
 
     // 更新 material score
     if (captured != EMPTY) {
-        board.updateMaterialScore(pieceValue(captured) * (isWhite(captured) ? -1 : 1));
+        board.updateMaterialScore(pieceValue(captured), player);
+    }
+
+    if (move.isPromotion) {
+        board.updateMaterialScore(pieceValue(move.promotionPiece) - pieceValue(moved), player);
     }
 
     // 更新 PST
-    
+
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+        // castleMove 完成
+    }
+
+    else if (move.isPromotion) {
+        board.updatePSTScore(-1 * evaluatePieceSquare(moved, move.from), player);
+        board.updatePSTScore(+1 * evaluatePieceSquare(move.promotionPiece, move.to), player);
+    }
+
+    else {
+        board.updatePSTScore(-1 * evaluatePieceSquare(moved, move.from), player);
+        board.updatePSTScore(+1 * evaluatePieceSquare(moved, move.to), player);
+    }
 }
 
 void undoMove(Board &board, Move &move) {
-    switch (move.castle) {
-    case SHORT_CASTLE:
-    case LONG_CASTLE:
+    // 執行 undo
+    Piece captured = move.capturePiece;
+    Piece moved = move.movePiece;
+    Player player = move.player;
+
+    move.capturePiece = captured;
+
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
         undoCastleMove(board, move);
-        return;
-
-    case NOT:
-    default:
-        break;
     }
 
-    switch (move.isPromotion) {
-    case true: 
-        board.set(move.from, move.movePiece);
-        board.set(move.to, move.capturePiece);
-        return;
-        
-    case false:
-        break;
+    else if (move.isPromotion) {
+        board.set(move.from, moved);
+        board.set(move.to, captured);
     }
 
-    board.set(move.from, move.movePiece);
-    board.set(move.to, move.capturePiece);
+    else {
+        board.set(move.from, moved);
+        board.set(move.to, captured);
+    }
+
+    // 更新 material score
+    if (captured != EMPTY) {
+        board.updateMaterialScore(-1 * pieceValue(captured), player);
+    }
+
+    if (move.isPromotion) {
+        board.updateMaterialScore(-1 * (pieceValue(move.promotionPiece) - pieceValue(moved)), player);
+    }
+
+    // 更新 PST
+
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+        // undoCastleMove 完成
+    }
+
+    else if (move.isPromotion) {
+        board.updatePSTScore(+1 * evaluatePieceSquare(moved, move.from), player);
+        board.updatePSTScore(-1 * evaluatePieceSquare(move.promotionPiece, move.to), player);
+    }
+
+    else {
+        board.updatePSTScore(+1 * evaluatePieceSquare(moved, move.from), player);
+        board.updatePSTScore(-1 * evaluatePieceSquare(moved, move.to), player);
+    }
 }

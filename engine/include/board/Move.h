@@ -36,6 +36,13 @@ struct Move {
     }
 };
 
+struct CastleMove {
+    Position kingFrom, kingTo;
+    Position rookFrom, rookTo;
+    Piece kingPiece;
+    Piece rookPiece;
+};
+
 void printMove(const Move &move);
 
 void makeMove(Board &board, Move &move);
@@ -45,3 +52,5 @@ void undoMove(Board &board, Move &move);
 void moveDebugPrint(const Move &move);
 
 bool isMoveLegal(const Board &board, const Move &move);
+
+CastleMove getCastleMove(Move &move);

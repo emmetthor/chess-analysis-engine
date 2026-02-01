@@ -101,7 +101,11 @@ void Board::change(std::vector<std::vector<Piece>> p) {
     }
 }
 
-void Board::updateMaterialScore(int d) {
-    materialScore += d;
+void Board::updateMaterialScore(int d, Player player) {
+    materialScore += d * (player == PLAYER_WHITE ? 1 : -1);
+}
+
+void Board::updatePSTScore(int d, Player player) {
+    PSTScore += d * (player == PLAYER_WHITE ? 1 : -1);
 }
 

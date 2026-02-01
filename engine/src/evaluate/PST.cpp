@@ -1,4 +1,5 @@
 #include "evaluate/PST.h"
+#include "board/Move.h"
 
 #include <iostream>
 
@@ -76,22 +77,12 @@ const int PST[6][8][8] = {
     }
 };
 
-int evaluatePieceSquare(const Board &board) {
-    int res = 0;
-
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            Piece p = board.at({r, c});
-            if (p == EMPTY) continue;
-
-            int whiteRow = r, whiteCol = c, blackRow = 7 - r, blackCol = 7 - c;
-            if (isWhite(p)) {
-                res += PST[p - WPAWN][whiteRow][whiteCol];
-            } else if (isBlack(p)) {
-                res -= PST[p - BPAWN][blackRow][blackCol];
-            }
-        }
+int evaluatePieceSquare(Piece p, Position pp) {
+    if (isWhite(p)) {
+        return PST[p - WPAWN][pp.row][pp.col];
+    } else if (isBlack(p)) {
+        return PST[p - BPAWN][7 - pp.row][7 - pp.col];
     }
 
-    return res;
+    return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
 #include "board/Board.h"
+#include "board/Move.h"
 
-int evaluatePieceSquare(const Board &board);
+int evaluatePieceSquare(Piece p, Position pp);
