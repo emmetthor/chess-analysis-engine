@@ -13,7 +13,7 @@ int generateAllLegalMoves(
     Move *buffer
 );
 
-int generateCaptureMoves(
+int generateAllCaptures(
     const Board &board,
     const Player player,
     Move *buffer

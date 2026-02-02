@@ -46,6 +46,43 @@ int generatePieceMoves(
     return cnt;
 }
 
+int generatePieceCapture(
+    const Board &board,
+    Player player,
+    Piece movePiece,
+    Move *buffer
+) {
+int cnt = 0;
+
+    Move move;
+    move.player = player;
+    move.movePiece = movePiece;
+
+    Position posBuffer[30];
+            
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            Position pos = {r, c};
+            Piece p = board.at(pos);
+
+            if (p != movePiece) continue;
+
+            move.from = pos;
+
+            int n = generatePieceCaptureFromPos(board, pos, movePiece, posBuffer);
+
+            for (int i = 0; i < n; i++) {
+                move.to = posBuffer[i];
+                move.capturePiece = board.at({move.to});
+
+                buffer[cnt++] = move;
+            }
+        }
+    }
+
+    return cnt;
+}
+
 int generateAllMoves(
     const Board &board,
     const Player player,
@@ -143,6 +180,69 @@ int generateAllMoves(
     return cnt;
 }
 
+int generateAllCaptures(
+    const Board &board,
+    const Player player,
+    Move *buffer
+) {
+    int cnt = 0;
+    Piece 
+        pawn =      playerPieceCharToPiece(player, 'P'),
+        knight =    playerPieceCharToPiece(player, 'N'),
+        bishop =    playerPieceCharToPiece(player, 'B'),
+        rook =      playerPieceCharToPiece(player, 'R'),
+        queen =     playerPieceCharToPiece(player, 'Q'),
+        king =      playerPieceCharToPiece(player, 'K');
+
+    cnt += generatePieceCapture(board, player, knight, buffer);
+    cnt += generatePieceCapture(board, player, bishop, buffer + cnt);
+    cnt += generatePieceCapture(board, player, rook, buffer + cnt);
+    cnt += generatePieceCapture(board, player, queen, buffer + cnt);
+    cnt += generatePieceCapture(board, player, king, buffer + cnt);
+
+    // pawn
+    int dr = (player == PLAYER_WHITE ? -1 : 1);
+    int startRank = (player == PLAYER_WHITE ? 6 : 1);
+    int promoteRank = (player == PLAYER_WHITE ? 0 : 7);
+
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            if (board.at({r, c}) != pawn) continue;
+
+            Move move;
+            move.player = player;
+            move.from = {r, c};
+            move.movePiece = pawn;
+            move.isPromotion = 0;
+
+            // capture
+            for (int dc : {-1, 1}) {
+                Position to = {r + dr, c + dc};
+                if (!board.isInBoard(to)) continue;
+
+                Piece atPiece = board.at(to);
+                if (atPiece == EMPTY) continue;
+                if (isSameColor(atPiece, pawn)) continue;
+
+                move.to = to;
+                move.capturePiece = atPiece;
+                if (to.row == promoteRank) {
+                    for (auto promo : {knight, bishop, rook, queen}) {
+                        move.isPromotion = 1;
+                        move.promotionPiece = promo;
+                        buffer[cnt++] = move;
+                    }
+                    move.isPromotion = 0;
+                } else {
+                    buffer[cnt++] = move;
+                }
+            }
+        }
+    }
+
+    return cnt;
+}
+
 int filterLegalMoves(
     const Board &board,
     const Player player,
@@ -173,27 +273,32 @@ int filterLegalMoves(
     return cnt;
 }
 
-
-
-int filterQSRelevantMoves(
+int filterQSLegalMoves(
     const Board &board,
     const Player player,
-    Move *LegalMoves,
-    int nLegalMoves,
+    Move *captureMoves,
+    int nCaptureMoves,
     Move *buffer
 ) {
     int cnt = 0;
     Board copyBoard = board;
-    Position opponentKingPos;
 
-    for (int i = 0; i < nLegalMoves; i++) {
-        Move &move = LegalMoves[i];
+    for (int i = 0; i < nCaptureMoves; i++) {
+        Move &move = captureMoves[i];
         //if (!isMoveLegal(board, move)) continue; 已經是正確的
 
-        if (move.isPromotion || move.capturePiece != EMPTY) {
+        if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+            // QS 沒有 castle
+            continue;
+        }
+
+        makeMove(copyBoard, move);
+
+        if (!isInCheck(copyBoard, player)) {
             buffer[cnt++] = move;
         }
 
+        undoMove(copyBoard, move);
     }
 
     return cnt;
@@ -210,18 +315,4 @@ int generateAllLegalMoves(
     int nLegalMoves = filterLegalMoves(board, player, allMoves, nAll, buffer);
 
     return nLegalMoves;
-}
-
-int generateCaptureMoves(
-    const Board &board,
-    const Player player,
-    Move *buffer
-) {
-    Move LegalMoves[256];
-    int nLegalMoves = generateAllLegalMoves(board, player, LegalMoves);
-
-    Move captureMoves[256];
-    int nCapturMoves = filterQSRelevantMoves(board, player, LegalMoves, nLegalMoves, buffer);
-
-    return nCapturMoves;
 }

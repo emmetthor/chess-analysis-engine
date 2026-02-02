@@ -20,7 +20,7 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
     if (standerdPoint > alpha) alpha = standerdPoint;
 
     Move captureMoves[256];
-    int nCaptureMoves = generateCaptureMoves(board, player, captureMoves);
+    int nCaptureMoves = generateAllCaptures(board, player, captureMoves);
 
     sortMove(captureMoves, nCaptureMoves);
 
@@ -34,7 +34,11 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
 
         makeMove(board, move);
-        int score = -quietscence(board, -beta, -alpha, opponent(player));
+
+        int score = 0;
+        if (!isInCheck(board, player)) {
+            score = -quietscence(board, -beta, -alpha, opponent(player));
+        }
         undoMove(board, move);
 
         if (score >= beta) return beta;
@@ -100,11 +104,14 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         for (int i = 0; i < nMoves; i++) {
             Move move = moves[i];
 
-            // debug::set(1);
-            // debug::log("negamaxRoot move: ");
-            // printMove(move);
-            // debug::set(0);
-            // std::this_thread::sleep_for(std::chrono::seconds(1));
+            if (d == 1) {
+                debug::set(1);
+                debug::log("negamaxRoot move: ");
+                printMove(move);
+                debug::set(0);
+            }
+
+            //std::this_thread::sleep_for(std::chrono::seconds(1));
 
             makeMove(board, move);
             int score = -negamax(board, d - 1, -INF, INF, opponent(player));

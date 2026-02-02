@@ -60,6 +60,62 @@ int generatePosFromPosWithSlidePiece(
     return cnt;
 }
 
+int generateCaptureFromPosWithJumpPiece(
+    const Board &board,
+    const Position &pos,
+    Piece movePiece,
+    const int dr[],
+    const int dc[],
+    Position *buffer
+) {
+    int cnt = 0;
+
+    for (int i = 0; i < 8; i++) {
+        Position p = {pos.row + dr[i], pos.col + dc[i]};
+        Piece atPiece = board.at(p);
+
+        if (!board.isInBoard(p)) continue;
+        if (atPiece == EMPTY) continue;
+        if (isSameColor(atPiece, movePiece)) continue;
+
+        buffer[cnt++] = p;
+    }
+
+    return cnt;
+}
+
+int generateCaptureFromPosWithSlidePiece(
+    const Board &board,
+    const Position &pos,
+    Piece movePiece,
+    const int dr[],
+    const int dc[],
+    Position *buffer
+) {
+    int cnt = 0;
+
+    for (int i = 0; i < 4; i++) {
+        Position p = {pos.row + dr[i], pos.col + dc[i]};
+
+        while (true) {
+            if (!board.isInBoard(p)) break;
+            Piece atPiece = board.at(p);
+
+            if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) break;
+
+            if (atPiece != EMPTY) {
+                buffer[cnt++] = p;
+                break;
+            }
+
+            p.row += dr[i];
+            p.col += dc[i];
+        }
+    }
+
+    return cnt;
+}
+
 int generatePiecePosFromPos(
     const Board &board,
     const Position &pos,
@@ -89,6 +145,40 @@ int generatePiecePosFromPos(
     case WKING:
     case BKING:
         return generatePosFromPosWithJumpPiece(board, pos, p, kdr, kdc, buffer);
+    }
+
+    return 0;
+}
+
+int generatePieceCaptureFromPos(
+    const Board &board,
+    const Position &pos,
+    Piece p,
+    Position *buffer
+) {
+    switch (p) {
+    case WKNIGHT:
+    case BKNIGHT:
+        return generateCaptureFromPosWithJumpPiece(board, pos, p, ndr, ndc, buffer);
+
+    case WBISHOP:
+    case BBISHOP:
+        return generateCaptureFromPosWithSlidePiece(board, pos, p, bqdr, bqdc, buffer);
+
+    case WROOK:
+    case BROOK:
+        return generateCaptureFromPosWithSlidePiece(board, pos, p, rqdr, rqdc, buffer);
+
+    case WQUEEN:
+    case BQUEEN: {
+        int n1 = generateCaptureFromPosWithSlidePiece(board, pos, p, rqdr, rqdc, buffer);
+        int n2 = generateCaptureFromPosWithSlidePiece(board, pos, p, bqdr, bqdc, buffer + n1);
+        return n1 + n2;
+    }
+
+    case WKING:
+    case BKING:
+        return generateCaptureFromPosWithJumpPiece(board, pos, p, kdr, kdc, buffer);
     }
 
     return 0;
