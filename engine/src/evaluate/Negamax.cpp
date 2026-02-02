@@ -24,7 +24,7 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
     Move captureMoves[256];
     int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
 
-    sortMove(captureMoves, nCaptureMoves);
+    sortMove(board, captureMoves, nCaptureMoves);
 
     for (int i = 0; i < nCaptureMoves; i++) {
         Move move = captureMoves[i];
@@ -69,7 +69,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
         else return 0;
     }
 
-    sortMove(moves, nMoves);
+    sortMove(board, moves, nMoves);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
@@ -101,7 +101,7 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, player, moves);
 
-    sortMove(moves, nMoves);
+    sortMove(board, moves, nMoves);
 
     for (int d = 1; d <= depth; d++) {
         SearchResult res;

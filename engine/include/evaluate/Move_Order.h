@@ -10,4 +10,8 @@ struct ScoreMove {
     int score;
 };
 
-void sortMove(Move *moves, int nMoves);
+void sortMove(
+    const Board &board,
+    Move *moves,
+    int nMoves
+);

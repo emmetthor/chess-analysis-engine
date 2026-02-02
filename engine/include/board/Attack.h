@@ -20,3 +20,10 @@ int countKnightAttacks(const Board &board, Position pos, const Player player);
 
 int countSquareAttacks(const Board &board, Position pos, const Player player);
 bool isSquareAttacked(const Board &board, Position pos, const Player player);
+
+int getAttackers(
+    const Board &board,
+    Position pos,
+    Player player,
+    Position* buffer
+);

@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = D$:/chess-analysis-engine/chess-analysis-engine/engine/build/
+cmake_ninja_workdir = E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/
 # =============================================================================
 # Object build statements for EXECUTABLE target chess-analysis-engine
 
@@ -49,182 +49,191 @@ cmake_ninja_workdir = D$:/chess-analysis-engine/chess-analysis-engine/engine/bui
 
 build cmake_object_order_depends_target_chess-analysis-engine: phony || .
 
-build CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Piece.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Piece.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Piece.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Board.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Board.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Board.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Move.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Move.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Move.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Attack.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Attack.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Attack.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Generate_Position.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Generate_Position.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Generate_Position.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Generate_Move.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Generate_Move.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Generate_Move.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Check.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Check.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\board\Check.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\board
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Material_Point.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Material_Point.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\Material_Point.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Evaluate.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Evaluate.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\Evaluate.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Control_Center.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Control_Center.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\Control_Center.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Negamax.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Negamax.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Negamax.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Negamax.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\Negamax.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Tempo.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Tempo.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Tempo.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Tempo.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\Tempo.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/PST.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/PST.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/PST.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/PST.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\PST.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/King_Safety.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/King_Safety.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/King_Safety.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/King_Safety.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\King_Safety.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Move_Order.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Move_Order.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/Move_Order.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Move_Order.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\Move_Order.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Pgn_Parser.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/evaluate/SEE.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/SEE.cpp || cmake_object_order_depends_target_chess-analysis-engine
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\evaluate\SEE.cpp.obj.d
+  FLAGS = -g -std=gnu++17
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
+  OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
+  OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\evaluate
+  TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
+
+build CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/pgn/Pgn_Parser.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\pgn\Pgn_Parser.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\pgn
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Valid_Piece.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/pgn/Valid_Piece.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\pgn\Valid_Piece.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\pgn
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Pgn_Transformer.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/pgn/Pgn_Transformer.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\pgn\Pgn_Transformer.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src\pgn
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/debug.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/debug.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\debug.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
 
-build CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug D$:/chess-analysis-engine/chess-analysis-engine/engine/src/main.cpp || cmake_object_order_depends_target_chess-analysis-engine
+build CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj: CXX_COMPILER__chess-analysis-engine_unscanned_Debug E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/main.cpp || cmake_object_order_depends_target_chess-analysis-engine
   CONFIG = Debug
   DEP_FILE = CMakeFiles\chess-analysis-engine.dir\src\main.cpp.obj.d
   FLAGS = -g -std=gnu++17
-  INCLUDES = -ID:/chess-analysis-engine/chess-analysis-engine/engine/include
+  INCLUDES = -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include
   OBJECT_DIR = CMakeFiles\chess-analysis-engine.dir
   OBJECT_FILE_DIR = CMakeFiles\chess-analysis-engine.dir\src
   TARGET_SUPPORT_DIR = CMakeFiles\chess-analysis-engine.dir
@@ -237,7 +246,7 @@ build CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj: CXX_COMPILER__chess
 #############################################
 # Link the executable chess-analysis-engine.exe
 
-build chess-analysis-engine.exe: CXX_EXECUTABLE_LINKER__chess-analysis-engine_Debug CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Negamax.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Tempo.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/PST.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/King_Safety.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Move_Order.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj
+build chess-analysis-engine.exe: CXX_EXECUTABLE_LINKER__chess-analysis-engine_Debug CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Negamax.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Tempo.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/PST.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/King_Safety.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/Move_Order.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/evaluate/SEE.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
@@ -254,9 +263,8 @@ build chess-analysis-engine.exe: CXX_EXECUTABLE_LINKER__chess-analysis-engine_De
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = C:\windows\system32\cmd.exe /C "cd /D D:\chess-analysis-engine\chess-analysis-engine\engine\build && "C:\Program Files\CMake\bin\cmake-gui.exe" -SD:\chess-analysis-engine\chess-analysis-engine\engine -BD:\chess-analysis-engine\chess-analysis-engine\engine\build"
-  DESC = Running CMake cache editor...
-  pool = console
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D E:\Emmet\coding\chess-engine\chess-analysis-engine\engine\build && C:\msys64\mingw64\bin\cmake.exe -E echo "No interactive CMake dialog available.""
+  DESC = No interactive CMake dialog available...
   restat = 1
 
 build edit_cache: phony CMakeFiles/edit_cache.util
@@ -266,7 +274,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = C:\windows\system32\cmd.exe /C "cd /D D:\chess-analysis-engine\chess-analysis-engine\engine\build && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SD:\chess-analysis-engine\chess-analysis-engine\engine -BD:\chess-analysis-engine\chess-analysis-engine\engine\build"
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D E:\Emmet\coding\chess-engine\chess-analysis-engine\engine\build && C:\msys64\mingw64\bin\cmake.exe --regenerate-during-build -SE:\Emmet\coding\chess-engine\chess-analysis-engine\engine -BE:\Emmet\coding\chess-engine\chess-analysis-engine\engine\build"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -284,7 +292,7 @@ build chess-analysis-engine: phony chess-analysis-engine.exe
 # =============================================================================
 
 #############################################
-# Folder: D:/chess-analysis-engine/chess-analysis-engine/engine/build
+# Folder: E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build
 
 build all: phony chess-analysis-engine.exe
 
@@ -295,14 +303,14 @@ build all: phony chess-analysis-engine.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja D$:/chess-analysis-engine/chess-analysis-engine/engine/build/cmake_install.cmake: RERUN_CMAKE | C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeRCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Linker/GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Linker/GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Linker/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/Windows-GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/Windows-GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/WindowsPaths.cmake CMakeCache.txt CMakeFiles/4.2.1/CMakeCCompiler.cmake CMakeFiles/4.2.1/CMakeCXXCompiler.cmake CMakeFiles/4.2.1/CMakeRCCompiler.cmake CMakeFiles/4.2.1/CMakeSystem.cmake D$:/chess-analysis-engine/chess-analysis-engine/engine/CMakeLists.txt
+build build.ninja E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/cmake_install.cmake: RERUN_CMAKE | C$:/msys64/mingw64/share/cmake/Modules/CMakeCInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeCXXInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeGenericSystem.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeInitializeConfigs.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeLanguageInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeRCInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Internal/CMakeCLinkerInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/Linker/GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Linker/GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Linker/GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/Windows-GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-Initialize.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-windres.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/WindowsPaths.cmake CMakeCache.txt CMakeFiles/4.2.3/CMakeCCompiler.cmake CMakeFiles/4.2.3/CMakeCXXCompiler.cmake CMakeFiles/4.2.3/CMakeRCCompiler.cmake CMakeFiles/4.2.3/CMakeSystem.cmake E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/CMakeLists.txt
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeRCInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Compiler/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Linker/GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Linker/GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Linker/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/Windows-GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Linker/Windows-GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/Windows.cmake C$:/Program$ Files/CMake/share/cmake-4.2/Modules/Platform/WindowsPaths.cmake CMakeCache.txt CMakeFiles/4.2.1/CMakeCCompiler.cmake CMakeFiles/4.2.1/CMakeCXXCompiler.cmake CMakeFiles/4.2.1/CMakeRCCompiler.cmake CMakeFiles/4.2.1/CMakeSystem.cmake D$:/chess-analysis-engine/chess-analysis-engine/engine/CMakeLists.txt: phony
+build C$:/msys64/mingw64/share/cmake/Modules/CMakeCInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeCXXInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeCommonLanguageInclude.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeGenericSystem.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeInitializeConfigs.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeLanguageInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeRCInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Compiler/GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Internal/CMakeCLinkerInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/Internal/CMakeCXXLinkerInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/Internal/CMakeCommonLinkerInformation.cmake C$:/msys64/mingw64/share/cmake/Modules/Linker/GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Linker/GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Linker/GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/Windows-GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/Windows-GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Linker/Windows-GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-C.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU-CXX.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-GNU.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-Initialize.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows-windres.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/Windows.cmake C$:/msys64/mingw64/share/cmake/Modules/Platform/WindowsPaths.cmake CMakeCache.txt CMakeFiles/4.2.3/CMakeCCompiler.cmake CMakeFiles/4.2.3/CMakeCXXCompiler.cmake CMakeFiles/4.2.3/CMakeRCCompiler.cmake CMakeFiles/4.2.3/CMakeSystem.cmake E$:/Emmet/coding/chess-engine/chess-analysis-engine/engine/CMakeLists.txt: phony
 
 
 #############################################

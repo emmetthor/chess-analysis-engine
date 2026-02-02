@@ -1,6 +1,7 @@
 #include "board/Generate_Position.h"
 #include "board/Board.h"
 #include "board/Move.h"
+#include "evaluate/Material_Point.h"
 #include "pgn/Pgn_Transformer.h"
 
 static const int ndr[] = {1, 2, 2, 1, -1, -2, -2, -1}, ndc[] = {2, 1, -1, -2, -2, -1, 1, 2};
@@ -50,6 +51,7 @@ int generatePosFromPosWithSlidePiece(
             if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) break;
 
             buffer[cnt++] = p;
+
             if (atPiece != EMPTY) break;
 
             p.row += dr[i];
@@ -77,6 +79,8 @@ int generateCaptureFromPosWithJumpPiece(
         if (!board.isInBoard(p)) continue;
         if (atPiece == EMPTY) continue;
         if (isSameColor(atPiece, movePiece)) continue;
+
+        
 
         buffer[cnt++] = p;
     }

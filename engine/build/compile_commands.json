@@ -1,122 +1,128 @@
 [
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Piece.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Piece.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Piece.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Piece.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\board\\Piece.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Piece.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Piece.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Board.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Board.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Board.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Board.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\board\\Board.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Board.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Board.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Move.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Move.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Move.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Move.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\board\\Move.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Move.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Move.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Attack.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Attack.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Attack.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Attack.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\board\\Attack.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Attack.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Attack.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Generate_Position.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Generate_Position.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Generate_Position.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Generate_Position.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\board\\Generate_Position.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Generate_Position.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Position.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Generate_Move.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Generate_Move.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Generate_Move.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Generate_Move.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\board\\Generate_Move.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Generate_Move.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Generate_Move.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Check.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\board\\Check.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/board/Check.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\board\\Check.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\board\\Check.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/board/Check.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/board/Check.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Material_Point.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Material_Point.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Material_Point.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Material_Point.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Material_Point.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Material_Point.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Material_Point.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Evaluate.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Evaluate.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Evaluate.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Evaluate.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Evaluate.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Evaluate.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Evaluate.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Control_Center.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Control_Center.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Control_Center.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Control_Center.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Control_Center.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Control_Center.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Control_Center.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Negamax.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Negamax.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Negamax.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Negamax.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Negamax.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Negamax.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Negamax.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Negamax.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Tempo.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Tempo.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Tempo.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Tempo.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Tempo.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Tempo.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Tempo.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Tempo.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\PST.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\PST.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/PST.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/PST.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\PST.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\PST.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/PST.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/PST.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\King_Safety.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\King_Safety.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/King_Safety.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/King_Safety.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\King_Safety.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\King_Safety.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/King_Safety.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/King_Safety.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Move_Order.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Move_Order.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/evaluate/Move_Order.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Move_Order.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\Move_Order.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\Move_Order.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/Move_Order.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/Move_Order.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Pgn_Parser.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\pgn\\Pgn_Parser.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Pgn_Parser.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\evaluate\\SEE.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\evaluate\\SEE.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/evaluate/SEE.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/evaluate/SEE.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Valid_Piece.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\pgn\\Valid_Piece.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Valid_Piece.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Pgn_Parser.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\pgn\\Pgn_Parser.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/pgn/Pgn_Parser.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Parser.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Pgn_Transformer.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\pgn\\Pgn_Transformer.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/pgn/Pgn_Transformer.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Valid_Piece.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\pgn\\Valid_Piece.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/pgn/Valid_Piece.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Valid_Piece.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\debug.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\debug.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/debug.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\pgn\\Pgn_Transformer.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\pgn\\Pgn_Transformer.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/pgn/Pgn_Transformer.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/pgn/Pgn_Transformer.cpp.obj"
 },
 {
-  "directory": "D:/chess-analysis-engine/chess-analysis-engine/engine/build",
-  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -ID:/chess-analysis-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\main.cpp.obj -c D:\\chess-analysis-engine\\chess-analysis-engine\\engine\\src\\main.cpp",
-  "file": "D:/chess-analysis-engine/chess-analysis-engine/engine/src/main.cpp",
-  "output": "D:/chess-analysis-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj"
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\debug.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\debug.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/debug.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/debug.cpp.obj"
+},
+{
+  "directory": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -IE:/Emmet/coding/chess-engine/chess-analysis-engine/engine/include -g -std=gnu++17 -o CMakeFiles\\chess-analysis-engine.dir\\src\\main.cpp.obj -c E:\\Emmet\\coding\\chess-engine\\chess-analysis-engine\\engine\\src\\main.cpp",
+  "file": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/src/main.cpp",
+  "output": "E:/Emmet/coding/chess-engine/chess-analysis-engine/engine/build/CMakeFiles/chess-analysis-engine.dir/src/main.cpp.obj"
 }
 ]
