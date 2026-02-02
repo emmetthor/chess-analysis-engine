@@ -62,73 +62,10 @@ void AttackMap::calculate(const Board &board) {
 }
 
 void updateAttackMap(const Board &board, const Move &move, bool add) {
-    debug::log("undefined function\n");
-    return;
-    // int dd = (add == 1 ? 1 : -1);
-
-    // Player player = move.player;
-
-    // // ====== CASTLING 特判 ======
-    // if (move.castle != NOT) {
-    //     int row = (player == PLAYER_WHITE ? 7 : 0);
-
-    //     // --- King ---
-    //     for (auto &pos : generatePiecePosFromPos(board, move.from, move.movePiece))
-    //         attackMap[player][pos.row][pos.col] -= dd;
-
-    //     for (auto &pos : generatePiecePosFromPos(board, move.to, move.movePiece))
-    //         attackMap[player][pos.row][pos.col] += dd;
-
-    //     // --- Rook ---
-    //     Position rookFrom, rookTo;
-    //     if (move.castle == SHORT_CASTLE) {
-    //         rookFrom = {row, 7};
-    //         rookTo   = {row, 5};
-    //     } else {
-    //         rookFrom = {row, 0};
-    //         rookTo   = {row, 3};
-    //     }
-
-    //     Piece rook = (player == PLAYER_WHITE ? WROOK : BROOK);
-
-    //     for (auto &pos : generatePiecePosFromPos(board, rookFrom, rook))
-    //         attackMap[player][pos.row][pos.col] -= dd;
-
-    //     for (auto &pos : generatePiecePosFromPos(board, rookTo, rook))
-    //         attackMap[player][pos.row][pos.col] += dd;
-
-    //     return;
-    // }
-
-    // Piece movePiece = move.movePiece;
-
-    // std::vector<Position> oldAttacks, newAttacks, captureAttacks;
-
-    // if (movePiece == WPAWN || movePiece == BPAWN) {
-    //     oldAttacks = generatePawnAttackPosition(board, move.from, player);
-    // } else {
-    //     oldAttacks = generatePiecePosFromPos(board, move.from, movePiece);
-    // }
-
-    // Piece moveToPiece = (move.isPromotion ? move.promotionPiece : movePiece);
-
-    // if (moveToPiece == WPAWN || moveToPiece == BPAWN) {
-    //     newAttacks = generatePawnAttackPosition(board, move.to, player);
-    // } else {
-    //     newAttacks = generatePiecePosFromPos(board, move.to, moveToPiece);
-    // }
-
-    // if (move.capturePiece != EMPTY) {
-    //     if (move.capturePiece == WPAWN || move.capturePiece == BPAWN) {
-    //         captureAttacks = generatePawnAttackPosition(board, move.to, opponent(player));
-    //     } else {
-    //         captureAttacks = generatePiecePosFromPos(board, move.to, move.capturePiece);
-    //     }
-    // }
-
-    // for (const auto &pos : oldAttacks) attackMap[player][pos.row][pos.col] -= dd;
-    // for (const auto &pos : newAttacks) attackMap[player][pos.row][pos.col] += dd;
-    // for (const auto &pos : captureAttacks) attackMap[opponent(player)][pos.row][pos.col] -= dd;
+    // debug::log("undefined function\n");
+    // return;
+    int dd = (add == 1 ? 1 : -1);
+    Player player = move.player;
 }
 
 bool AttackMap::isSquareAttacked(Position pos, const Player player) {

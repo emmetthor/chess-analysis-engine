@@ -180,7 +180,7 @@ int generateAllMoves(
     return cnt;
 }
 
-int generateAllCaptures(
+int generateCaptureMoves(
     const Board &board,
     const Player player,
     Move *buffer
@@ -273,37 +273,6 @@ int filterLegalMoves(
     return cnt;
 }
 
-int filterQSLegalMoves(
-    const Board &board,
-    const Player player,
-    Move *captureMoves,
-    int nCaptureMoves,
-    Move *buffer
-) {
-    int cnt = 0;
-    Board copyBoard = board;
-
-    for (int i = 0; i < nCaptureMoves; i++) {
-        Move &move = captureMoves[i];
-        //if (!isMoveLegal(board, move)) continue; 已經是正確的
-
-        if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
-            // QS 沒有 castle
-            continue;
-        }
-
-        makeMove(copyBoard, move);
-
-        if (!isInCheck(copyBoard, player)) {
-            buffer[cnt++] = move;
-        }
-
-        undoMove(copyBoard, move);
-    }
-
-    return cnt;
-}
-
 int generateAllLegalMoves(
     const Board &board,
     const Player player,
@@ -313,6 +282,19 @@ int generateAllLegalMoves(
     int nAll = generateAllMoves(board, player, allMoves);
 
     int nLegalMoves = filterLegalMoves(board, player, allMoves, nAll, buffer);
+
+    return nLegalMoves;
+}
+
+int generateLegalCaptureMoves(
+    const Board &board,
+    const Player player,
+    Move *buffer
+) {
+    Move captureMoves[2000];
+    int ncaptureMoves = generateCaptureMoves(board, player, captureMoves);
+
+    int nLegalMoves = filterLegalMoves(board, player, captureMoves, ncaptureMoves, buffer);
 
     return nLegalMoves;
 }

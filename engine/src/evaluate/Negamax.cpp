@@ -14,13 +14,15 @@
 
 static const int INF = 1e9;
 
+int quietscenceNodes = 0;
 int quietscence(Board &board, int alpha, int beta, Player player) {
+    quietscenceNodes++;
     int standerdPoint = (player == PLAYER_WHITE ? 1 : -1) * boardEvaluate(board, 1);
     if (standerdPoint >= beta) return beta;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
     Move captureMoves[256];
-    int nCaptureMoves = generateAllCaptures(board, player, captureMoves);
+    int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
 
     sortMove(captureMoves, nCaptureMoves);
 
@@ -48,7 +50,9 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
     return alpha;
 }
 
+int negamaxNodes = 0;
 int negamax(Board &board, int depth, int alpha, int beta, Player player) {
+    negamaxNodes++;
     if (depth == 0) {
         return quietscence(board, alpha, beta, player);
     }
@@ -81,13 +85,15 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
         int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
         undoMove(board, move);
 
+        if (score >= beta) return beta;
         if (score > alpha) alpha = score;
-        if (alpha >= beta) break;
     }
 
     return alpha;
 }
 
+int lstNegamaxNodes = 0;
+int lstQuietscenceNodes = 0;
 SearchResult negamaxRoot(Board &board, int depth, Player player) {
     SearchResult finalRes;
     finalRes.bestScore = -INF;
@@ -104,12 +110,12 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         for (int i = 0; i < nMoves; i++) {
             Move move = moves[i];
 
-            if (d == 1) {
-                debug::set(1);
-                debug::log("negamaxRoot move: ");
-                printMove(move);
-                debug::set(0);
-            }
+            // if (d == 1) {
+            //     debug::set(1);
+            //     debug::log("negamaxRoot move: ");
+            //     printMove(move);
+            //     debug::set(0);
+            // }
 
             //std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -122,6 +128,13 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
                 res.bestScore = score;
             }
         }
+
+        std::cout << "depth = " << d << '\n';
+        std::cout << "negamax nodes = " << negamaxNodes - lstNegamaxNodes << '\n';
+        std::cout << "quietscence nodes = " << quietscenceNodes - lstQuietscenceNodes<< '\n';
+
+        lstNegamaxNodes = negamaxNodes;
+        lstQuietscenceNodes = quietscenceNodes;
 
         for (int i = 0; i < nMoves; i++) {
             if (moves[i] == res.bestMove) {

@@ -13,8 +13,6 @@ int evaluateMoveScore(Move &move) {
     }
 
     if (move.capturePiece != EMPTY) {
-        // 次要看
-        score += 5000;
         score += pieceValue(move.capturePiece) * 10 - pieceValue(move.movePiece);
     }
 
