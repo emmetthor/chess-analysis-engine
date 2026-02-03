@@ -38,6 +38,10 @@ void Board::init() {
     for (int c = 0; c < 8; c++) {
         board[6][c] = WPAWN;
     }
+
+    materialScore = 0;
+    PSTScore = 0;
+    castleRights = 0b1111;
 }
 
 void Board::debugPrint() const {

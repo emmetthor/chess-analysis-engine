@@ -8,6 +8,7 @@
 #include "evaluate/Tempo.h"
 #include "evaluate/PST.h"
 #include "evaluate/King_Safety.h"
+#include "evaluate/Mobility.h"
 
 #include <iostream>
 
@@ -30,6 +31,13 @@ int boardEvaluate(const Board &board, bool quick = false) {
     // slow
     res += evaluateKingSafety(board, PLAYER_WHITE);
     res -= evaluateKingSafety(board, PLAYER_BLACK);
+
+    res += evaluateKnightMobility(board, PLAYER_WHITE);
+    res -= evaluateKnightMobility(board, PLAYER_BLACK);
+    res += evaluateBishopMobility(board, PLAYER_WHITE);
+    res -= evaluateBishopMobility(board, PLAYER_BLACK);
+    res += evaluateRookMobility(board, PLAYER_WHITE);
+    res -= evaluateRookMobility(board, PLAYER_BLACK);
     
     return res;
 }

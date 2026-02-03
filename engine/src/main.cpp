@@ -84,7 +84,7 @@ int main() {
         debug::set(0);
 
         auto start = std::chrono::high_resolution_clock::now();
-        SearchResult res = negamaxRoot(board, 6, player);
+        SearchResult res = negamaxRoot(board, 1, player);
         auto searchEnd = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
 

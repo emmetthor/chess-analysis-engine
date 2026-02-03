@@ -303,7 +303,8 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 board.at({7, 5}) == EMPTY &&
                 isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 6}, opponent(player)) == false &&
-                isSquareAttacked(board, {7, 5}, opponent(player)) == false
+                isSquareAttacked(board, {7, 5}, opponent(player)) == false &&
+                (board.castleRights & 0b1000) == 1
             ) {
                 return true;
             }
@@ -316,7 +317,8 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 board.at({7, 1}) == EMPTY &&
                 isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 2}, opponent(player)) == false &&
-                isSquareAttacked(board, {7, 3}, opponent(player)) == false 
+                isSquareAttacked(board, {7, 3}, opponent(player)) == false &&
+                (board.castleRights & 0b0100) == 1
             ) {
                 return true;
             }
@@ -330,7 +332,8 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 board.at({0, 5}) == EMPTY &&
                 isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 6}, opponent(player)) == false &&
-                isSquareAttacked(board, {0, 5}, opponent(player)) == false
+                isSquareAttacked(board, {0, 5}, opponent(player)) == false &&
+                (board.castleRights & 0b0010) == 1
             ) {
                 return true;
             }
@@ -343,7 +346,8 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 board.at({0, 1}) == EMPTY &&
                 isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 2}, opponent(player)) == false &&
-                isSquareAttacked(board, {0, 3}, opponent(player)) == false
+                isSquareAttacked(board, {0, 3}, opponent(player)) == false &&
+                (board.castleRights & 0b0001) == 1
             ) {
                 return true;
             }
@@ -522,9 +526,42 @@ bool isMoveLegal(const Board &board, const Move &move) {
     return true;
 }
 
+int updateCastleRights(int castleRights, const Move &move) {
+    Player player = move.player;
+    int fromCol = move.from.col;
+
+    // 動 king → 清掉該方所有 castle bit
+    if (move.movePiece == playerPieceCharToPiece(player, 'K')) {
+        if (player == PLAYER_WHITE) {
+            castleRights &= ~0b1100; // 清 bit2 bit3 → 白方 king + queen side
+        } else {
+            castleRights &= ~0b0011; // 清 bit0 bit1 → 黑方 king + queen side
+        }
+    }
+
+    // 動 rook → 清掉對應側
+    else if (move.movePiece == playerPieceCharToPiece(player, 'R')) {
+        if (player == PLAYER_WHITE) {
+            if (fromCol == 0) castleRights &= ~0b0100; // WQ
+            else if (fromCol == 7) castleRights &= ~0b1000; // WK
+        } else {
+            if (fromCol == 0) castleRights &= ~0b0001; // BQ
+            else if (fromCol == 7) castleRights &= ~0b0010; // BK
+        }
+    }
+
+    return castleRights;
+}
+
 // 執行 move
 void makeMove(Board &board, Move &move) {
     printMove(move);
+
+    // 控制 castleRights
+    move.prevCastleRights = board.castleRights;
+    board.castleRights = updateCastleRights(board.castleRights, move);
+
+    std::cout << board.castleRights << '\n';
 
     // 執行 move
     Piece captured = board.at(move.to);
@@ -574,6 +611,9 @@ void makeMove(Board &board, Move &move) {
 }
 
 void undoMove(Board &board, Move &move) {
+    // 控制 castleRights
+    board.castleRights = move.prevCastleRights;
+
     // 執行 undo
     Piece captured = move.capturePiece;
     Piece moved = move.movePiece;

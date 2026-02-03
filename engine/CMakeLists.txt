@@ -25,6 +25,8 @@ set(SOURCE_FILES
     src/evaluate/King_Safety.cpp
     src/evaluate/Move_Order.cpp
     src/evaluate/SEE.cpp
+    src/evaluate/Mobility.cpp
+    src/evaluate/TT.cpp
 
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp

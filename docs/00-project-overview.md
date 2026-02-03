@@ -9,6 +9,8 @@
 
 ## 2. 模組劃分
 
+### `board/`
+
 | 檔案名稱 | 功能 |
 | - | - |
 | Attack | 全盤攻擊圖 (`AttackMap`)、檢查格子攻擊 (`countSquareAttacks`) |
@@ -17,4 +19,9 @@
 | Generate_Move | 生成目前盤面上所有合法著法 (`generateAllLegalMoves`)、生成所有合法吃子 (`generateLegalCaptureMoves`) |
 | Generate_Position | 生成特定棋子可移動位置 (`generatePiecePosFromPos`)、生成可吃子位置 (`generatePieceCaptureFromPos`) |
 | Move | 移動主體，執行與反悔移動 (`makeMove & undoMove`)、檢查移動合法性 (`isMoveLegal`) |
-| Piece | 定義棋子、檢查棋子顏色 (`isWhite & isBlack & isSameColor`)
+| Piece | 定義棋子、檢查棋子顏色 (`isWhite & isBlack & isSameColor`) |
+
+### `evaluate/`
+
+| 檔案名稱 | 功能 |
+| - | - |

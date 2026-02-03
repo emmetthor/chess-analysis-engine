@@ -37,8 +37,7 @@ Player opponent(Player player);
 
 std::string pngPosition(const Position pos);
 
-class Board {
-public: 
+struct Board {
     Board();
 
     void init();
@@ -56,10 +55,16 @@ public:
 
     int getMaterialScore() const;
     int getPSTScore() const;
-    
-private:
 
     Piece board[8][8];
-    int materialScore = 0;
-    int PSTScore = 0;
+    int materialScore;
+    int PSTScore;
+
+    /*
+    0001 黑方 queen side
+    0010 黑方 king  side
+    0100 白方 queen side
+    1000 白方 king  side
+    */
+    int castleRights;
 };

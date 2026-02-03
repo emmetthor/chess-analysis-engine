@@ -22,6 +22,8 @@ struct Move {
 
     bool isEnPassant;
 
+    int prevCastleRights;
+
     bool operator==(const Move &other) const {
         return
             player == other.player &&
