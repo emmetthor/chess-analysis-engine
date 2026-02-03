@@ -1,3 +1,5 @@
+#pragma GCC optimize("O3,unroll-loops")
+
 #include "board/Check.h"
 #include "evaluate/Evaluate.h"
 #include "evaluate/Material_Point.h"

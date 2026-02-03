@@ -1,3 +1,5 @@
+#pragma GCC optimize("O3,unroll-loops")
+
 #include "board/Board.h"
 #include "board/Move.h"
 #include "board/Generate_Move.h"

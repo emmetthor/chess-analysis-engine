@@ -1,3 +1,5 @@
+#pragma GCC optimize("O3,unroll-loops")
+
 #include "evaluate/Move_Order.h"
 #include "evaluate/Material_Point.h"
 #include "evaluate/SEE.h"
