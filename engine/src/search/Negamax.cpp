@@ -2,6 +2,7 @@
 
 #include "board/Board.h"
 #include "move/Move.h"
+#include "move/Make_Move.h"
 #include "move/Generate_Move.h"
 #include "board/Check.h"
 #include "search/Negamax.h"

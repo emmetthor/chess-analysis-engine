@@ -17,6 +17,7 @@ set(SOURCE_FILES
     src/move/Move_Order.cpp
     src/move/Generate_Position.cpp
     src/move/Generate_Move.cpp
+    src/move/Make_Move.cpp
 
     src/evaluate/Material_Point.cpp
     src/evaluate/Evaluate.cpp

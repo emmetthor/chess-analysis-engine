@@ -29,8 +29,9 @@
 | - | - |
 | Generate_Move | 生成目前盤面上所有合法著法 (`generateAllLegalMoves`)、生成所有合法吃子 (`generateLegalCaptureMoves`) |
 | Generate_Position | 生成特定棋子可移動位置 (`generatePiecePosFromPos`)、生成可吃子位置 (`generatePieceCaptureFromPos`) |
-| Move | 移動主體，執行與反悔移動 (`makeMove & undoMove`)、檢查移動合法性 (`isMoveLegal`) |
+| Move | 移動主體、檢查移動合法性 (`isMoveLegal`) |
 | Move_Order | 將著法排序，增加剪枝速度 (`sortMove`) |
+| Make_Move | 執行與反悔移動 (`makeMove & undoMove`) |
 
 ### `search/`
 
@@ -59,3 +60,18 @@
 | Pgn_Parser | 轉換完整遊戲 PGN 變成合法著法 |
 | Pgn_Transformer | 轉換位置與 PGN (`pgnToPosition & positionToPgn`) |
 | Valid_Piece | 轉換玩家與棋子 (`playerPieceCharToPiece`)|
+
+## 3. 資料流
+
+```mermaid
+graph LR
+    test1 --> test2
+```
+
+## 4. 專案參考與 AI 使用
+
+### [Stockfish 18](https://github.com/official-stockfish)
+
+這是世界上最強的引擎之一，當然要參考他的架構。
+
+### [ChatGPT 協助](https://chatgpt.com/g/g-p-69381984e7988191afa09bafbf015c43-c-cheng-shi-shi-zuo-xi-yang-qi-fen-xi-yin-qing/project)

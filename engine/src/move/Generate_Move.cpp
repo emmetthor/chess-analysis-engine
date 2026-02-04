@@ -3,6 +3,7 @@
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "move/Move.h"
+#include "move/Make_Move.h"
 #include "move/Generate_Position.h"
 #include "board/Check.h"
 #include "board/Attack.h"

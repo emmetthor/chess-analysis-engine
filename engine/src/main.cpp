@@ -3,6 +3,7 @@
 #include "move/Move.h"
 #include "board/Attack.h"
 #include "move/Generate_Move.h"
+#include "move/Make_Move.h"
 #include "board/Check.h"
 #include "pgn/Pgn_Parser.h"
 #include "evaluate/Evaluate.h"
