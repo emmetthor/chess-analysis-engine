@@ -1,6 +1,6 @@
 #pragma once
 
-#include "board/Move.h"
+#include "move/Move.h"
 
 #include <vector>
 #include <string>

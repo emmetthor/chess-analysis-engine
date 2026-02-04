@@ -1,6 +1,6 @@
-#include "board/Generate_Position.h"
+#include "move/Generate_Position.h"
 #include "board/Board.h"
-#include "board/Move.h"
+#include "move/Move.h"
 #include "evaluate/Material_Point.h"
 #include "pgn/Pgn_Transformer.h"
 

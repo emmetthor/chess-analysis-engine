@@ -1,5 +1,5 @@
 #include "evaluate/PST.h"
-#include "board/Move.h"
+#include "move/Move.h"
 
 #include <iostream>
 

@@ -2,8 +2,8 @@
 
 #include "board/Board.h"
 #include "board/Piece.h"
-#include "board/Move.h"
-#include "board/Generate_Position.h"
+#include "move/Move.h"
+#include "move/Generate_Position.h"
 #include "board/Check.h"
 #include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"

@@ -1,12 +1,12 @@
 #include "board/Board.h"
 #include "board/Piece.h"
-#include "board/Move.h"
+#include "move/Move.h"
 #include "board/Attack.h"
-#include "board/Generate_Move.h"
+#include "move/Generate_Move.h"
 #include "board/Check.h"
 #include "pgn/Pgn_Parser.h"
 #include "evaluate/Evaluate.h"
-#include "evaluate/Negamax.h"
+#include "search/Negamax.h"
 #include "debug.h"
 
 #include <chrono>
@@ -84,7 +84,7 @@ int main() {
         debug::set(0);
 
         auto start = std::chrono::high_resolution_clock::now();
-        SearchResult res = negamaxRoot(board, 1, player);
+        SearchResult res = negamaxRoot(board, 6, player);
         auto searchEnd = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
 

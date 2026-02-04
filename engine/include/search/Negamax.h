@@ -1,7 +1,7 @@
 #pragma once
 
 #include "board/Board.h"
-#include "board/Move.h"
+#include "move/Move.h"
 
 struct SearchResult {
     Move bestMove;

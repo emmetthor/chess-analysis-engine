@@ -1,7 +1,7 @@
 #include "board/Check.h"
 #include "board/Board.h"
 #include "board/Attack.h"
-#include "board/Generate_Move.h"
+#include "move/Generate_Move.h"
 #include "pgn/Pgn_Transformer.h"
 
 bool isInCheck(

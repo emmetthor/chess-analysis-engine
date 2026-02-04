@@ -9,6 +9,11 @@
 
 ## 2. 模組劃分
 
+| 檔案名稱 | 功能 |
+| - | - |
+| main | 主要程式執行序 |
+| debug | 除錯輸出專用 |
+
 ### `board/`
 
 | 檔案名稱 | 功能 |
@@ -16,12 +21,41 @@
 | Attack | 全盤攻擊圖 (`AttackMap`)、檢查格子攻擊 (`countSquareAttacks`) |
 | Board | 棋盤主體 |
 | Check | 檢查玩家是否被將軍 (`isInCheck`)|
+| Piece | 定義棋子、檢查棋子顏色 (`isWhite & isBlack & isSameColor`) |
+
+### `move/`
+
+| 檔案名稱 | 功能 |
+| - | - |
 | Generate_Move | 生成目前盤面上所有合法著法 (`generateAllLegalMoves`)、生成所有合法吃子 (`generateLegalCaptureMoves`) |
 | Generate_Position | 生成特定棋子可移動位置 (`generatePiecePosFromPos`)、生成可吃子位置 (`generatePieceCaptureFromPos`) |
 | Move | 移動主體，執行與反悔移動 (`makeMove & undoMove`)、檢查移動合法性 (`isMoveLegal`) |
-| Piece | 定義棋子、檢查棋子顏色 (`isWhite & isBlack & isSameColor`) |
+| Move_Order | 將著法排序，增加剪枝速度 (`sortMove`) |
+
+### `search/`
+
+| 檔案名稱 | 功能 |
+| - | - |
+| Search | 進行 `negamax` search, `quietscence` |
+| TT | Zobrist hash 記憶化搜索 |
 
 ### `evaluate/`
 
 | 檔案名稱 | 功能 |
 | - | - |
+| Control_Center | 檢查中心是否有攻擊、佔據 (`evaluateCenterControl`) |
+| Evaluate | 所有評估彙整 |
+| King_Safety | 檢查王安全性 (`evaluateKingSafety`) |
+| Material_Point | 棋子價值回傳 (`pieceValue`) |
+| Mobility | 評估棋子可行動力 (`evaluate knight / bishop / rook  Mobility`) |
+| PST | 棋子位置評分 (`evaluatePieceSquare`) |
+| SEE | 棋子交換盈虧評分 (`SEE`) |
+| Tempo | 出子優先評分 (`evaluateTempo`) |
+
+### `pgn/`
+
+| 檔案名稱 | 功能 |
+| - | - |
+| Pgn_Parser | 轉換完整遊戲 PGN 變成合法著法 |
+| Pgn_Transformer | 轉換位置與 PGN (`pgnToPosition & positionToPgn`) |
+| Valid_Piece | 轉換玩家與棋子 (`playerPieceCharToPiece`)|

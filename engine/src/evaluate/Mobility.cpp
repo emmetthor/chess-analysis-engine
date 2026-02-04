@@ -1,4 +1,4 @@
-#include "board/Generate_Position.h"
+#include "move/Generate_Position.h"
 #include "evaluate/Mobility.h"
 #include "pgn/Pgn_Transformer.h"
 

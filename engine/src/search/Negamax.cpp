@@ -1,12 +1,12 @@
 #pragma GCC optimize("O3,unroll-loops")
 
 #include "board/Board.h"
-#include "board/Move.h"
-#include "board/Generate_Move.h"
+#include "move/Move.h"
+#include "move/Generate_Move.h"
 #include "board/Check.h"
-#include "evaluate/Negamax.h"
+#include "search/Negamax.h"
 #include "evaluate/Evaluate.h"
-#include "evaluate/Move_Order.h"
+#include "move/Move_Order.h"
 #include "debug.h"
 
 #include <vector>

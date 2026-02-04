@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Board.h"
-#include "Piece.h"
+#include "board/Board.h"
+#include "move/Generate_Position.h"
 #include "board/Attack.h"
 
 enum Castle {

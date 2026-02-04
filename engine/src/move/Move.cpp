@@ -1,6 +1,6 @@
 #include "board/Board.h"
 #include "board/Piece.h"
-#include "board/Move.h"
+#include "move/Move.h"
 #include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"
 #include "evaluate/Material_Point.h"
@@ -561,7 +561,7 @@ void makeMove(Board &board, Move &move) {
     move.prevCastleRights = board.castleRights;
     board.castleRights = updateCastleRights(board.castleRights, move);
 
-    std::cout << board.castleRights << '\n';
+    //std::cout << board.castleRights << '\n';
 
     // 執行 move
     Piece captured = board.at(move.to);
