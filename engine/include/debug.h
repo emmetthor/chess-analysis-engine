@@ -1,74 +1,79 @@
 #pragma once
-#include <iostream>
 #include <fstream>
-#include <string>
-#include <sstream>
+#include <cstdint>
 
-enum class DebugLevel { INFO, DEBUG, WARN, ERROR };
-enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH };
-
-// ---- 控制開關 ----
-// 開發版定義 ENGINE_DEBUG
-// 正式版未定義
+//======================
+// Compile-time switch
+//======================
 #ifdef ENGINE_DEBUG
     #define DEBUG_ENABLED 1
 #else
     #define DEBUG_ENABLED 0
 #endif
 
+#ifdef ENGINE_DEBUG
+    #include <assert.h>
+    #define ENGINE_ASSERT(x) assert(x)
+#else
+    #define ENGINE_ASSERT(x) ((void)0)
+#endif
+
+//======================
+// Enum
+//======================
+enum class DebugLevel { INFO, DEBUG, WARN, ERROR };
+enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH, ATK };
+
+//======================
+// Debug class
+//======================
 class Debug {
 public:
-    static constexpr bool enabled = DEBUG_ENABLED;  // compile-time 控制
     static DebugLevel level;
-    static std::ofstream logFile;
+    static uint32_t categoryMask;
+    static bool consoleEnabled;
+    static bool fileEnabled;
 
-    // 初始化，可選檔案輸出
-    static void init(const std::string &file = "") {
+    static void init(const char* file = nullptr);
+    static void shutdown();
+
 #if DEBUG_ENABLED
-        if (!file.empty()) logFile.open(file);
+    static void log(
+        DebugCategory cat,
+        DebugLevel lvl,
+        const char* file,
+        int line,
+        const char* func,
+        const char* fmt,
+        ...
+    );
+#else
+    static inline void log(...) {}
 #endif
-    }
-
-    // 關閉檔案
-    static void shutdown() {
-#if DEBUG_ENABLED
-        if (logFile.is_open()) logFile.close();
-#endif
-    }
-
-    // 主要 log 函數
-    static void log(DebugCategory cat, DebugLevel msgLevel, const std::string &msg) {
-#if DEBUG_ENABLED
-        if (msgLevel < level) return;
-
-        std::ostringstream oss;
-        oss << "[" << categoryToString(cat) << "] " << msg;
-
-        std::cout << oss.str() << std::endl;
-        if (logFile.is_open()) logFile << oss.str() << std::endl;
-#endif
-    }
-
-    // log 任意變數
-    template<typename T>
-    static void logVar(DebugCategory cat, DebugLevel msgLevel, const std::string &name, const T &val) {
-#if DEBUG_ENABLED
-        std::ostringstream oss;
-        oss << name << " = " << val;
-        log(cat, msgLevel, oss.str());
-#endif
-    }
-
-private:
-    static std::string categoryToString(DebugCategory cat) {
-        switch(cat) {
-            case DebugCategory::TT: return "TT";
-            case DebugCategory::MOVE: return "MOVE";
-            case DebugCategory::QS: return "QS";
-            case DebugCategory::EVAL: return "EVAL";
-            case DebugCategory::BOARD: return "BOARD";
-            case DebugCategory::SEARCH: return "SEARCH";
-        }
-        return "UNKNOWN";
-    }
 };
+
+//======================
+// Macros (唯一使用入口)
+//======================
+#if DEBUG_ENABLED
+
+#define LOG_DEBUG(cat, fmt, ...) \
+    Debug::log(cat, DebugLevel::DEBUG, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+
+#define LOG_INFO(cat, fmt, ...) \
+    Debug::log(cat, DebugLevel::INFO, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+
+#define LOG_WARN(cat, fmt, ...) \
+    Debug::log(cat, DebugLevel::WARN, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+
+#define LOG_ERROR(cat, fmt, ...) \
+    Debug::log(cat, DebugLevel::ERROR, __FILE__, __LINE__, __func__, fmt, ##__VA_ARGS__)
+
+#else
+
+#define LOG_DEBUG(...)
+#define LOG_INFO(...)
+#define LOG_WARN(...)
+#define LOG_ERROR(...)
+
+#endif
