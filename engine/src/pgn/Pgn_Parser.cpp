@@ -65,7 +65,7 @@ void PGN::cinPgnToSan() {
 
         if (input[0] == '[') {
             headerType = USELESS;
-            debug::log("cinPgnToSan: useless header\n");
+            //debug::log("cinPgnToSan: useless header\n");
             continue;
         }
 
@@ -103,7 +103,7 @@ void PGN::cinPgnToSan() {
         san_moves.push_back(sanClearer(input));
     }
 
-    debug::log("cinPgnToSan: ", whiteName, ' ', whiteElo, ' ', blackName, ' ', blackElo, '\n');
+    //debug::log("cinPgnToSan: ", whiteName, ' ', whiteElo, ' ', blackName, ' ', blackElo, '\n');
 }
 
 bool isCapture(std::string strSan) {
@@ -176,7 +176,7 @@ Move parsePieceMove(SAN &strSan, Board &board) {
         }
     }
 
-    debug::log("parsePieceMove: No valid move\n");
+    //debug::log("parsePieceMove: No valid move\n");
 
     return Move();
 }
@@ -244,7 +244,7 @@ Move parsePawnMove(SAN &san, Board &board) {
         }
     }
 
-    debug::log("parsePawnMove: No valid move\n");
+    //debug::log("parsePawnMove: No valid move\n");
 
     return Move();
 }
@@ -270,7 +270,7 @@ void PGN::SantoMove() {
     Board board;
 
     for (auto san : san_moves) {
-        debug::log("SantoMove: ", san, '\n');
+        //debug::log("SantoMove: ", san, '\n');
         
         if (specialPiece.find(san[0]) != specialPiece.end()) {
             SAN pieceSan = parsePieceSan(san, player);
@@ -301,14 +301,14 @@ void PGN::SantoMove() {
         }
 
         board.debugPrint();
-        debug::log('\n');
+        //debug::log('\n');
 
         player = (player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE);
     }
 }
 
 Move PGN::SantoMoveSingle(Board &board, std::string strSan, Player player) {
-    debug::log("SantoMove: ", strSan, '\n');
+    //debug::log("SantoMove: ", strSan, '\n');
     
     if (specialPiece.find(strSan[0]) != specialPiece.end()) {
         SAN pieceSan = parsePieceSan(strSan, player);

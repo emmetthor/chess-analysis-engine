@@ -43,7 +43,7 @@ bool isStringAPosition(std::string s) {
 
 Position pgnToPosition(std::string s) {
     if (!isStringAPosition(s)) {
-        debug::log("pgnToPosition: Invalid input: ", s, '\n');
+        //debug::log("pgnToPosition: Invalid input: ", s, '\n');
         return {-1, -1};
     }
 

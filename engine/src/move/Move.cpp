@@ -21,14 +21,14 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
 
     if (move.player == PLAYER_WHITE) {
         if (moveForWard < 0) {
-            debug::log("isPawnMoveLegal: Pawn can't move backward\n");
+            //debug::log("isPawnMoveLegal: Pawn can't move backward\n");
             return false;
         }
     }
 
     if (move.player == PLAYER_BLACK) {
         if (moveForWard > 0) {
-            debug::log("isPawnMoveLegal: Pawn can't move backward\n");
+            //debug::log("isPawnMoveLegal: Pawn can't move backward\n");
             return false;
         }
 
@@ -38,7 +38,7 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
     // 直走
     if (moveSideward == 0) {
         if (moveForWard > 2) {
-            debug::log("isPawnMoveLegal: Pawn can't move three or more steps at one time\n");
+            //debug::log("isPawnMoveLegal: Pawn can't move three or more steps at one time\n");
             return false;
         }
 
@@ -46,13 +46,13 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
         if (moveForWard == 2) {
             // 白方兵走兩格
             if (isWhite(move.movePiece) && move.from.row != 6) {
-                debug::log("isPawnMoveLegal: Pawn can move two steps only when stated from the original position\n");
+                //debug::log("isPawnMoveLegal: Pawn can move two steps only when stated from the original position\n");
                 return false;
             }
 
             // 黑方兵走兩格
             if (isBlack(move.movePiece) && move.from.row != 1) {
-                debug::log("isPawnMoveLegal: Pawn can move two steps only when stated from the original position\n");
+                //debug::log("isPawnMoveLegal: Pawn can move two steps only when stated from the original position\n");
                 return false;
             }
 
@@ -60,7 +60,7 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
             midPos = (move.from.row + move.to.row) / 2;
 
             if (board.at(move.to) != EMPTY || board.at({midPos, move.to.col}) != EMPTY) {
-                debug::log("isPawnMoveLegal: Pawn can't capture a piece in front of it\n");
+                //debug::log("isPawnMoveLegal: Pawn can't capture a piece in front of it\n");
                 return false;
             }
 
@@ -69,26 +69,26 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
 
         if (moveForWard == 1) {
             if (board.at(move.to) != EMPTY) {
-                debug::log("isPawnMoveLegal: Pawn can't capture a piece in front of it\n");
+                //debug::log("isPawnMoveLegal: Pawn can't capture a piece in front of it\n");
                 return false;
             }
 
             return true;
         }
 
-        debug::log("Pawn should move\n");
+        //debug::log("Pawn should move\n");
         return false;
     }
 
     // 斜吃
     else if (moveSideward == 1) {
         if (board.at(move.to) == EMPTY) {
-            debug::log("isPawnMoveLegal: Pawn can't capure nothing\n");
+            //debug::log("isPawnMoveLegal: Pawn can't capure nothing\n");
             return false;
         }
 
         if (moveForWard != 1) {
-            debug::log("isPawnMoveLegal: Pawn can only take the piece a block diagonally\n");
+            //debug::log("isPawnMoveLegal: Pawn can only take the piece a block diagonally\n");
             return false;
         }
 
@@ -97,11 +97,11 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
 
     // 亂走
     else {
-        debug::log("isPawnMoveLegal: Pawn can't move like that\n");
+        //debug::log("isPawnMoveLegal: Pawn can't move like that\n");
         return false;
     }
 
-    debug::log("isPawnMoveLegal: HOW DID YOU GET HERE?\n");
+    //debug::log("isPawnMoveLegal: HOW DID YOU GET HERE?\n");
     return false;
 }
 
@@ -118,7 +118,7 @@ bool isKnightMoveLegal(const Board &board, const Move &move) {
         return true;
     }
 
-    debug::log("isKnightMoveLegal: knight can't move like that\n");
+    //debug::log("isKnightMoveLegal: knight can't move like that\n");
 
     return false;
 }
@@ -128,10 +128,10 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
     int moveForWard = abs(move.from.row - move.to.row);
     int moveSideward = abs(move.from.col - move.to.col);
 
-    debug::log("isBishopMoveLegal: from: ", move.from.row, ", ", move.from.col, " to ", move.to.row, ", ", move.to.col, '\n');
+    //debug::log("isBishopMoveLegal: from: ", move.from.row, ", ", move.from.col, " to ", move.to.row, ", ", move.to.col, '\n');
 
     if (moveForWard != moveSideward) {
-        debug::log("isBishopMoveLegal: bishop can't move like that\n");
+        //debug::log("isBishopMoveLegal: bishop can't move like that\n");
         return false;
     }
 
@@ -141,7 +141,7 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
 
     bool allEmpty = true;
     for (int r = fromRow + dr, c = fromCol + dc; r != toRow, c != toCol; r += dr, c += dc) {
-        debug::log(r, ", ", c, '\n');
+        //debug::log(r, ", ", c, '\n');
         if (board.at({r, c}) != EMPTY) {
             allEmpty = false;
             break;
@@ -150,7 +150,7 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
 
     if (allEmpty) return true;
     else {
-        debug::log("isBishopMoveLegal: a piece blocked the way during the move\n");
+        //debug::log("isBishopMoveLegal: a piece blocked the way during the move\n");
         return false;
     }
 }
@@ -161,7 +161,7 @@ bool isRookMoveLegal(const Board &board, const Move &move) {
     int moveSideward = abs(move.from.col - move.to.col);
 
     if (moveForWard != 0 && moveSideward != 0) {
-        debug::log("isRookMoveLegal: Rook can't move like that\n");
+        //debug::log("isRookMoveLegal: Rook can't move like that\n");
         return false;
     }
 
@@ -179,7 +179,7 @@ bool isRookMoveLegal(const Board &board, const Move &move) {
 
         if (allEmpty) return true;
         else {
-            debug::log("isRookMoveLegal: a piece blocked the way during the move\n");
+            //debug::log("isRookMoveLegal: a piece blocked the way during the move\n");
             return false;
         }
     }
@@ -198,12 +198,12 @@ bool isRookMoveLegal(const Board &board, const Move &move) {
 
         if (allEmpty) return true;
         else {
-            debug::log("isRookMoveLegal: a piece blocked the way during the move\n");
+            //debug::log("isRookMoveLegal: a piece blocked the way during the move\n");
             return false;
         }
     }
 
-    debug::log("isRookMoveLegal: HOW DID YOU GET HERE?\n");
+    //debug::log("isRookMoveLegal: HOW DID YOU GET HERE?\n");
 
     return false;
 }
@@ -228,7 +228,7 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
 
             if (allEmpty) return true;
             else {
-                debug::log("isQueenMoveLegal: a piece blocked the way during the move\n");
+                //debug::log("isQueenMoveLegal: a piece blocked the way during the move\n");
                 return false;
             }
         }
@@ -247,7 +247,7 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
 
             if (allEmpty) return true;
             else {
-                debug::log("isQueenMoveLegal: a piece blocked the way during the move\n");
+                //debug::log("isQueenMoveLegal: a piece blocked the way during the move\n");
                 return false;
             }
         }
@@ -268,12 +268,12 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
 
         if (allEmpty) return true;
         else {
-            debug::log("isQueenMoveLegal: a piece blocked the way during the move\n");
+            //debug::log("isQueenMoveLegal: a piece blocked the way during the move\n");
             return false;
         }
     }
 
-    debug::log("isQueenMoveLegal: Queen can't move like that\n");
+    //debug::log("isQueenMoveLegal: Queen can't move like that\n");
     return false;
 }
 
@@ -283,12 +283,12 @@ bool isKingMoveLegal(const Board &board, const Move &move) {
     int moveSideward = abs(move.from.col - move.to.col);
 
     if (moveForWard > 1 || moveSideward > 1) {
-        debug::log("King can't move two steps\n");
+        //debug::log("King can't move two steps\n");
         return false;
     }
 
     if (isSquareAttacked(board, move.to, opponent(move.player))) {
-        debug::log("King can't move to a attacked square\n");
+        //debug::log("King can't move to a attacked square\n");
         return false;
     }
 
@@ -409,10 +409,14 @@ CastleMove getCastleMove(Move &move) {
 }
 
 void printMove(const Move &move) {
-    if (move.castle == SHORT_CASTLE) debug::log("move: O-O\n");
-    else if (move.castle == LONG_CASTLE) debug::log("move: O-O-O\n");
+    if (move.castle == SHORT_CASTLE) {
+        //debug::log("move: O-O\n");
+    }
+    else if (move.castle == LONG_CASTLE) {
+        //debug::log("move: O-O-O\n");
+    }
     else {
-        debug::log("move: ", pieceToChar(move.movePiece), pngPosition(move.from), pngPosition(move.to), '\n');
+        //debug::log("move: ", pieceToChar(move.movePiece), pngPosition(move.from), pngPosition(move.to), '\n');
         // std::cerr
         //     << "move: "
         //     << pieceToChar(move.movePiece)
@@ -436,12 +440,12 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
     // 檢查是否超出棋盤
     if (!board.isInBoard(move.from)) {
-        debug::log("isMoveLegal: from postition: (", move.from.row, ", ", move.from.col, ") is out of board\n");
+        //debug::log("isMoveLegal: from postition: (", move.from.row, ", ", move.from.col, ") is out of board\n");
         return false;
     }
 
     if (!board.isInBoard(move.to)) {
-        debug::log("isMoveLegal: to postition: (", move.to.row, ", ", move.to.col, ") is out of board\n");
+        //debug::log("isMoveLegal: to postition: (", move.to.row, ", ", move.to.col, ") is out of board\n");
         return false;
     }
 
@@ -449,13 +453,13 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
     // 檢查移動棋子是否為空
     if (fromPiece == EMPTY) {
-        debug::log("isMoveLegal: moving EMPTY\n");
+        //debug::log("isMoveLegal: moving EMPTY\n");
         return false;
     }
 
     // 檢查移動棋子是否正確
     if (fromPiece != move.movePiece) {
-        debug::log("isMoveLegal: moving piece: ", pieceToChar(fromPiece), " is not correct. it should be: ", pieceToChar(move.movePiece), '\n');
+        //debug::log("isMoveLegal: moving piece: ", pieceToChar(fromPiece), " is not correct. it should be: ", pieceToChar(move.movePiece), '\n');
         return false;
     }
 
@@ -463,7 +467,7 @@ bool isMoveLegal(const Board &board, const Move &move) {
 
     //檢查是否吃同色棋子
     if (toPiece != EMPTY && isSameColor(move.movePiece, board.at(move.to))) {
-        debug::log("isMoveLegal: ", pieceToChar(move.movePiece), " can't capture the same color pieces: ", pieceToChar(toPiece), '\n');
+        //debug::log("isMoveLegal: ", pieceToChar(move.movePiece), " can't capture the same color pieces: ", pieceToChar(toPiece), '\n');
         return false;
     }
 

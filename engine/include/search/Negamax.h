@@ -16,9 +16,9 @@ int negamax(
     int depth,
     int alpha,
     int beta,
-    Player player,
-    AttackMap &attackMap
+    Player player
 );
+
 SearchResult negamaxRoot(
     Board &board,
     int depth,

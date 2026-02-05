@@ -52,25 +52,25 @@ void Board::debugPrint() const {
     for (int r = 0; r < 9; r++) {
         for (int c = -1; c < 8; c++) {
             if (r == 8 && c == -1) {
-                debug::log("_ ");
+                //debug::log("_ ");
                 continue;
             }
 
             if (c == -1) {
-                debug::log(rowToPgn[r], ' ');
+                //debug::log(rowToPgn[r], ' ');
                 continue;
             }
 
             if (r == 8) {
-                debug::log(colToPgn[c], ' ');
+                //debug::log(colToPgn[c], ' ');
                 continue;
             }
 
-            debug::log(pieceToChar(board[r][c]), " \n"[c == 8 - 1]);
+            //debug::log(pieceToChar(board[r][c]), " \n"[c == 8 - 1]);
         }
     }
 
-    debug::log('\n');
+    //debug::log('\n');
 }
 
 Piece Board::at(Position pos) const {

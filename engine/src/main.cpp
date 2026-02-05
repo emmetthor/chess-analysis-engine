@@ -80,10 +80,6 @@ int main() {
     
     std::string s = "";
     while (s != "end") {
-        debug::set(1);
-        board.debugPrint();
-        debug::set(0);
-
         auto start = std::chrono::high_resolution_clock::now();
         SearchResult res = negamaxRoot(board, 6, player);
         auto searchEnd = std::chrono::high_resolution_clock::now();
@@ -92,20 +88,10 @@ int main() {
         Move best = res.bestMove;
         int score = res.bestScore;
 
-        debug::set(1);
-        debug::log("best move: ");
-        printMove(best);
-        debug::log("score: ", score, '\n', "duration: ", duration, "ms\n");
-        debug::set(0);
-
         makeMove(board, best);
 
         std::cin >> s;
         Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
-
-        debug::set(1);
-        printMove(oppoMove);
-        debug::set(0);
     }
 
     return 0;
