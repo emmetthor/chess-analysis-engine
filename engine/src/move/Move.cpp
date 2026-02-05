@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <assert.h>
 
+Move inValidMove;
+
 // 檢查兵走子
 bool isPawnMoveLegal(const Board &board, const Move &move) {
     int moveForWard = move.from.row - move.to.row;

@@ -13,5 +13,6 @@ struct ScoreMove {
 void sortMove(
     const Board &board,
     Move *moves,
-    int nMoves
+    int nMoves,
+    Move &TTMove
 );

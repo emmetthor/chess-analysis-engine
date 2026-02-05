@@ -31,7 +31,7 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
     Move captureMoves[256];
     int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
 
-    sortMove(board, captureMoves, nCaptureMoves);
+    sortMove(board, captureMoves, nCaptureMoves, inValidMove);
 
     for (int i = 0; i < nCaptureMoves; i++) {
         Move move = captureMoves[i];
@@ -58,13 +58,35 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
 }
 
 int negamaxNodes = 0;
+int ttProbe = 0;
+int ttHit = 0;
+int ttCut = 0;
 int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     negamaxNodes++;
 
     //TT表 記憶化搜索
-    int TTValue; Move TTMove;
-    if (probeTT(board.zobristKey, depth, alpha, beta, TTValue, TTMove)) {
-        return TTValue;
+    ttProbe++;
+    TTEntry tt;
+    Move TTMove;
+    if (probeTT(board.zobristKey, depth, alpha, beta, tt)) {
+        ttHit++;
+
+        if (tt.depth >= depth) {
+            if (tt.flag == EXACT) {
+                ttCut++;
+                return tt.score;
+            }
+            if (tt.flag == LOWER && tt.score >= beta) {
+                ttCut++;
+                return beta;
+            }
+            if (tt.flag == UPPER && tt.score <= alpha) {
+                ttCut++;
+                return alpha;
+            }
+        }
+        
+        if (isMoveLegal(board, tt.bestMove)) TTMove = tt.bestMove;
     }
 
     int oriAlpha = alpha;
@@ -81,40 +103,24 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     if (standerdPoint >= beta) return beta;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
+    // 生成所有走法
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, player, moves);
 
+    // 檢查 checkmate / stalemate
     if (nMoves == 0) {
         if (isInCheck(board, player)) return -INF + depth;
         else return 0;
     }
 
-    for (int i = 0; i < nMoves; i++) {
-        if (moves[i] == TTMove) {
-            std::swap(moves[0], moves[i]);
-            break;
-        }
-    }
-
-    sortMove(board, moves + 1, nMoves - 1);
+    sortMove(board, moves, nMoves, TTMove);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
 
-        if (startDebug) {
-            // debug::set(1);
-            // debug::log("depth: ", depth," move: ");
-            // printMove(move);
-            // //board.debugPrint();
-            // debug::set(0);
-        }
-        // std::this_thread::sleep_for(std::chrono::seconds(1));
-
         makeMove(board, move);
         int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
         undoMove(board, move);
-
-        //if (startDebug) {std::cout << score << ' ' << alpha << ' ' << beta << '\n';}
 
         if (score >= beta) {
             // cutoff 存 LOWER
@@ -144,14 +150,20 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
 
 int lstNegamaxNodes = 0;
 int lstQuietscenceNodes = 0;
+int lstPorbeTTTimes = 0;
+int lstttProbe = 0;
+int lstttHit = 0;
+int lstttCut = 0;
 SearchResult negamaxRoot(Board &board, int depth, Player player) {
     SearchResult finalRes;
     finalRes.bestScore = -INF;
 
+    // 生成所有走法
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, player, moves);
 
-    sortMove(board, moves, nMoves);
+    // 排序
+    sortMove(board, moves, nMoves, inValidMove);
 
     for (int d = 1; d <= depth; d++) {
         SearchResult res;
@@ -160,19 +172,7 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         for (int i = 0; i < nMoves; i++) {
             Move move = moves[i];
 
-            // if (d == 6) {
-            //     debug::set(1);
-            //     debug::log("negamaxRoot move: ");
-            //     printMove(move);
-            //     if (move.from == Position{3, 4} && move.to == Position{5, 3}) {
-            //         board.debugPrint();
-            //         startDebug = 1;
-            //     }
-            //     debug::set(0);
-            // }
-
-            //std::this_thread::sleep_for(std::chrono::seconds(1));
-
+            // 遞迴下一層
             makeMove(board, move);
             int score = -negamax(board, d - 1, -INF, INF, opponent(player));
             undoMove(board, move);
@@ -183,13 +183,21 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
             }
         }
 
+        // 輸出節點數
         std::cout << "depth = " << d << '\n';
         std::cout << "negamax nodes = " << negamaxNodes - lstNegamaxNodes << '\n';
         std::cout << "quietscence nodes = " << quietscenceNodes - lstQuietscenceNodes<< '\n';
+        std::cout << "probeTT times = " << ttProbe - lstttProbe << '\n';
+        std::cout << "tt cut times = " << ttCut - lstttCut << '\n';
+        std::cout << "tt hit times = " << ttHit - lstttHit << '\n';
 
         lstNegamaxNodes = negamaxNodes;
         lstQuietscenceNodes = quietscenceNodes;
+        lstttProbe = ttProbe;
+        lstttCut = ttCut;
+        lstttHit = ttHit;
 
+        // iterative
         for (int i = 0; i < nMoves; i++) {
             if (moves[i] == res.bestMove) {
                 std::swap(moves[0], moves[i]);

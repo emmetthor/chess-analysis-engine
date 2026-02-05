@@ -94,12 +94,12 @@ int generateAllMoves(
 ) {
     int cnt = 0;
     Piece 
-        pawn =      playerPieceCharToPiece(player, 'P'),
-        knight =    playerPieceCharToPiece(player, 'N'),
-        bishop =    playerPieceCharToPiece(player, 'B'),
-        rook =      playerPieceCharToPiece(player, 'R'),
-        queen =     playerPieceCharToPiece(player, 'Q'),
-        king =      playerPieceCharToPiece(player, 'K');
+        pawn    = playerPieceCharToPiece(player, 'P'),
+        knight  = playerPieceCharToPiece(player, 'N'),
+        bishop  = playerPieceCharToPiece(player, 'B'),
+        rook    = playerPieceCharToPiece(player, 'R'),
+        queen   = playerPieceCharToPiece(player, 'Q'),
+        king    = playerPieceCharToPiece(player, 'K');
 
     cnt += generatePieceMoves(board, player, knight, buffer);
     cnt += generatePieceMoves(board, player, bishop, buffer + cnt);

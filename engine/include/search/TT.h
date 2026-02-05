@@ -30,8 +30,7 @@ bool probeTT (
     int depth,
     int alpha, 
     int beta,
-    int &outValue,
-    Move &outMove
+    TTEntry &TTOut
 );
 
 void storeTT(

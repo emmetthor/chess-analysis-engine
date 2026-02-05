@@ -41,6 +41,8 @@ struct Move {
     }
 };
 
+extern Move inValidMove;
+
 struct CastleMove {
     Position kingFrom, kingTo;
     Position rookFrom, rookTo;

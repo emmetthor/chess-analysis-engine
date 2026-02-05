@@ -6,8 +6,10 @@
 
 #include <algorithm>
 
-int evaluateMoveScore(const Board &board, Move &move) {
+int evaluateMoveScore(const Board &board, Move &move, Move &TTMove) {
     int score = 0;
+
+    if (move == TTMove) score += 1000000;
 
     if (move.isPromotion) {
         // 最先看
@@ -24,12 +26,12 @@ int evaluateMoveScore(const Board &board, Move &move) {
     return score;
 }
 
-void sortMove(const Board &board, Move *moves, int nMoves) {
+void sortMove(const Board &board, Move *moves, int nMoves, Move &TTMove) {
     ScoreMove tmp[256];
 
     for (int i = 0; i < nMoves; i++) {
         tmp[i].move = moves[i];
-        tmp[i].score = evaluateMoveScore(board, moves[i]);
+        tmp[i].score = evaluateMoveScore(board, moves[i], TTMove);
     }
 
     std::sort(tmp, tmp + nMoves,
