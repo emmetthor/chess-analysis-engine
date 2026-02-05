@@ -10,6 +10,7 @@
 #include "search/Negamax.h"
 #include "debug.h"
 
+#include <iostream>
 #include <chrono>
 #include <algorithm>
 
@@ -93,6 +94,7 @@ int main() {
 
         makeMove(board, best);
 
+        std::cin >> s;
         Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
     }
 

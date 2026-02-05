@@ -410,19 +410,18 @@ CastleMove getCastleMove(Move &move) {
 
 void printMove(const Move &move) {
     if (move.castle == SHORT_CASTLE) {
-        //debug::log("move: O-O\n");
+        std::cerr << "move: O-O\n";
     }
     else if (move.castle == LONG_CASTLE) {
-        //debug::log("move: O-O-O\n");
+        std::cerr << "move: O-O-O\n";
     }
     else {
-        //debug::log("move: ", pieceToChar(move.movePiece), pngPosition(move.from), pngPosition(move.to), '\n');
-        // std::cerr
-        //     << "move: "
-        //     << pieceToChar(move.movePiece)
-        //     << pngPosition(move.from)
-        //     << pngPosition(move.to)
-        //     << '\n';
+        std::cerr
+            << "move: "
+            << pieceToChar(move.movePiece)
+            << pngPosition(move.from)
+            << pngPosition(move.to)
+            << '\n';
     }
 }
 

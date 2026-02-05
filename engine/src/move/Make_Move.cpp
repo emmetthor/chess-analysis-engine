@@ -7,6 +7,7 @@
 #include "evaluate/PST.h"
 #include "debug.h"
 
+#include <iostream>
 #include <assert.h>
 
 // 入堡走子
@@ -76,7 +77,15 @@ int updateCastleRights(int castleRights, const Move &move) {
 
 // 執行 move
 void makeMove(Board &board, Move &move) {
-    printMove(move);
+    // if (!isPositionValid(move.from)) {
+    //     std::cerr << "invalid from\n";
+    //     std::cerr << move.from.row << ' ' << move.from.col << '\n';
+    //     assert(0);
+    // }
+    // if (!isPositionValid(move.to)) {
+    //     std::cerr << "invalid to\n";
+    //     assert(0);
+    // }
 
     move.prevCastleRights = board.castleRights;
     move.prevMateralPoints = board.materialScore;
@@ -163,7 +172,11 @@ void makeMove(Board &board, Move &move) {
         board.zobristKey ^= zobPiece[captured][toZob];
     }
 
-    assert(computeZobrist(board, player) == board.zobristKey);
+    if (computeZobrist(board, player) != board.zobristKey) {
+        printMove(move);
+        assert(move == inValidMove);
+        assert(0);
+    }
 }
 
 void undoMove(Board &board, Move &move) {
