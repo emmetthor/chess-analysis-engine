@@ -14,6 +14,9 @@
 #include <algorithm>
 
 int main() {
+    Debug::init("engine_debug.log");
+    Debug::level = DebugLevel::DEBUG;
+    LOG_INFO(DebugCategory::BOARD, "Engine start");
     // debug::set(1);
     // debug::log("cinPgnToSan: please input your game with PGN:\n");
     // debug::set(0);
@@ -90,7 +93,6 @@ int main() {
 
         makeMove(board, best);
 
-        std::cin >> s;
         Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
     }
 

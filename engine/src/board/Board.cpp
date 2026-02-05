@@ -97,6 +97,10 @@ bool samePosition(Position a, Position b) {
     else return false;
 }
 
+bool isPositionValid(Position p) {
+    return p.row >= 0 && p.row < 8 && p.col >= 0 && p.col < 8;
+}
+
 Player opponent(Player player) {
     return player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE;
 }

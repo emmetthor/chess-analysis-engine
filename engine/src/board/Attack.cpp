@@ -16,8 +16,11 @@ static const int bqdr[] = {1, 1, -1 , -1}, bqdc[] = {1, -1, 1, -1};
 static const int kdr[] = {1, 1, 1, 0, -1, -1, -1, 0}, kdc[] = {1, 0, -1, -1, -1, 0, 1, 1};
 
 int countPawnAttacks(const Board &board, Position pos, const Player player) {
+    if (isPositionValid(pos)) {
+        ENGINE_ASSERT(isPositionValid(pos));
+    }
+
     int cnt = 0;
-    // pawn
     int pdr = (player == PLAYER_WHITE ? -1 : 1);
     for (int pdc : {-1, 1}) {
         Position p = {pos.row - pdr, pos.col + pdc};

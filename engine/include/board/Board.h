@@ -34,6 +34,8 @@ struct Position {
 
 bool samePosition(Position a, Position b);
 
+bool isPositionValid(Position p);
+
 Player opponent(Player player);
 
 std::string pngPosition(const Position pos);

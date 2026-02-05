@@ -184,13 +184,6 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         }
 
         // 輸出節點數
-        std::cout << "depth = " << d << '\n';
-        std::cout << "negamax nodes = " << negamaxNodes - lstNegamaxNodes << '\n';
-        std::cout << "quietscence nodes = " << quietscenceNodes - lstQuietscenceNodes<< '\n';
-        std::cout << "probeTT times = " << ttProbe - lstttProbe << '\n';
-        std::cout << "tt cut times = " << ttCut - lstttCut << '\n';
-        std::cout << "tt hit times = " << ttHit - lstttHit << '\n';
-
         lstNegamaxNodes = negamaxNodes;
         lstQuietscenceNodes = quietscenceNodes;
         lstttProbe = ttProbe;
