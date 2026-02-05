@@ -1,13 +1,23 @@
 #include "move/Make_Move.h"
 #include "board/Board.h"
 #include "pgn/Valid_Piece.h"
+#include "search/Zobrist.h"
+#include "search/Negamax.h"
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
+#include "debug.h"
+
+#include <assert.h>
 
 // 入堡走子
 void castleMove(Board &board, Move &move) {
     CastleMove c = getCastleMove(move);
     Player player = move.player;
+
+    // if (exactDebug) 
+    //     std::cout << '(' << c.kingFrom.row << ' ' << c.kingFrom.col << ')' << " -> " << '(' << c.kingTo.row << ' ' << c.kingTo.col << ')'
+    //     << " | " << '(' << c.rookFrom.row << ' ' << c.rookFrom.col << ')' << " -> " << '(' << c.rookTo.row << ' ' << c.rookTo.col << ')'
+    //     << " | " << c.kingPiece << ' ' << c.rookPiece << '\n';
 
     board.set(c.kingFrom,   EMPTY);
     board.set(c.kingTo,     c.kingPiece);
@@ -19,6 +29,11 @@ void castleMove(Board &board, Move &move) {
 
     board.updatePSTScore(-1 * evaluatePieceSquare(c.rookPiece, c.rookFrom), player);
     board.updatePSTScore(+1 * evaluatePieceSquare(c.rookPiece, c.rookTo), player);
+
+    board.zobristKey ^= zobPiece[c.kingPiece][zobBoardPosition(c.kingFrom)];
+    board.zobristKey ^= zobPiece[c.kingPiece][zobBoardPosition(c.kingTo)];
+    board.zobristKey ^= zobPiece[c.rookPiece][zobBoardPosition(c.rookFrom)];
+    board.zobristKey ^= zobPiece[c.rookPiece][zobBoardPosition(c.rookTo)];
 }
 
 // 還原入堡
@@ -30,12 +45,6 @@ void undoCastleMove(Board &board, Move &move) {
     board.set(c.kingTo,     EMPTY);
     board.set(c.rookFrom,   c.rookPiece);
     board.set(c.rookTo,     EMPTY);
-
-    board.updatePSTScore(+1 * evaluatePieceSquare(c.kingPiece, c.kingFrom), player);
-    board.updatePSTScore(-1 * evaluatePieceSquare(c.kingPiece, c.kingTo), player);
-
-    board.updatePSTScore(+1 * evaluatePieceSquare(c.rookPiece, c.rookFrom), player);
-    board.updatePSTScore(-1 * evaluatePieceSquare(c.rookPiece, c.rookTo), player);
 }
 
 int updateCastleRights(int castleRights, const Move &move) {
@@ -69,18 +78,23 @@ int updateCastleRights(int castleRights, const Move &move) {
 void makeMove(Board &board, Move &move) {
     printMove(move);
 
-    // 控制 castleRights
     move.prevCastleRights = board.castleRights;
+    move.prevMateralPoints = board.materialScore;
+    move.prevPST = board.PSTScore;
+    move.prevZobrist = board.zobristKey;
+
+    // 控制 castleRights
+    
+    board.zobristKey ^= zobCastle[board.castleRights];
     board.castleRights = updateCastleRights(board.castleRights, move);
+    board.zobristKey ^= zobCastle[board.castleRights];
 
     //std::cout << board.castleRights << '\n';
 
     // 執行 move
-    Piece captured = board.at(move.to);
+    Piece captured = move.capturePiece;
     Piece moved = move.movePiece;
     Player player = move.player;
-
-    move.capturePiece = captured;
 
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
         castleMove(board, move);
@@ -88,7 +102,7 @@ void makeMove(Board &board, Move &move) {
 
     else if (move.isPromotion) {
         board.set(move.from, EMPTY);
-        board.set(move.to, moved);
+        board.set(move.to, move.promotionPiece);
     }
 
     else {
@@ -120,11 +134,43 @@ void makeMove(Board &board, Move &move) {
         board.updatePSTScore(-1 * evaluatePieceSquare(moved, move.from), player);
         board.updatePSTScore(+1 * evaluatePieceSquare(moved, move.to), player);
     }
+
+    if (captured != EMPTY) {
+        board.updatePSTScore(-1 * evaluatePieceSquare(captured, move.to), opponent(player));
+    }
+
+    // 更新Zobrist
+    int fromZob = zobBoardPosition(move.from);
+    int toZob = zobBoardPosition(move.to);
+
+    board.zobristKey ^= zobPlayer;
+
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+        // castleMove 完成
+    }
+
+    else if (move.isPromotion) {
+        board.zobristKey ^= zobPiece[moved][fromZob];
+        board.zobristKey ^= zobPiece[move.promotionPiece][toZob];
+    }
+
+    else {
+        board.zobristKey ^= zobPiece[moved][fromZob];
+        board.zobristKey ^= zobPiece[moved][toZob];
+    }
+
+    if (captured != EMPTY) {
+        board.zobristKey ^= zobPiece[captured][toZob];
+    }
+
+    assert(computeZobrist(board, player) == board.zobristKey);
 }
 
 void undoMove(Board &board, Move &move) {
-    // 控制 castleRights
     board.castleRights = move.prevCastleRights;
+    board.materialScore = move.prevMateralPoints;
+    board.PSTScore = move.prevPST;
+    board.zobristKey = move.prevZobrist;
 
     // 執行 undo
     Piece captured = move.capturePiece;
@@ -145,30 +191,5 @@ void undoMove(Board &board, Move &move) {
     else {
         board.set(move.from, moved);
         board.set(move.to, captured);
-    }
-
-    // 更新 material score
-    if (captured != EMPTY) {
-        board.updateMaterialScore(-1 * pieceValue(captured), player);
-    }
-
-    if (move.isPromotion) {
-        board.updateMaterialScore(-1 * (pieceValue(move.promotionPiece) - pieceValue(moved)), player);
-    }
-
-    // 更新 PST
-
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
-        // undoCastleMove 完成
-    }
-
-    else if (move.isPromotion) {
-        board.updatePSTScore(+1 * evaluatePieceSquare(moved, move.from), player);
-        board.updatePSTScore(-1 * evaluatePieceSquare(move.promotionPiece, move.to), player);
-    }
-
-    else {
-        board.updatePSTScore(+1 * evaluatePieceSquare(moved, move.from), player);
-        board.updatePSTScore(-1 * evaluatePieceSquare(moved, move.to), player);
     }
 }

@@ -5,6 +5,7 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <cstdint>
 
 /*
 初始化
@@ -59,7 +60,8 @@ struct Board {
     Piece board[8][8];
     int materialScore;
     int PSTScore;
-
+    Player player;
+    
     /*
     0001 黑方 queen side
     0010 黑方 king  side
@@ -67,4 +69,5 @@ struct Board {
     1000 白方 king  side
     */
     int castleRights;
+    uint64_t zobristKey;
 };

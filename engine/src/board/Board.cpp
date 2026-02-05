@@ -3,6 +3,7 @@
 
 #include "board/Board.h"
 #include "board/Piece.h"
+#include "search/Zobrist.h"
 #include "pgn/Pgn_Transformer.h"
 #include "debug.h"
 
@@ -11,7 +12,7 @@ Board::Board() {
 }
 
 void Board::init() {
-    whiteToMove = true; //白方先手
+    player = PLAYER_WHITE;
 
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
@@ -42,6 +43,9 @@ void Board::init() {
     materialScore = 0;
     PSTScore = 0;
     castleRights = 0b1111;
+
+    initZobrist();
+    zobristKey = computeZobrist(*this, PLAYER_BLACK);
 }
 
 void Board::debugPrint() const {

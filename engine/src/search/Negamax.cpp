@@ -6,6 +6,7 @@
 #include "move/Generate_Move.h"
 #include "board/Check.h"
 #include "search/Negamax.h"
+#include "search/TT.h"
 #include "evaluate/Evaluate.h"
 #include "move/Move_Order.h"
 #include "debug.h"
@@ -16,6 +17,9 @@
 #include <chrono>
 
 static const int INF = 1e9;
+
+bool startDebug = 0;
+bool exactDebug = 0;
 
 int quietscenceNodes = 0;
 int quietscence(Board &board, int alpha, int beta, Player player) {
@@ -56,6 +60,19 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
 int negamaxNodes = 0;
 int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     negamaxNodes++;
+
+    //TT表 記憶化搜索
+    int TTValue; Move TTMove;
+    if (probeTT(board.zobristKey, depth, alpha, beta, TTValue, TTMove)) {
+        return TTValue;
+    }
+
+    int oriAlpha = alpha;
+    int bestScore = -INF;
+    Move bestMove;
+    bool hasMove = 0;
+
+    // depth = 0 進入QS
     if (depth == 0) {
         return quietscence(board, alpha, beta, player);
     }
@@ -72,27 +89,57 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
         else return 0;
     }
 
-    sortMove(board, moves, nMoves);
+    for (int i = 0; i < nMoves; i++) {
+        if (moves[i] == TTMove) {
+            std::swap(moves[0], moves[i]);
+            break;
+        }
+    }
+
+    sortMove(board, moves + 1, nMoves - 1);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
 
-        // debug::set(1);
-        // debug::log("negamax move: ");
-        // printMove(move);
-        // board.debugPrint();
-        // debug::set(0);
+        if (startDebug) {
+            // debug::set(1);
+            // debug::log("depth: ", depth," move: ");
+            // printMove(move);
+            // //board.debugPrint();
+            // debug::set(0);
+        }
         // std::this_thread::sleep_for(std::chrono::seconds(1));
 
         makeMove(board, move);
         int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
         undoMove(board, move);
 
-        if (score >= beta) return beta;
+        //if (startDebug) {std::cout << score << ' ' << alpha << ' ' << beta << '\n';}
+
+        if (score >= beta) {
+            // cutoff 存 LOWER
+            storeTT(board.zobristKey, depth, beta, LOWER, move);
+
+            return beta;
+        }
         if (score > alpha) alpha = score;
+        if (score > bestScore) {
+            bestScore = score;
+            bestMove = move;
+            hasMove = 1;
+        }
     }
 
-    return alpha;
+    TTFlag flag;
+    if (bestScore <= oriAlpha) flag = UPPER;
+    else if (bestScore >= beta) flag = LOWER;
+    else flag = EXACT;
+
+    if (hasMove) {
+        storeTT(board.zobristKey, depth, bestScore, flag, bestMove);
+    }
+
+    return bestScore;
 }
 
 int lstNegamaxNodes = 0;
@@ -113,10 +160,14 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         for (int i = 0; i < nMoves; i++) {
             Move move = moves[i];
 
-            // if (d == 1) {
+            // if (d == 6) {
             //     debug::set(1);
             //     debug::log("negamaxRoot move: ");
             //     printMove(move);
+            //     if (move.from == Position{3, 4} && move.to == Position{5, 3}) {
+            //         board.debugPrint();
+            //         startDebug = 1;
+            //     }
             //     debug::set(0);
             // }
 

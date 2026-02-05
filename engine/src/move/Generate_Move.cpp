@@ -8,6 +8,7 @@
 #include "board/Check.h"
 #include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"
+#include "search/Negamax.h"
 #include "debug.h"
 
 #include <vector>
@@ -177,6 +178,12 @@ int generateAllMoves(
         Move moveCastle;
         moveCastle.castle = len;
         moveCastle.player = player;
+        moveCastle.capturePiece = EMPTY;
+
+        CastleMove m = getCastleMove(moveCastle);
+        moveCastle.from = m.kingFrom;
+        moveCastle.to = m.kingTo;
+
         buffer[cnt++] = moveCastle;
     }
 

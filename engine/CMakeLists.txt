@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 # 告訴 CMake include 目錄在哪
 include_directories(include)
 
+add_definitions(-D_GLIBCXX_DEBUG)
+
 # 目標檔案
 set(SOURCE_FILES
     src/board/Piece.cpp
@@ -34,6 +36,7 @@ set(SOURCE_FILES
 
     src/search/Negamax.cpp
     src/search/TT.cpp
+    src/search/Zobrist.cpp
 
     src/debug.cpp
     src/main.cpp

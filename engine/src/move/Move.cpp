@@ -10,6 +10,8 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <assert.h>
+
 // 檢查兵走子
 bool isPawnMoveLegal(const Board &board, const Move &move) {
     int moveForWard = move.from.row - move.to.row;
@@ -294,6 +296,8 @@ bool isKingMoveLegal(const Board &board, const Move &move) {
 // 檢查入堡
 bool isCastleLegal(const Board &board, const Move &move) {
     Player player = move.player;
+    assert(player == PLAYER_WHITE || player == PLAYER_BLACK);
+
     if (player == PLAYER_WHITE) {
         if (move.castle == SHORT_CASTLE) {
             if (

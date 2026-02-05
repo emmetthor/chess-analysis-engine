@@ -20,9 +20,12 @@ struct Move {
 
     Castle castle = NOT;
 
-    bool isEnPassant;
+    bool isEnPassant = false;
 
     int prevCastleRights;
+    int prevMateralPoints;
+    int prevPST;
+    uint64_t prevZobrist;
 
     bool operator==(const Move &other) const {
         return
