@@ -101,6 +101,10 @@ bool isPositionValid(Position p) {
     return p.row >= 0 && p.row < 8 && p.col >= 0 && p.col < 8;
 }
 
+bool isPlayerValid(Player player) {
+    return player == PLAYER_WHITE || player == PLAYER_BLACK;
+}
+
 Player opponent(Player player) {
     return player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE;
 }
