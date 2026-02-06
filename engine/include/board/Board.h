@@ -32,34 +32,20 @@ struct Position {
     }
 };
 
-bool samePosition(Position a, Position b);
-
-bool isPositionValid(Position p);
+bool isInBoard(Position pos);
 bool isPlayerValid(Player player);
 
 Player opponent(Player player);
-
-std::string pngPosition(const Position pos);
 
 struct Board {
     Board();
 
     void init();
-    void debugPrint() const;
 
     Piece at(Position pos) const;
     void set(Position pos, Piece p);
     void change(std::vector<std::vector<Piece>> p);
-
-    bool isInBoard(Position pos) const;
-    bool whiteToMove;
-
-    void updateMaterialScore(int d, Player player);
-    void updatePSTScore(int d, Player player);
-
-    int getMaterialScore() const;
-    int getPSTScore() const;
-
+    
     Piece board[8][8];
     int materialScore;
     int PSTScore;

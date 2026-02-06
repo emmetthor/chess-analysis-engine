@@ -30,7 +30,7 @@ void Board::init() {
         board[1][c] = BPAWN;
     }
 
-    //黑方棋子
+    //白方棋子
     board[7][0] = board[7][7] = WROOK;
     board[7][1] = board[7][6] = WKNIGHT;
     board[7][2] = board[7][5] = WBISHOP;
@@ -42,69 +42,34 @@ void Board::init() {
 
     materialScore = 0;
     PSTScore = 0;
+    // 所有 castle 都可能
     castleRights = 0b1111;
 
     initZobrist();
     zobristKey = computeZobrist(*this, PLAYER_BLACK);
 }
 
-void Board::debugPrint() const {
-    for (int r = 0; r < 9; r++) {
-        for (int c = -1; c < 8; c++) {
-            if (r == 8 && c == -1) {
-                //debug::log("_ ");
-                continue;
-            }
-
-            if (c == -1) {
-                //debug::log(rowToPgn[r], ' ');
-                continue;
-            }
-
-            if (r == 8) {
-                //debug::log(colToPgn[c], ' ');
-                continue;
-            }
-
-            //debug::log(pieceToChar(board[r][c]), " \n"[c == 8 - 1]);
-        }
-    }
-
-    //debug::log('\n');
-}
-
+// 回傳位於 pos 的 Piece
 Piece Board::at(Position pos) const {
     return board[pos.row][pos.col];
 }
 
+// 設定 Piece 在 pos 裡
 void Board::set(Position pos, Piece p) {
     board[pos.row][pos.col] = p;
 }
 
-bool Board::isInBoard(Position pos) const {
+// 檢查 pos 是否合法
+bool isInBoard(Position pos) {
     return 0 <= pos.row && pos.row < 8 && 0 <= pos.col && pos.col < 8;
 }
 
-std::string pngPosition(const Position pos) {
-    std::string result = "";
-    result += colToPgn[pos.col];
-    result += rowToPgn[pos.row];
-    return result;
-}
-
-bool samePosition(Position a, Position b) {
-    if (a.row == b.row && a.col == b.col) return true;
-    else return false;
-}
-
-bool isPositionValid(Position p) {
-    return p.row >= 0 && p.row < 8 && p.col >= 0 && p.col < 8;
-}
-
+// 檢查 player 是否合法
 bool isPlayerValid(Player player) {
     return player == PLAYER_WHITE || player == PLAYER_BLACK;
 }
 
+// 輸出 player 的對手顏色
 Player opponent(Player player) {
     return player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE;
 }
@@ -116,15 +81,3 @@ void Board::change(std::vector<std::vector<Piece>> p) {
         }
     }
 }
-
-void Board::updateMaterialScore(int d, Player player) {
-    materialScore += d * (player == PLAYER_WHITE ? 1 : -1);
-}
-
-void Board::updatePSTScore(int d, Player player) {
-    PSTScore += d * (player == PLAYER_WHITE ? 1 : -1);
-}
-
-int Board::getMaterialScore() const { return materialScore; }
-
-int Board::getPSTScore() const { return PSTScore; }
