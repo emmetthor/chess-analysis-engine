@@ -27,11 +27,8 @@ int countPawnAttacks(
     Position pos,
     const Player player
 ) {
-    if (isPositionValid(pos)) {
-        LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
-        ENGINE_ASSERT(isPositionValid(pos));
-    }
-
+    // 假設 pos 與 player 合法
+    // 枚舉所有兵的合法走法 O(2)
     int cnt = 0;
     int pdr = (player == PLAYER_WHITE ? -1 : 1);
     for (int pdc : {-1, 1}) {
@@ -49,6 +46,8 @@ int countKingAttacks(
     Position pos,
     const Player player
 ) {
+    // 假設 pos 與 player 合法
+    // 枚舉所有王的合法走法 O(8)
     int cnt = 0;
     Piece king = playerPieceCharToPiece(player, 'K');
     
@@ -66,6 +65,8 @@ int countKnightAttacks(
     Position pos,
     const Player player
 ) {
+    // 假設 pos 與 player 合法
+    // 枚舉所有騎士的合法走法 O(8)
     int cnt = 0;
     Piece knight = playerPieceCharToPiece(player, 'N');
     
@@ -78,7 +79,13 @@ int countKnightAttacks(
     return cnt;
 }
 
-int countDiagnalAttacks(const Board &board, Position pos, const Player player) {
+int countDiagnalAttacks(
+    const Board &board,
+    Position pos,
+    const Player player
+) {
+    // 假設 pos 與 player 合法
+    // 枚舉所有斜向的合法走法 O(16)
     int cnt = 0;
     Piece bishop = playerPieceCharToPiece(player, 'B');
     Piece queen = playerPieceCharToPiece(player, 'Q');
@@ -103,7 +110,13 @@ int countDiagnalAttacks(const Board &board, Position pos, const Player player) {
     return cnt;
 }
 
-int countStraightAttacks(const Board &board, Position pos, const Player player) {
+int countStraightAttacks(
+    const Board &board,
+    Position pos,
+    const Player player
+) {
+    // 假設 pos 與 player 合法
+    // 枚舉所有直向的合法走法 O(16)
     int cnt = 0;
     Piece rook = playerPieceCharToPiece(player, 'R');
     Piece queen = playerPieceCharToPiece(player, 'Q');
@@ -134,8 +147,9 @@ int PawnAttackers(
     const Player player,
     Position *buffer
 ) {
+    // 假設 pos 與 player 合法，且 buffer 空間足夠
+    // 枚舉所有兵的合法走法 O(2)
     int cnt = 0;
-    // pawn
     int pdr = (player == PLAYER_WHITE ? -1 : 1);
     for (int pdc : {-1, 1}) {
         Position p = {pos.row - pdr, pos.col + pdc};
@@ -153,6 +167,8 @@ int KnightAttackers(
     const Player player,
     Position *buffer
 ) {
+    // 假設 pos 與 player 合法，且 buffer 空間足夠
+    // 枚舉所有騎士的合法走法 O(8)
     int cnt = 0;
     Piece knight = playerPieceCharToPiece(player, 'N');
     
@@ -171,6 +187,8 @@ int BishopAttackers(
     const Player player,
     Position *buffer
 ) {
+    // 假設 pos 與 player 合法，且 buffer 空間足夠
+    // 枚舉所有主教的合法走法 O(16)
     int cnt = 0;
     Piece bishop = playerPieceCharToPiece(player, 'B');
 
@@ -200,6 +218,8 @@ int RookAttackers(
     const Player player,
     Position *buffer
 ) {
+    // 假設 pos 與 player 合法，且 buffer 空間足夠
+    // 枚舉所有城堡的合法走法 O(16)
     int cnt = 0;
     Piece rook = playerPieceCharToPiece(player, 'R');
 
@@ -229,6 +249,8 @@ int QueenAttackers(
     const Player player,
     Position *buffer
 ) {
+    // 假設 pos 與 player 合法，且 buffer 空間足夠
+    // 枚舉所有皇后的合法走法 O(32)
     int cnt = 0;
     Piece queen = playerPieceCharToPiece(player, 'Q');
 
@@ -269,23 +291,51 @@ int QueenAttackers(
     return cnt;
 }
 
-int countSquareAttacks(const Board &board, Position pos, const Player player) {
+// 計算此格子中有多少攻擊
+int countSquareAttacks(
+    const Board &board,
+    Position pos,
+    const Player player
+) {
+    // 檢查位置合法性
+    if (!isPositionValid(pos)) {
+        LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
+        ENGINE_ASSERT(isPositionValid(pos));
+    }
+    // 檢查玩家合法性
+    if (!isPlayerValid(player)) {
+        LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
+        ENGINE_ASSERT(isPlayerValid(player));
+    }
+
     int cnt = 0;
     cnt += countPawnAttacks(board, pos, player);
     cnt += countKnightAttacks(board, pos, player);
     cnt += countDiagnalAttacks(board, pos, player);
     cnt += countStraightAttacks(board, pos, player);
     cnt += countKingAttacks(board, pos, player);
-
     return cnt;
 }
 
+// 給 buffer 填充此格子的攻擊者位置
+// WARN 未寫 King 的 get attackers
 int getAttackers(
     const Board &board,
     Position pos,
     Player player,
     Position* buffer
 ) {
+    // 檢查位置合法性
+    if (!isPositionValid(pos)) {
+        LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
+        ENGINE_ASSERT(isPositionValid(pos));
+    }
+    // 檢查玩家合法性
+    if (!isPlayerValid(player)) {
+        LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
+        ENGINE_ASSERT(isPlayerValid(player));
+    }
+
     int cnt = 0;
     cnt += PawnAttackers(board, pos, player, buffer + cnt);
     cnt += KnightAttackers(board, pos, player, buffer + cnt);
@@ -294,15 +344,23 @@ int getAttackers(
     return cnt;
 }
 
-bool isSquareAttacked(const Board &board, Position pos, const Player player) {
+// 判斷此格子是否被攻擊
+bool isSquareAttacked(
+    const Board &board,
+    Position pos, const
+    Player player
+) {
+    // 檢查位置合法性
+    if (!isPositionValid(pos)) {
+        LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
+        ENGINE_ASSERT(isPositionValid(pos));
+    }
+    // 檢查玩家合法性
+    if (!isPlayerValid(player)) {
+        LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
+        ENGINE_ASSERT(isPlayerValid(player));
+    }
+
     return (countSquareAttacks(board, pos, player) > 0 ? 1 : 0);
 }
 
-int attackers(
-    const Board &board,
-    Position pos,
-    const Player player,
-    Position *buffer
-) {
-
-}
