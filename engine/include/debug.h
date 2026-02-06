@@ -161,5 +161,5 @@ inline bool Debug::fileEnabled = false;
 #define LOG_DEBUG(...)
 #define LOG_INFO(...)
 #define LOG_WARN(...)
-#define LOG_ERROR_(...)
+#define LOG_ERROR(...)
 #endif
