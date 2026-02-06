@@ -12,4 +12,9 @@ Code Review 可以確保程式碼品質，也就是**可讀性、可維護姓、
 | - | - | - |
 | 一般變數與函式 | `lowerPascalCase` | 單字組合時第一單字小寫，其餘單字開頭大寫 |
 | `class`、`enum`、`structure` | `PascalCase` | 單字組合開頭大寫 |
-| 常數 (`const`) | `UPPER_SNAKE_CASE` | 單字組合所有字皆大寫，用 `_` 分隔。
+| 常數 (`const`) | `UPPER_SNAKE_CASE` | 單字組合所有字皆大寫，用 `_` 分隔。 |
+
+### 註解要求
+
+- 若程式碼長到無法一眼看出功能，則須寫上註解。
+- 若發現錯誤或警告，以 `ERROR` `WARN` 表示，如此之後即可 CTRL-F 搜尋。
