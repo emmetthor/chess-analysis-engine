@@ -35,6 +35,7 @@ struct Position {
 bool samePosition(Position a, Position b);
 
 bool isPositionValid(Position p);
+bool isPlayerValid(Player player);
 
 Player opponent(Player player);
 
