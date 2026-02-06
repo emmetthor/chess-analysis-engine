@@ -92,6 +92,8 @@ int main() {
         Move best = res.bestMove;
         int score = res.bestScore;
 
+        LOG_INFO(DebugCategory::BOARD, "best move: ", best);
+
         makeMove(board, best);
 
         std::cin >> s;
