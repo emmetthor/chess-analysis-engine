@@ -10,13 +10,25 @@
 #include <iostream>
 #include <vector>
 
-static const int ndr[] = {1, 2, 2, 1, -1, -2, -2, -1}, ndc[] = {2, 1, -1, -2, -2, -1, 1, 2};
-static const int rqdr[] = {1, -1, 0 , 0}, rqdc[] = {0, 0, 1, -1};
-static const int bqdr[] = {1, 1, -1 , -1}, bqdc[] = {1, -1, 1, -1};
-static const int kdr[] = {1, 1, 1, 0, -1, -1, -1, 0}, kdc[] = {1, 0, -1, -1, -1, 0, 1, 1};
+// 棋子移動的固定 map
+// jump piece
+static const int KNIGHT_DR[]        = {  1,  2,  2,  1, -1, -2, -2, -1};
+static const int KNIGHT_DC[]        = {  2,  1, -1, -2, -2, -1,  1,  2};
+static const int KING_DR[]          = {  1,  1,  1,  0, -1, -1, -1,  0};
+static const int KING_DC[]          = {  1,  0, -1, -1, -1,  0,  1,  1};
+// slide piece
+static const int ROOK_QUEEN_DR[]    = {  1, -1,  0,  0};
+static const int ROOK_QUEEN_DC[]    = {  0,  0,  1, -1};
+static const int BISHOP_QUEEN_DR[]  = {  1,  1, -1, -1};
+static const int BISHOP_QUEEN_DC[]  = {  1, -1,  1, -1};
 
-int countPawnAttacks(const Board &board, Position pos, const Player player) {
+int countPawnAttacks(
+    const Board &board,
+    Position pos,
+    const Player player
+) {
     if (isPositionValid(pos)) {
+        LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
         ENGINE_ASSERT(isPositionValid(pos));
     }
 
@@ -32,12 +44,33 @@ int countPawnAttacks(const Board &board, Position pos, const Player player) {
     return cnt;
 }
 
-int countKnightAttacks(const Board &board, Position pos, const Player player) {
+int countKingAttacks(
+    const Board &board,
+    Position pos,
+    const Player player
+) {
+    int cnt = 0;
+    Piece king = playerPieceCharToPiece(player, 'K');
+    
+    for (int i = 0; i < 8; i++) {
+        Position p = {pos.row + KING_DR[i], pos.col + KING_DC[i]};
+
+        if (board.isInBoard(p) && board.at(p) == king) cnt++;
+    }
+
+    return cnt;
+}
+
+int countKnightAttacks(
+    const Board &board,
+    Position pos,
+    const Player player
+) {
     int cnt = 0;
     Piece knight = playerPieceCharToPiece(player, 'N');
     
     for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + ndr[i], pos.col + ndc[i]};
+        Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
 
         if (board.isInBoard(p) && board.at(p) == knight) cnt++;
     }
@@ -51,7 +84,7 @@ int countDiagnalAttacks(const Board &board, Position pos, const Player player) {
     Piece queen = playerPieceCharToPiece(player, 'Q');
 
     for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + bqdr[i], pos.col + bqdc[i]};
+        Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
 
         while (true) {
             if (!board.isInBoard(p)) break;
@@ -62,8 +95,8 @@ int countDiagnalAttacks(const Board &board, Position pos, const Player player) {
 
             if (pp != EMPTY) break; 
 
-            p.row += bqdr[i];
-            p.col += bqdc[i];
+            p.row += BISHOP_QUEEN_DR[i];
+            p.col += BISHOP_QUEEN_DC[i];
         }
     }
 
@@ -76,7 +109,7 @@ int countStraightAttacks(const Board &board, Position pos, const Player player) 
     Piece queen = playerPieceCharToPiece(player, 'Q');
 
     for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + rqdr[i], pos.col + rqdc[i]};
+        Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
 
         while (true) {
             if (!board.isInBoard(p)) break;
@@ -87,8 +120,8 @@ int countStraightAttacks(const Board &board, Position pos, const Player player) 
 
             if (pp != EMPTY) break; 
 
-            p.row += rqdr[i];
-            p.col += rqdc[i];
+            p.row += ROOK_QUEEN_DR[i];
+            p.col += ROOK_QUEEN_DC[i];
         }
     }
 
@@ -124,7 +157,7 @@ int KnightAttackers(
     Piece knight = playerPieceCharToPiece(player, 'N');
     
     for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + ndr[i], pos.col + ndc[i]};
+        Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
 
         if (board.isInBoard(p) && board.at(p) == knight) buffer[cnt++] = p;
     }
@@ -142,7 +175,7 @@ int BishopAttackers(
     Piece bishop = playerPieceCharToPiece(player, 'B');
 
     for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + bqdr[i], pos.col + bqdc[i]};
+        Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
 
         while (true) {
             if (!board.isInBoard(p)) break;
@@ -153,8 +186,8 @@ int BishopAttackers(
 
             if (pp != EMPTY) break; 
 
-            p.row += bqdr[i];
-            p.col += bqdc[i];
+            p.row += BISHOP_QUEEN_DR[i];
+            p.col += BISHOP_QUEEN_DC[i];
         }
     }
 
@@ -171,7 +204,7 @@ int RookAttackers(
     Piece rook = playerPieceCharToPiece(player, 'R');
 
     for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + rqdr[i], pos.col + rqdc[i]};
+        Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
 
         while (true) {
             if (!board.isInBoard(p)) break;
@@ -182,8 +215,8 @@ int RookAttackers(
 
             if (pp != EMPTY) break; 
 
-            p.row += rqdr[i];
-            p.col += rqdc[i];
+            p.row += ROOK_QUEEN_DR[i];
+            p.col += ROOK_QUEEN_DC[i];
         }
     }
 
@@ -200,7 +233,7 @@ int QueenAttackers(
     Piece queen = playerPieceCharToPiece(player, 'Q');
 
     for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + bqdr[i], pos.col + bqdc[i]};
+        Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
 
         while (true) {
             if (!board.isInBoard(p)) break;
@@ -211,13 +244,13 @@ int QueenAttackers(
 
             if (pp != EMPTY) break; 
 
-            p.row += bqdr[i];
-            p.col += bqdc[i];
+            p.row += BISHOP_QUEEN_DR[i];
+            p.col += BISHOP_QUEEN_DC[i];
         }
     }
 
     for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + rqdr[i], pos.col + rqdc[i]};
+        Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
 
         while (true) {
             if (!board.isInBoard(p)) break;
@@ -228,8 +261,8 @@ int QueenAttackers(
 
             if (pp != EMPTY) break; 
 
-            p.row += rqdr[i];
-            p.col += rqdc[i];
+            p.row += ROOK_QUEEN_DR[i];
+            p.col += ROOK_QUEEN_DC[i];
         }
     }
 
@@ -242,6 +275,7 @@ int countSquareAttacks(const Board &board, Position pos, const Player player) {
     cnt += countKnightAttacks(board, pos, player);
     cnt += countDiagnalAttacks(board, pos, player);
     cnt += countStraightAttacks(board, pos, player);
+    cnt += countKingAttacks(board, pos, player);
 
     return cnt;
 }
