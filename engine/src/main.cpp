@@ -75,31 +75,28 @@ int main() {
 
     // std::cout << "max duration: " << maxDuration << "ms\n";
 
-    Position p = {-1, 123};
-    LOG_ERROR(DebugCategory::BOARD, p);
-
-    // int cnt = 1;
-    // PGN pgn;
-    // Board board;
-    // Player player = PLAYER_WHITE;
-    // // debug::set(1);
-    // // attackMap.debugPrint();
+    int cnt = 1;
+    PGN pgn;
+    Board board;
+    Player player = PLAYER_WHITE;
+    // debug::set(1);
+    // attackMap.debugPrint();
     
-    // std::string s = "";
-    // while (s != "end") {
-    //     auto start = std::chrono::high_resolution_clock::now();
-    //     SearchResult res = negamaxRoot(board, 6, player);
-    //     auto searchEnd = std::chrono::high_resolution_clock::now();
-    //     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
+    std::string s = "";
+    while (s != "end") {
+        auto start = std::chrono::high_resolution_clock::now();
+        SearchResult res = negamaxRoot(board, 6, player);
+        auto searchEnd = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
 
-    //     Move best = res.bestMove;
-    //     int score = res.bestScore;
+        Move best = res.bestMove;
+        int score = res.bestScore;
 
-    //     makeMove(board, best);
+        makeMove(board, best);
 
-    //     std::cin >> s;
-    //     Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
-    // }
+        std::cin >> s;
+        Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
+    }
 
-    // return 0;
+    return 0;
 }
