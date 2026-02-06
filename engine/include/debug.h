@@ -72,6 +72,7 @@ inline std::ostream& operator<<(std::ostream& os, const Board& p) {
 }
 #endif
 
+// WARN 目前尚未支援移動棋子的輸出
 #if DEBUG_ENABLED
 inline std::ostream& operator<<(std::ostream& os, const Move& move) {
     return os << positionToPgn(move.from) << positionToPgn(move.to);
