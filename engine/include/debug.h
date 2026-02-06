@@ -7,7 +7,9 @@
 #include <cstdint>
 #include <utility>  // std::forward
 
-#include "board/Board.h" // 你的 Position / Move / Board 定義
+#include "board/Board.h"
+#include "move/Move.h"
+#include "pgn/Pgn_Transformer.h"
 
 // ======================
 // DEBUG 開關
@@ -41,9 +43,39 @@ enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH, ATK };
 inline std::ostream& operator<<(std::ostream& os, const Position& p) {
     return os << "(" << p.row << "," << p.col << ")";
 }
+#endif
 
-// 如果你有 Move / Board，也一樣加
-// inline std::ostream& operator<<(std::ostream& os, const Move& m) { ... }
+#if DEBUG_ENABLED
+inline std::ostream& operator<<(std::ostream& os, const Board& p) {
+    for (int r = 0; r < 9; r++) {
+        for (int c = -1; c < 8; c++) {
+            if (r == 8 && c == -1) {
+                os << "  ";
+                continue;
+            }
+
+            if (c == -1) {
+                os << rowToPgn[r] << ' ';
+                continue;
+            }
+
+            if (r == 8) {
+                os << colToPgn[c] << ' ';
+                continue;
+            }
+
+            os << pieceToChar(p.board[r][c]) << " \n"[c == 8 - 1];
+        }
+    }
+
+    return os;
+}
+#endif
+
+#if DEBUG_ENABLED
+inline std::ostream& operator<<(std::ostream& os, const Move& move) {
+    return os << positionToPgn(move.from) << positionToPgn(move.to);
+}
 #endif
 
 // ======================
