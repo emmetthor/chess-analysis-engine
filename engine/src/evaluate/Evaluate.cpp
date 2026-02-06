@@ -23,8 +23,8 @@ int boardEvaluate(const Board &board, bool quick = false) {
     // std::cout << "here x" << cnt++ << " times.\n";
     int res = 0;
 
-    res += board.getMaterialScore();
-    res += board.getPSTScore();
+    res += board.materialScore;
+    res += board.PSTScore;
 
     if (quick) return res;
 

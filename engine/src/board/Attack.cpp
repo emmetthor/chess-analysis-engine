@@ -33,7 +33,7 @@ int countPawnAttacks(
     int pdr = (player == PLAYER_WHITE ? -1 : 1);
     for (int pdc : {-1, 1}) {
         Position p = {pos.row - pdr, pos.col + pdc};
-        if (!board.isInBoard(p)) continue;
+        if (!isInBoard(p)) continue;
 
         if (board.at(p) == playerPieceCharToPiece(player, 'P')) cnt++;
     }
@@ -54,7 +54,7 @@ int countKingAttacks(
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + KING_DR[i], pos.col + KING_DC[i]};
 
-        if (board.isInBoard(p) && board.at(p) == king) cnt++;
+        if (isInBoard(p) && board.at(p) == king) cnt++;
     }
 
     return cnt;
@@ -73,7 +73,7 @@ int countKnightAttacks(
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
 
-        if (board.isInBoard(p) && board.at(p) == knight) cnt++;
+        if (isInBoard(p) && board.at(p) == knight) cnt++;
     }
 
     return cnt;
@@ -94,7 +94,7 @@ int countDiagnalAttacks(
         Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
 
             int pp = board.at(p);
 
@@ -125,7 +125,7 @@ int countStraightAttacks(
         Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
 
             int pp = board.at(p);
 
@@ -153,7 +153,7 @@ int PawnAttackers(
     int pdr = (player == PLAYER_WHITE ? -1 : 1);
     for (int pdc : {-1, 1}) {
         Position p = {pos.row - pdr, pos.col + pdc};
-        if (!board.isInBoard(p)) continue;
+        if (!isInBoard(p)) continue;
 
         if (board.at(p) == playerPieceCharToPiece(player, 'P')) buffer[cnt++] = p;
     }
@@ -175,7 +175,7 @@ int KnightAttackers(
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
 
-        if (board.isInBoard(p) && board.at(p) == knight) buffer[cnt++] = p;
+        if (isInBoard(p) && board.at(p) == knight) buffer[cnt++] = p;
     }
 
     return cnt;
@@ -196,7 +196,7 @@ int BishopAttackers(
         Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
 
             int pp = board.at(p);
 
@@ -227,7 +227,7 @@ int RookAttackers(
         Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
 
             int pp = board.at(p);
 
@@ -258,7 +258,7 @@ int QueenAttackers(
         Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
 
             int pp = board.at(p);
 
@@ -275,7 +275,7 @@ int QueenAttackers(
         Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
 
             int pp = board.at(p);
 
@@ -298,9 +298,9 @@ int countSquareAttacks(
     const Player player
 ) {
     // 檢查位置合法性
-    if (!isPositionValid(pos)) {
+    if (!isInBoard(pos)) {
         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
-        ENGINE_ASSERT(isPositionValid(pos));
+        ENGINE_ASSERT(isInBoard(pos));
     }
     // 檢查玩家合法性
     if (!isPlayerValid(player)) {
@@ -326,9 +326,9 @@ int getAttackers(
     Position* buffer
 ) {
     // 檢查位置合法性
-    if (!isPositionValid(pos)) {
+    if (!isInBoard(pos)) {
         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
-        ENGINE_ASSERT(isPositionValid(pos));
+        ENGINE_ASSERT(isInBoard(pos));
     }
     // 檢查玩家合法性
     if (!isPlayerValid(player)) {
@@ -351,9 +351,9 @@ bool isSquareAttacked(
     Player player
 ) {
     // 檢查位置合法性
-    if (!isPositionValid(pos)) {
+    if (!isInBoard(pos)) {
         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
-        ENGINE_ASSERT(isPositionValid(pos));
+        ENGINE_ASSERT(isInBoard(pos));
     }
     // 檢查玩家合法性
     if (!isPlayerValid(player)) {

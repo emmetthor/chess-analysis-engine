@@ -300,9 +300,6 @@ void PGN::SantoMove() {
             moves.emplace_back(pawnMove);
         }
 
-        board.debugPrint();
-        //debug::log('\n');
-
         player = (player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE);
     }
 }

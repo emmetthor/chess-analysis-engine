@@ -20,7 +20,7 @@ int evaluateKingSafety(const Board &board, Player player) {
     for (auto dr : {-1, -1, -1, 0, 1, 1, 1, 0}) {
         for (auto dc : {-1, 0, 1, 1, -1, 0, 1, -1}) {
             Position p = {kingPos.row + dr, kingPos.col + dc};
-            if (!board.isInBoard(p)) continue;
+            if (!isInBoard(p)) continue;
 
             danger += countSquareAttacks(board, p, opponent(player));
         }

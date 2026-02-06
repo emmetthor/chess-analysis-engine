@@ -126,7 +126,7 @@ int generateAllMoves(
             move.to = {r + dr, c};
             move.capturePiece = board.at(move.to);
 
-            if (board.isInBoard(move.to) && move.capturePiece == EMPTY) {
+            if (isInBoard(move.to) && move.capturePiece == EMPTY) {
                 if (move.to.row == promoteRank) {
                     for (auto promo : {knight, bishop, rook, queen}) {
                         move.isPromotion = 1;
@@ -144,7 +144,7 @@ int generateAllMoves(
                 move.to = {r + 2 * dr, c};
                 Position mid = {r + dr, c};
 
-                if (board.isInBoard(move.to) && board.at(move.to) == EMPTY && board.at(mid) == EMPTY) {
+                if (isInBoard(move.to) && board.at(move.to) == EMPTY && board.at(mid) == EMPTY) {
                     move.capturePiece = EMPTY; // 兩步不能 capture
                     buffer[cnt++] = move;
                 }
@@ -153,7 +153,7 @@ int generateAllMoves(
             // capture
             for (int dc : {-1, 1}) {
                 Position to = {r + dr, c + dc};
-                if (!board.isInBoard(to)) continue;
+                if (!isInBoard(to)) continue;
                 if (board.at(to) == EMPTY) continue;
                 if (isSameColor(board.at(to), pawn)) continue;
 
@@ -228,7 +228,7 @@ int generateCaptureMoves(
             // capture
             for (int dc : {-1, 1}) {
                 Position to = {r + dr, c + dc};
-                if (!board.isInBoard(to)) continue;
+                if (!isInBoard(to)) continue;
 
                 Piece atPiece = board.at(to);
                 if (atPiece == EMPTY) continue;

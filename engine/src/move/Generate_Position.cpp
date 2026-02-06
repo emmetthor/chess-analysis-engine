@@ -23,7 +23,7 @@ int generatePosFromPosWithJumpPiece(
         Position p = {pos.row + dr[i], pos.col + dc[i]};
         Piece atPiece = board.at(p);
 
-        if (!board.isInBoard(p)) continue;
+        if (!isInBoard(p)) continue;
         if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) continue;
 
         buffer[cnt++] = p;
@@ -46,7 +46,7 @@ int generatePosFromPosWithSlidePiece(
         Position p = {pos.row + dr[i], pos.col + dc[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
             Piece atPiece = board.at(p);
             if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) break;
 
@@ -76,7 +76,7 @@ int generateCaptureFromPosWithJumpPiece(
         Position p = {pos.row + dr[i], pos.col + dc[i]};
         Piece atPiece = board.at(p);
 
-        if (!board.isInBoard(p)) continue;
+        if (!isInBoard(p)) continue;
         if (atPiece == EMPTY) continue;
         if (isSameColor(atPiece, movePiece)) continue;
 
@@ -102,7 +102,7 @@ int generateCaptureFromPosWithSlidePiece(
         Position p = {pos.row + dr[i], pos.col + dc[i]};
 
         while (true) {
-            if (!board.isInBoard(p)) break;
+            if (!isInBoard(p)) break;
             Piece atPiece = board.at(p);
 
             if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) break;

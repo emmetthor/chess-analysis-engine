@@ -409,20 +409,7 @@ CastleMove getCastleMove(Move &move) {
 }
 
 void printMove(const Move &move) {
-    if (move.castle == SHORT_CASTLE) {
-        std::cerr << "move: O-O\n";
-    }
-    else if (move.castle == LONG_CASTLE) {
-        std::cerr << "move: O-O-O\n";
-    }
-    else {
-        std::cerr
-            << "move: "
-            << pieceToChar(move.movePiece)
-            << pngPosition(move.from)
-            << pngPosition(move.to)
-            << '\n';
-    }
+    return;
 }
 
 // 通用檢查走子
@@ -438,12 +425,12 @@ bool isMoveLegal(const Board &board, const Move &move) {
     }
 
     // 檢查是否超出棋盤
-    if (!board.isInBoard(move.from)) {
+    if (!isInBoard(move.from)) {
         //debug::log("isMoveLegal: from postition: (", move.from.row, ", ", move.from.col, ") is out of board\n");
         return false;
     }
 
-    if (!board.isInBoard(move.to)) {
+    if (!isInBoard(move.to)) {
         //debug::log("isMoveLegal: to postition: (", move.to.row, ", ", move.to.col, ") is out of board\n");
         return false;
     }

@@ -14,6 +14,7 @@
 void castleMove(Board &board, Move &move) {
     CastleMove c = getCastleMove(move);
     Player player = move.player;
+    int playerScoreControl = (player == PLAYER_WHITE ? 1 : -1);
 
     // if (exactDebug) 
     //     std::cout << '(' << c.kingFrom.row << ' ' << c.kingFrom.col << ')' << " -> " << '(' << c.kingTo.row << ' ' << c.kingTo.col << ')'
@@ -25,11 +26,11 @@ void castleMove(Board &board, Move &move) {
     board.set(c.rookFrom,   EMPTY);
     board.set(c.rookTo,     c.rookPiece);
 
-    board.updatePSTScore(-1 * evaluatePieceSquare(c.kingPiece, c.kingFrom), player);
-    board.updatePSTScore(+1 * evaluatePieceSquare(c.kingPiece, c.kingTo), player);
+    board.materialScore -= playerScoreControl * evaluatePieceSquare(c.kingPiece, c.kingFrom);
+    board.materialScore += playerScoreControl * evaluatePieceSquare(c.kingPiece, c.kingTo);
 
-    board.updatePSTScore(-1 * evaluatePieceSquare(c.rookPiece, c.rookFrom), player);
-    board.updatePSTScore(+1 * evaluatePieceSquare(c.rookPiece, c.rookTo), player);
+    board.materialScore -= playerScoreControl * evaluatePieceSquare(c.rookPiece, c.rookFrom);
+    board.materialScore += playerScoreControl * evaluatePieceSquare(c.rookPiece, c.rookTo);
 
     board.zobristKey ^= zobPiece[c.kingPiece][zobBoardPosition(c.kingFrom)];
     board.zobristKey ^= zobPiece[c.kingPiece][zobBoardPosition(c.kingTo)];
@@ -104,6 +105,7 @@ void makeMove(Board &board, Move &move) {
     Piece captured = move.capturePiece;
     Piece moved = move.movePiece;
     Player player = move.player;
+    int playerScoreControl = (player == PLAYER_WHITE ? 1 : -1);
 
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
         castleMove(board, move);
@@ -121,11 +123,11 @@ void makeMove(Board &board, Move &move) {
 
     // 更新 material score
     if (captured != EMPTY) {
-        board.updateMaterialScore(pieceValue(captured), player);
+        board.materialScore += playerScoreControl * pieceValue(captured);
     }
 
     if (move.isPromotion) {
-        board.updateMaterialScore(pieceValue(move.promotionPiece) - pieceValue(moved), player);
+        board.materialScore += playerScoreControl * (pieceValue(move.promotionPiece) - pieceValue(moved));
     }
 
     // 更新 PST
@@ -135,17 +137,17 @@ void makeMove(Board &board, Move &move) {
     }
 
     else if (move.isPromotion) {
-        board.updatePSTScore(-1 * evaluatePieceSquare(moved, move.from), player);
-        board.updatePSTScore(+1 * evaluatePieceSquare(move.promotionPiece, move.to), player);
+        board.PSTScore -= playerScoreControl * evaluatePieceSquare(moved, move.from);
+        board.PSTScore += playerScoreControl * evaluatePieceSquare(move.promotionPiece, move.to);
     }
 
     else {
-        board.updatePSTScore(-1 * evaluatePieceSquare(moved, move.from), player);
-        board.updatePSTScore(+1 * evaluatePieceSquare(moved, move.to), player);
+        board.PSTScore -= playerScoreControl * evaluatePieceSquare(moved, move.from);
+        board.PSTScore += playerScoreControl * evaluatePieceSquare(moved, move.to);
     }
 
     if (captured != EMPTY) {
-        board.updatePSTScore(-1 * evaluatePieceSquare(captured, move.to), opponent(player));
+        board.PSTScore -= -playerScoreControl * evaluatePieceSquare(captured, move.to);
     }
 
     // 更新Zobrist
