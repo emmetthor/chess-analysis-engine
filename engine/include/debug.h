@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <utility>  // std::forward
 
+#include "board/Piece.h"
 #include "board/Board.h"
 #include "move/Move.h"
 #include "pgn/Pgn_Transformer.h"
@@ -72,10 +73,12 @@ inline std::ostream& operator<<(std::ostream& os, const Board& p) {
 }
 #endif
 
-// WARN 目前尚未支援移動棋子的輸出
 #if DEBUG_ENABLED
 inline std::ostream& operator<<(std::ostream& os, const Move& move) {
-    return os << positionToPgn(move.from) << positionToPgn(move.to);
+    if (move.castle == SHORT_CASTLE) os << "O-O";
+    else if (move.castle == LONG_CASTLE) os << "O-O-O";
+    else os << pieceToChar(move.movePiece) << positionToPgn(move.from) << positionToPgn(move.to);
+    return os;
 }
 #endif
 
