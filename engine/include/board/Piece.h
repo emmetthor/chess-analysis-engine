@@ -8,7 +8,6 @@ enum Piece {
 };
 
 char pieceToChar(Piece p);
-
 int isWhite (Piece p);
 int isBlack (Piece p);
 int isSameColor (Piece p1, Piece p2);

@@ -4,7 +4,9 @@
 #include "move/Generate_Move.h"
 #include "pgn/Pgn_Transformer.h"
 
-bool isInCheck(
+// 確認 player 方王有沒有被將軍
+// WARN 每次都要 O(64) 掃一遍太慢，建議用陣列紀錄棋子位置
+bool isInCheck (
     const Board &board,
     const Player player
 ) {
