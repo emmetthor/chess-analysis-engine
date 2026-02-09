@@ -7,28 +7,6 @@
 const char colToPgn[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 const char rowToPgn[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 
-std::map<char, Piece> pieceCharToPieceType[2] = {
-    {
-        {'K', WKING},
-        {'Q', WQUEEN},
-        {'N', WKNIGHT},
-        {'B', WBISHOP},
-        {'R', WROOK},
-        {'P', WPAWN}
-    },
-    {
-        {'K', BKING},
-        {'Q', BQUEEN},
-        {'N', BKNIGHT},
-        {'B', BBISHOP},
-        {'R', BROOK},
-        {'P', BPAWN}
-    }
-};
-
-Piece playerPieceCharToPiece(Player player, char piece) {
-    return pieceCharToPieceType[player][piece];
-}
 
 bool isStringAPosition(std::string s) {
     if (s.size() != 2) {

@@ -7,9 +7,6 @@
 
 extern const char colToPgn[8];
 extern const char rowToPgn[8];
-extern std::map<char, Piece> pieceCharToPieceType[2];
-
-Piece playerPieceCharToPiece(Player player, char piece);
 
 bool isStringAPosition(std::string s);
 
