@@ -16,11 +16,6 @@ void castleMove(Board &board, Move &move) {
     Player player = move.player;
     int playerScoreControl = (player == Player::WHITE ? 1 : -1);
 
-    // if (exactDebug) 
-    //     std::cout << '(' << c.kingFrom.row << ' ' << c.kingFrom.col << ')' << " -> " << '(' << c.kingTo.row << ' ' << c.kingTo.col << ')'
-    //     << " | " << '(' << c.rookFrom.row << ' ' << c.rookFrom.col << ')' << " -> " << '(' << c.rookTo.row << ' ' << c.rookTo.col << ')'
-    //     << " | " << c.kingPiece << ' ' << c.rookPiece << '\n';
-
     board.set(c.kingFrom,   Piece::EMPTY);
     board.set(c.kingTo,     c.kingPiece);
     board.set(c.rookFrom,   Piece::EMPTY);

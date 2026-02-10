@@ -19,8 +19,10 @@ int generatePieceMoves(
     Piece movePiece,
     Move *buffer
 ) {
-    int cnt = 0;
+    ENGINE_ASSERT(isPlayerValid(player));
+    ENGINE_ASSERT(movePiece != Piece::EMPTY);
 
+    int cnt = 0;
     Move move;
     move.player = player;
     move.movePiece = movePiece;
@@ -56,8 +58,10 @@ int generatePieceCapture(
     Piece movePiece,
     Move *buffer
 ) {
-int cnt = 0;
+    ENGINE_ASSERT(isPlayerValid(player));
+    ENGINE_ASSERT(movePiece != Piece::EMPTY);
 
+    int cnt = 0;
     Move move;
     move.player = player;
     move.movePiece = movePiece;
@@ -92,6 +96,8 @@ int generateAllMoves(
     const Player player,
     Move *buffer
 ) {
+    ENGINE_ASSERT(isPlayerValid(player));
+
     int cnt = 0;
     Piece 
         pawn    = makePiece(player, 'P'),
@@ -195,6 +201,8 @@ int generateCaptureMoves(
     const Player player,
     Move *buffer
 ) {
+    ENGINE_ASSERT(isPlayerValid(player));
+    
     int cnt = 0;
     Piece 
         pawn =      makePiece(player, 'P'),
@@ -260,6 +268,8 @@ int filterLegalMoves(
     int nAllMoves,
     Move *buffer
 ) {
+    ENGINE_ASSERT(isPlayerValid(player));
+
     int cnt = 0;
     Board copyBoard = board;
 
@@ -288,6 +298,8 @@ int generateAllLegalMoves(
     const Player player,
     Move *buffer
 ) {
+    ENGINE_ASSERT(isPlayerValid(player));
+
     Move allMoves[2000];
     int nAll = generateAllMoves(board, player, allMoves);
 
@@ -301,6 +313,8 @@ int generateLegalCaptureMoves(
     const Player player,
     Move *buffer
 ) {
+    ENGINE_ASSERT(isPlayerValid(player));
+    
     Move captureMoves[2000];
     int ncaptureMoves = generateCaptureMoves(board, player, captureMoves);
 
