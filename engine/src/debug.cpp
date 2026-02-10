@@ -1,5 +1,11 @@
-#if DEBUG_ENABLED
-static const char* levelToStr(DebugLevel lvl) {
+#include "debug.h"
+
+// 靜態成員要定義一次
+DebugLevel Debug::level = DebugLevel::DEBUG;
+uint32_t Debug::categoryMask = 0xFFFFFFFF;
+
+// 非 template 函式定義
+const char* Debug::levelToStr(DebugLevel lvl) {
     switch (lvl) {
         case DebugLevel::INFO:  return "INFO";
         case DebugLevel::DEBUG: return "DEBUG";
@@ -9,7 +15,7 @@ static const char* levelToStr(DebugLevel lvl) {
     return "UNK";
 }
 
-static const char* categoryToStr(DebugCategory cat) {
+const char* Debug::categoryToStr(DebugCategory cat) {
     switch (cat) {
         case DebugCategory::TT:     return "TT";
         case DebugCategory::MOVE:   return "MOVE";
@@ -21,35 +27,3 @@ static const char* categoryToStr(DebugCategory cat) {
     }
     return "UNK";
 }
-
-static std::ofstream g_logFile;
-static void logHeader(std::ostringstream& oss,
-                        DebugCategory cat,
-                        DebugLevel lvl,
-                        const char* file,
-                        int line,
-                        const char* func) {
-    oss << "[" << std::left << std::setw(7) << categoryToStr(cat)
-        << "][" << std::setw(5) << levelToStr(lvl)
-        << "][" << std::setw(20) << (std::string(file) + ":" + std::to_string(line))
-        << "][" << std::setw(12) << func << "] ";
-}
-
-template <typename... Args>
-static void Debug::logStream(DebugCategory cat,
-                        DebugLevel lvl,
-                        const char* file,
-                        int line,
-                        const char* func,
-                        Args&&... args) {
-    if (lvl < level) return;
-    if (!(categoryMask & (1u << int(cat)))) return;
-
-    std::ostringstream oss;
-    logHeader(oss, cat, lvl, file, line, func);
-    (oss << ... << std::forward<Args>(args)); // fold expression
-
-    if (consoleEnabled) std::cout << oss.str() << '\n';
-    if (fileEnabled && g_logFile.is_open()) g_logFile << oss.str() << '\n';
-}
-#endif

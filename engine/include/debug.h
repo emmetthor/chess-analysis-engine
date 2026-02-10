@@ -204,6 +204,11 @@
 #include <cassert>
 #include <cstdint>
 #include <ostream>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <iomanip>
+#include <utility>
 
 #ifdef ENGINE_DEBUG
     #define ENGINE_ASSERT(x) assert(x)
@@ -227,7 +232,23 @@ public:
         int line,
         const char* func,
         Args&&... args
-    );
+    ) {
+        if (lvl < level) return;
+        if (!(categoryMask & (1u << int(cat)))) return;
+
+        std::ostringstream oss;
+        oss << "[" << std::left << std::setw(7) << categoryToStr(cat)
+            << "][" << std::setw(5) << levelToStr(lvl)
+            << "][" << std::setw(20) << (std::string(file) + ":" + std::to_string(line))
+            << "][" << std::setw(12) << func << "] ";
+        (oss << ... << std::forward<Args>(args)); // fold expression
+
+        std::cout << oss.str() << '\n';
+    }
+
+private:
+    static const char* levelToStr(DebugLevel lvl);
+    static const char* categoryToStr(DebugCategory cat);
 };
 
 #if ENGINE_DEBUG
