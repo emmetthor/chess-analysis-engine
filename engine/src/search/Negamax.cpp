@@ -19,16 +19,19 @@
 #include <chrono>
 
 static const int INF = 1e9;
+static const int MAX_QS_DEPTH = 6;
 
 bool startDebug = 0;
 bool exactDebug = 0;
 
 int quietscenceNodes = 0;
-int quietscence(Board &board, int alpha, int beta, Player player) {
+int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
     quietscenceNodes++;
     int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, 1);
     if (standerdPoint >= beta) return beta;
     if (standerdPoint > alpha) alpha = standerdPoint;
+
+    if (depth > MAX_QS_DEPTH) return standerdPoint;
 
     Move captureMoves[256];
     int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
@@ -47,7 +50,7 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
 
         int score = 0;
         if (!isInCheck(board, player)) {
-            score = -quietscence(board, -beta, -alpha, opponent(player));
+            score = -quietscence(board, -beta, -alpha, opponent(player), depth + 1);
         }
         undoMove(board, move);
 
@@ -97,7 +100,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
 
     // depth = 0 進入QS
     if (depth == 0) {
-        return quietscence(board, alpha, beta, player);
+        return quietscence(board, alpha, beta, player, 0);
     }
 
     // 生成所有走法
