@@ -217,7 +217,7 @@
 #endif
 
 enum class DebugLevel { INFO, DEBUG, WARN, ERROR };
-enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH, ATK };
+enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH, ATK, GENERATE};
 
 class Debug {
 public:

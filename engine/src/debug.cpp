@@ -17,13 +17,14 @@ const char* Debug::levelToStr(DebugLevel lvl) {
 
 const char* Debug::categoryToStr(DebugCategory cat) {
     switch (cat) {
-        case DebugCategory::TT:     return "TT";
-        case DebugCategory::MOVE:   return "MOVE";
-        case DebugCategory::QS:     return "QS";
-        case DebugCategory::EVAL:   return "EVAL";
-        case DebugCategory::BOARD:  return "BOARD";
-        case DebugCategory::SEARCH: return "SEARCH";
-        case DebugCategory::ATK:    return "ATK";
+        case DebugCategory::TT:         return "TT";
+        case DebugCategory::MOVE:       return "MOVE";
+        case DebugCategory::QS:         return "QS";
+        case DebugCategory::EVAL:       return "EVAL";
+        case DebugCategory::BOARD:      return "BOARD";
+        case DebugCategory::SEARCH:     return "SEARCH";
+        case DebugCategory::ATK:        return "ATK";
+        case DebugCategory::GENERATE:   return "GENERATE";
     }
     return "UNK";
 }
