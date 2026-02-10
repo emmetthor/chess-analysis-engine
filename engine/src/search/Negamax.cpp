@@ -100,10 +100,6 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
         return quietscence(board, alpha, beta, player);
     }
 
-    int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, 0);
-    if (standerdPoint >= beta) return beta;
-    if (standerdPoint > alpha) alpha = standerdPoint;
-
     // 生成所有走法
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, player, moves);
@@ -143,9 +139,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     else if (bestScore >= beta) flag = LOWER;
     else flag = EXACT;
 
-    if (hasMove) {
-        storeTT(board.zobristKey, depth, bestScore, flag, bestMove);
-    }
+    storeTT(board.zobristKey, depth, bestScore, flag, (hasMove ? bestMove : inValidMove));
 
     return bestScore;
 }
@@ -186,6 +180,13 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         }
 
         // 輸出節點數
+        if (d == depth) {
+            LOG_INFO(DebugCategory::SEARCH, "negamaxNodes = ", negamaxNodes);
+            LOG_INFO(DebugCategory::SEARCH, "qquietscenceNodes ", quietscenceNodes);
+            LOG_INFO(DebugCategory::SEARCH, "ttProbe = ", ttProbe);
+            LOG_INFO(DebugCategory::SEARCH, "ttCut = ", ttCut);
+            LOG_INFO(DebugCategory::SEARCH, "ttHit = ", ttHit);
+        }
         lstNegamaxNodes = negamaxNodes;
         lstQuietscenceNodes = quietscenceNodes;
         lstttProbe = ttProbe;
