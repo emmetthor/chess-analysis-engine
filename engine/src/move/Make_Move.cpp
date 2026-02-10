@@ -14,7 +14,7 @@
 void castleMove(Board &board, Move &move) {
     CastleMove c = getCastleMove(move);
     Player player = move.player;
-    int playerScoreControl = (player == PLAYER_WHITE ? 1 : -1);
+    int playerScoreControl = (player == Player::WHITE ? 1 : -1);
 
     // if (exactDebug) 
     //     std::cout << '(' << c.kingFrom.row << ' ' << c.kingFrom.col << ')' << " -> " << '(' << c.kingTo.row << ' ' << c.kingTo.col << ')'
@@ -55,7 +55,7 @@ int updateCastleRights(int castleRights, const Move &move) {
 
     // 動 king → 清掉該方所有 castle bit
     if (move.movePiece == makePiece(player, 'K')) {
-        if (player == PLAYER_WHITE) {
+        if (player == Player::WHITE) {
             castleRights &= ~0b1100; // 清 bit2 bit3 → 白方 king + queen side
         } else {
             castleRights &= ~0b0011; // 清 bit0 bit1 → 黑方 king + queen side
@@ -64,7 +64,7 @@ int updateCastleRights(int castleRights, const Move &move) {
 
     // 動 rook → 清掉對應側
     else if (move.movePiece == makePiece(player, 'R')) {
-        if (player == PLAYER_WHITE) {
+        if (player == Player::WHITE) {
             if (fromCol == 0) castleRights &= ~0b0100; // WQ
             else if (fromCol == 7) castleRights &= ~0b1000; // WK
         } else {
@@ -105,7 +105,7 @@ void makeMove(Board &board, Move &move) {
     Piece captured = move.capturePiece;
     Piece moved = move.movePiece;
     Player player = move.player;
-    int playerScoreControl = (player == PLAYER_WHITE ? 1 : -1);
+    int playerScoreControl = (player == Player::WHITE ? 1 : -1);
 
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
         castleMove(board, move);

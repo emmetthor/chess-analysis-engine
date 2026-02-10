@@ -108,9 +108,9 @@ int generateAllMoves(
     cnt += generatePieceMoves(board, player, king, buffer + cnt);
 
     // pawn
-    int dr = (player == PLAYER_WHITE ? -1 : 1);
-    int startRank = (player == PLAYER_WHITE ? 6 : 1);
-    int promoteRank = (player == PLAYER_WHITE ? 0 : 7);
+    int dr = (player == Player::WHITE ? -1 : 1);
+    int startRank = (player == Player::WHITE ? 6 : 1);
+    int promoteRank = (player == Player::WHITE ? 0 : 7);
 
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
@@ -211,9 +211,9 @@ int generateCaptureMoves(
     cnt += generatePieceCapture(board, player, king, buffer + cnt);
 
     // pawn
-    int dr = (player == PLAYER_WHITE ? -1 : 1);
-    int startRank = (player == PLAYER_WHITE ? 6 : 1);
-    int promoteRank = (player == PLAYER_WHITE ? 0 : 7);
+    int dr = (player == Player::WHITE ? -1 : 1);
+    int startRank = (player == Player::WHITE ? 6 : 1);
+    int promoteRank = (player == Player::WHITE ? 0 : 7);
 
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {

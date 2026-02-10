@@ -19,14 +19,14 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
     int moveForWard = move.from.row - move.to.row;
     int moveSideward = abs(move.from.col - move.to.col);
 
-    if (move.player == PLAYER_WHITE) {
+    if (move.player == Player::WHITE) {
         if (moveForWard < 0) {
             //debug::log("isPawnMoveLegal: Pawn can't move backward\n");
             return false;
         }
     }
 
-    if (move.player == PLAYER_BLACK) {
+    if (move.player == Player::BLACK) {
         if (moveForWard > 0) {
             //debug::log("isPawnMoveLegal: Pawn can't move backward\n");
             return false;
@@ -298,9 +298,9 @@ bool isKingMoveLegal(const Board &board, const Move &move) {
 // 檢查入堡
 bool isCastleLegal(const Board &board, const Move &move) {
     Player player = move.player;
-    assert(player == PLAYER_WHITE || player == PLAYER_BLACK);
+    ENGINE_ASSERT(isPlayerValid(player));
 
-    if (player == PLAYER_WHITE) {
+    if (player == Player::WHITE) {
         if (move.castle == SHORT_CASTLE) {
             if (
                 board.at({7, 4}) == Piece::WKING &&
@@ -368,8 +368,8 @@ bool isPromoteLegal(const Board &board, const Move &move) {
 
     if (move.promotionPiece == Piece::EMPTY) return false;
 
-    if (move.player == PLAYER_WHITE && move.to.row == 0) return true;
-    if (move.player == PLAYER_BLACK && move.to.row == 7) return true;
+    if (move.player == Player::WHITE && move.to.row == 0) return true;
+    if (move.player == Player::BLACK && move.to.row == 7) return true;
 
     return false;
 }
@@ -395,12 +395,13 @@ const Position castleMoveMap[2][3][4] {
 
 CastleMove getCastleMove(Move &move) {
     Player player = move.player;
+    int playerIndex = playerToIndex(move.player);
     CastleMove res;
 
-    res.kingFrom    = castleMoveMap[player][move.castle][0];
-    res.kingTo      = castleMoveMap[player][move.castle][1];
-    res.rookFrom    = castleMoveMap[player][move.castle][2];
-    res.rookTo      = castleMoveMap[player][move.castle][3];
+    res.kingFrom    = castleMoveMap[playerIndex][move.castle][0];
+    res.kingTo      = castleMoveMap[playerIndex][move.castle][1];
+    res.rookFrom    = castleMoveMap[playerIndex][move.castle][2];
+    res.rookTo      = castleMoveMap[playerIndex][move.castle][3];
 
     res.kingPiece = makePiece(player, 'K');
     res.rookPiece = makePiece(player, 'R');

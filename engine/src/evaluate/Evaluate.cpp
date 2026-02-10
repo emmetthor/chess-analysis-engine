@@ -28,15 +28,15 @@ int boardEvaluate(const Board &board, bool quick = false) {
     if (quick) return res;
 
     // slow
-    res += evaluateKingSafety(board, PLAYER_WHITE);
-    res -= evaluateKingSafety(board, PLAYER_BLACK);
+    res += evaluateKingSafety(board, Player::WHITE);
+    res -= evaluateKingSafety(board, Player::BLACK);
 
-    res += evaluateKnightMobility(board, PLAYER_WHITE);
-    res -= evaluateKnightMobility(board, PLAYER_BLACK);
-    res += evaluateBishopMobility(board, PLAYER_WHITE);
-    res -= evaluateBishopMobility(board, PLAYER_BLACK);
-    res += evaluateRookMobility(board, PLAYER_WHITE);
-    res -= evaluateRookMobility(board, PLAYER_BLACK);
+    res += evaluateKnightMobility(board, Player::WHITE);
+    res -= evaluateKnightMobility(board, Player::BLACK);
+    res += evaluateBishopMobility(board, Player::WHITE);
+    res -= evaluateBishopMobility(board, Player::BLACK);
+    res += evaluateRookMobility(board, Player::WHITE);
+    res -= evaluateRookMobility(board, Player::BLACK);
     
     return res;
 }

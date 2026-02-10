@@ -20,10 +20,10 @@ int evaluateCenterControl(const Board &board) {
     int whiteOccupy = 0, blackOccupy = 0;
 
     for (Position pos : center) {
-        whitePawnControl += countPawnAttacks(board, pos, PLAYER_WHITE);
-        whiteKnightControl += countKnightAttacks(board, pos, PLAYER_WHITE);
-        blackPawnControl += countPawnAttacks(board, pos, PLAYER_BLACK);
-        blackKnightControl += countKnightAttacks(board, pos, PLAYER_BLACK);
+        whitePawnControl += countPawnAttacks(board, pos, Player::WHITE);
+        whiteKnightControl += countKnightAttacks(board, pos, Player::WHITE);
+        blackPawnControl += countPawnAttacks(board, pos, Player::BLACK);
+        blackKnightControl += countKnightAttacks(board, pos, Player::BLACK);
 
         Piece p = board.at(pos);
 

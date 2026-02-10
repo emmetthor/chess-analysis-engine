@@ -78,7 +78,7 @@ int main() {
     int cnt = 1;
     PGN pgn;
     Board board;
-    Player player = PLAYER_WHITE;
+    Player player = Player::WHITE;
     // debug::set(1);
     // attackMap.debugPrint();
     

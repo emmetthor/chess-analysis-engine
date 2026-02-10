@@ -35,7 +35,7 @@ uint64_t computeZobrist(const Board &board, Player player) {
         }
     }
 
-    if (player == PLAYER_BLACK)
+    if (player == Player::BLACK)
         key ^= zobPlayer;
 
     key ^= zobCastle[board.castleRights];

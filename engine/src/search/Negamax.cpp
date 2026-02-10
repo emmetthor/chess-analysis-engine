@@ -25,7 +25,7 @@ bool exactDebug = 0;
 int quietscenceNodes = 0;
 int quietscence(Board &board, int alpha, int beta, Player player) {
     quietscenceNodes++;
-    int standerdPoint = (player == PLAYER_WHITE ? 1 : -1) * boardEvaluate(board, 1);
+    int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, 1);
     if (standerdPoint >= beta) return beta;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
@@ -100,7 +100,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
         return quietscence(board, alpha, beta, player);
     }
 
-    int standerdPoint = (player == PLAYER_WHITE ? 1 : -1) * boardEvaluate(board, 0);
+    int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, 0);
     if (standerdPoint >= beta) return beta;
     if (standerdPoint > alpha) alpha = standerdPoint;
 

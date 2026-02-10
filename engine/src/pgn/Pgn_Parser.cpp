@@ -166,7 +166,7 @@ Move parsePieceMove(SAN &strSan, Board &board) {
             Move move;
             move.from = {r, c};
             move.movePiece = strSan.piece;
-            move.player = isWhite(strSan.piece) ? PLAYER_WHITE : PLAYER_BLACK;
+            move.player = isWhite(strSan.piece) ? Player::WHITE : Player::BLACK;
             move.to = strSan.toPos;
             move.capturePiece = board.at(move.to);
 
@@ -232,7 +232,7 @@ Move parsePawnMove(SAN &san, Board &board) {
             Move move;
             move.from = {r, c};
             move.movePiece = san.piece;
-            move.player = isWhite(san.piece) ? PLAYER_WHITE : PLAYER_BLACK;
+            move.player = isWhite(san.piece) ? Player::WHITE : Player::BLACK;
             move.to = san.toPos;
             move.capturePiece = board.at(move.to);
             move.isPromotion = san.isPromote;
@@ -265,7 +265,7 @@ Move parseCastleSan(std::string san, Player player) {
 }
 
 void PGN::SantoMove() {
-    Player player = PLAYER_WHITE;
+    Player player = Player::WHITE;
     
     Board board;
 
@@ -300,7 +300,7 @@ void PGN::SantoMove() {
             moves.emplace_back(pawnMove);
         }
 
-        player = (player == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE);
+        player = (player == Player::WHITE ? Player::BLACK : Player::WHITE);
     }
 }
 

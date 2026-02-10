@@ -31,7 +31,7 @@ int countPawnAttacks(
     // 假設 pos 與 player 合法
     // 枚舉所有兵的合法走法 O(2)
     int cnt = 0;
-    int pdr = (player == PLAYER_WHITE ? -1 : 1);
+    int pdr = (player == Player::WHITE ? -1 : 1);
     for (int pdc : {-1, 1}) {
         Position p = {pos.row - pdr, pos.col + pdc};
         if (!isInBoard(p)) continue;
@@ -151,7 +151,7 @@ int PawnAttackers(
     // 假設 pos 與 player 合法，且 buffer 空間足夠
     // 枚舉所有兵的合法走法 O(2)
     int cnt = 0;
-    int pdr = (player == PLAYER_WHITE ? -1 : 1);
+    int pdr = (player == Player::WHITE ? -1 : 1);
     for (int pdc : {-1, 1}) {
         Position p = {pos.row - pdr, pos.col + pdc};
         if (!isInBoard(p)) continue;
