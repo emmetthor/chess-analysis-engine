@@ -8,6 +8,7 @@
 #include "search/Negamax.h"
 #include "search/TT.h"
 #include "evaluate/Evaluate.h"
+#include "evaluate/Material_Point.h"
 #include "move/Move_Order.h"
 #include "debug.h"
 #include "Structure_IO.h"
@@ -36,12 +37,11 @@ int quietscence(Board &board, int alpha, int beta, Player player) {
 
     for (int i = 0; i < nCaptureMoves; i++) {
         Move move = captureMoves[i];
-        
-        // debug::set(1);
-        // printMove(move);
-        // board.debugPrint();
-        // debug::set(0);
-        // std::this_thread::sleep_for(std::chrono::seconds(1));
+
+        // delta pruning 如果吃子太糟就直接跳過
+        Piece captured = move.capturePiece;
+        ENGINE_ASSERT(!(!move.isPromotion && captured == Piece::EMPTY));
+        if (!move.isPromotion && pieceValue(move.movePiece) > pieceValue(captured) + 200) continue;
 
         makeMove(board, move);
 
