@@ -13,12 +13,12 @@ int evaluateMoveScore(const Board &board, Move &move, Move &TTMove) {
 
     if (move.isPromotion) {
         // 最先看
-        score += 100000;
+        score += 10000;
         score += pieceValue(move.promotionPiece);
     }
 
     if (move.capturePiece != Piece::EMPTY) {
-        score += pieceValue(move.capturePiece) * 10 - pieceValue(move.movePiece);
+        score += pieceValue(move.capturePiece) * 100 - pieceValue(move.movePiece);
     }
     
     score += SEE(board, move.to, move.movePiece, move.player);
