@@ -155,7 +155,7 @@ int generatePiecePosFromPos(
 
     case Piece::WBISHOP:
     case Piece::BBISHOP:
-        return generatePosFromPosWithSlidePiece(board, pos, p, BISHOP_QUEEN_DR, ROOK_QUEEN_DC, buffer);
+        return generatePosFromPosWithSlidePiece(board, pos, p, BISHOP_QUEEN_DR, BISHOP_QUEEN_DC, buffer);
 
     case Piece::WROOK:
     case Piece::BROOK:
@@ -164,7 +164,7 @@ int generatePiecePosFromPos(
     case Piece::WQUEEN:
     case Piece::BQUEEN: {
         int n1 = generatePosFromPosWithSlidePiece(board, pos, p, ROOK_QUEEN_DR, ROOK_QUEEN_DC, buffer);
-        int n2 = generatePosFromPosWithSlidePiece(board, pos, p, BISHOP_QUEEN_DR, ROOK_QUEEN_DC, buffer + n1);
+        int n2 = generatePosFromPosWithSlidePiece(board, pos, p, BISHOP_QUEEN_DR, BISHOP_QUEEN_DC, buffer + n1);
         return n1 + n2;
     }
 
