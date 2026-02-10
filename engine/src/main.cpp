@@ -18,62 +18,41 @@
 int main() {
     Debug::level = DebugLevel::INFO;
     LOG_INFO(DebugCategory::BOARD, "Engine start");
-    // debug::set(1);
-    // debug::log("cinPgnToSan: please input your game with PGN:\n");
-    // debug::set(0);
+    LOG_INFO(DebugCategory::BOARD, "input PGN:...");
 
-    // PGN pgn;
-    // pgn.cinPgnToSan();
-    // pgn.SantoMove();
+//     PGN pgn;
+//     pgn.cinPgnToSan();
+//     pgn.SantoMove();
 
-    // debug::set(1);
-    // debug::log("Pgn transform finished.\n");
-    // debug::set(0);
+//     LOG_INFO(DebugCategory::BOARD, "PGN transform finished");
 
-    // Board board;
-    // std::vector<Move> moves = pgn.getMoves(), allLegalMoves;
+//     Board board;
+//     std::vector<Move> moves = pgn.getMoves(), allLegalMoves;
 
-    // int maxDuration = 0;
-    // int cnt = 1;
-    // for (auto &move : moves) {
-    //     Player player = move.player;
+//     int maxDuration = 0;
+//     int cnt = 1;
+//     for (auto &move : moves) {
+//         Player player = move.player;
 
-    //     debug::set(1);
-    //     board.debugPrint();
-    //     debug::set(0);
+//         LOG_INFO(DebugCategory::BOARD, "current board: \n", board);
 
-    //     auto start = std::chrono::high_resolution_clock::now();
-    //     SearchResult res = negamaxRoot(board, 4, player);
-    //     auto searchEnd = std::chrono::high_resolution_clock::now();
-    //     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
+//         auto start = std::chrono::high_resolution_clock::now();
+//         SearchResult res = negamaxRoot(board, 1, player);
+//         auto searchEnd = std::chrono::high_resolution_clock::now();
+//         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
         
-    //     if (duration > maxDuration) maxDuration = duration;
+//         if (duration > maxDuration) maxDuration = duration;
 
-    //     Move best = res.bestMove;
-    //     int score = res.bestScore;
+//         Move best = res.bestMove;
+//         int score = res.bestScore;
 
-    //     std::cerr
-    //         << cnt++
-    //         << ". "
-    //         << "current move: "
-    //         << pieceToChar(move.movePiece)
-    //         << pngPosition(move.from)
-    //         << pngPosition(move.to)
-    //         << '\n';
+//         LOG_INFO(DebugCategory::BOARD, "best move: ", best);
+//         LOG_INFO(DebugCategory::BOARD, "score: ", score);
+//         LOG_INFO(DebugCategory::BOARD, "spent: ", duration, "ms");
 
-    //     std::cerr
-    //         << "best move: "
-    //         << pieceToChar(best.movePiece)
-    //         << pngPosition(best.from)
-    //         << pngPosition(best.to)
-    //         << " score: "
-    //         << score
-    //         <<  '\n';
 
-    //     makeMove(board, move);
-    // }
-
-    // std::cout << "max duration: " << maxDuration << "ms\n";
+//         makeMove(board, move);
+//     }
 
     int cnt = 1;
     PGN pgn;
@@ -85,7 +64,7 @@ int main() {
     std::string s = "";
     while (s != "end") {
         auto start = std::chrono::high_resolution_clock::now();
-        SearchResult res = negamaxRoot(board, 2, player);
+        SearchResult res = negamaxRoot(board, 6, player);
         auto searchEnd = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
 
@@ -93,11 +72,17 @@ int main() {
         int score = res.bestScore;
 
         LOG_INFO(DebugCategory::BOARD, "best move: ", best);
+        LOG_INFO(DebugCategory::BOARD, "score: ", score);
+        LOG_INFO(DebugCategory::BOARD, "spent: ", duration, "ms");
 
         makeMove(board, best);
 
+        LOG_INFO(DebugCategory::BOARD, "current board: ", '\n', board);
+
         std::cin >> s;
         Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
+
+        LOG_INFO(DebugCategory::BOARD, "current board: ", '\n', board);
     }
 
     return 0;
