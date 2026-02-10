@@ -40,7 +40,7 @@ inline bool isPlayerValid(Player player) {
 }
 
 inline Player opponent(Player player) {
-    return (player == Player::WHITE ? Player::BLACK : Player::BLACK);
+    return (player == Player::WHITE ? Player::BLACK : Player::WHITE);
 }
 
 inline Piece makePiece(Player player, char pieceChar) {
