@@ -116,11 +116,16 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
 
     sortMove(board, moves, nMoves, TTMove);
 
+    int searchDepth = depth - 1;
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
 
+        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 && i >= 6 && searchDepth >= 1) {
+            searchDepth -= 1;
+        }
+
         makeMove(board, move);
-        int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
+        int score = -negamax(board, searchDepth, -beta, -alpha, opponent(player));
         undoMove(board, move);
 
         if (score >= beta) {
