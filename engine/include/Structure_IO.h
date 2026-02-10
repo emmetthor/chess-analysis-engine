@@ -11,6 +11,7 @@ inline std::ostream& operator<<(std::ostream& os, const Position& p) {
 }
 
 inline std::ostream& operator<<(std::ostream& os, const Board& p) {
+    os << '\n';
     for (int r = 0; r < 9; r++) {
         for (int c = -1; c < 8; c++) {
             if (r == 8 && c == -1) {
@@ -44,4 +45,8 @@ inline std::ostream& operator<<(std::ostream& os, const Move& move) {
 
 inline std::ostream& operator<<(std::ostream& os, const Player player) {
     return os << playerToIndex(player);
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Piece p) {
+    return os << pieceToChar(p);
 }
