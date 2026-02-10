@@ -9,6 +9,7 @@
 #include "board/Attack.h"
 #include "pgn/Pgn_Transformer.h"
 #include "search/Negamax.h"
+#include "Structure_IO.h"
 #include "debug.h"
 
 #include <vector>
