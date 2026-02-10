@@ -3,7 +3,7 @@
 #include "pgn/Pgn_Transformer.h"
 
 Position findKing(const Board &board, Player player) {
-    Piece king = playerPieceCharToPiece(player, 'K');
+    Piece king = makePiece(player, 'K');
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
             if (board.at({r, c}) == king) return {r, c};

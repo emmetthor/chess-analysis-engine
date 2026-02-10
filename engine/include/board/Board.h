@@ -1,5 +1,9 @@
 #pragma once
 
+enum Player {
+    PLAYER_WHITE, PLAYER_BLACK
+};
+
 #include "Piece.h"
 
 #include <string>
@@ -17,10 +21,6 @@
 是否白方先手
 */
 
-enum Player {
-    PLAYER_WHITE, PLAYER_BLACK
-};
-
 struct Position {
     int row = -1;
     int col = -1;
@@ -36,6 +36,10 @@ bool isInBoard(Position pos);
 bool isPlayerValid(Player player);
 
 Player opponent(Player player);
+
+inline Piece makePiece(Player player, char pieceChar) {
+    return MAKE_PIECE_MAP[static_cast<int>(player)][charToPieceIndex(pieceChar)];
+}
 
 struct Board {
     Board();

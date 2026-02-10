@@ -2,28 +2,28 @@
 
 int pieceValue(const Piece p) {
     switch (p) {
-    case WKING:
-    case BKING:
+    case Piece::WKING:
+    case Piece::BKING:
         break;
 
-    case WQUEEN:
-    case BQUEEN:
+    case Piece::WQUEEN:
+    case Piece::BQUEEN:
         return 900;
     
-    case WKNIGHT:
-    case BKNIGHT:
+    case Piece::WKNIGHT:
+    case Piece::BKNIGHT:
         return 320;
 
-    case WBISHOP:
-    case BBISHOP:
+    case Piece::WBISHOP:
+    case Piece::BBISHOP:
         return 330;
 
-    case WROOK:
-    case BROOK:
+    case Piece::WROOK:
+    case Piece::BROOK:
         return 500;
 
-    case WPAWN:
-    case BPAWN:
+    case Piece::WPAWN:
+    case Piece::BPAWN:
         return 100;
     }
 

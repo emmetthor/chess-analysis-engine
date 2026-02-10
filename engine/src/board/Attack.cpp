@@ -6,6 +6,7 @@
 #include "move/Generate_Position.h"
 #include "pgn/Pgn_Transformer.h"
 #include "debug.h"
+#include "Structure_IO.h"
 
 #include <iostream>
 #include <vector>
@@ -35,7 +36,7 @@ int countPawnAttacks(
         Position p = {pos.row - pdr, pos.col + pdc};
         if (!isInBoard(p)) continue;
 
-        if (board.at(p) == playerPieceCharToPiece(player, 'P')) cnt++;
+        if (board.at(p) == makePiece(player, 'P')) cnt++;
     }
 
     return cnt;
@@ -49,7 +50,7 @@ int countKingAttacks(
     // 假設 pos 與 player 合法
     // 枚舉所有王的合法走法 O(8)
     int cnt = 0;
-    Piece king = playerPieceCharToPiece(player, 'K');
+    Piece king = makePiece(player, 'K');
     
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + KING_DR[i], pos.col + KING_DC[i]};
@@ -68,7 +69,7 @@ int countKnightAttacks(
     // 假設 pos 與 player 合法
     // 枚舉所有騎士的合法走法 O(8)
     int cnt = 0;
-    Piece knight = playerPieceCharToPiece(player, 'N');
+    Piece knight = makePiece(player, 'N');
     
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
@@ -87,8 +88,8 @@ int countDiagnalAttacks(
     // 假設 pos 與 player 合法
     // 枚舉所有斜向的合法走法 O(16)
     int cnt = 0;
-    Piece bishop = playerPieceCharToPiece(player, 'B');
-    Piece queen = playerPieceCharToPiece(player, 'Q');
+    Piece bishop = makePiece(player, 'B');
+    Piece queen = makePiece(player, 'Q');
 
     for (int i = 0; i < 4; i++) {
         Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
@@ -96,11 +97,11 @@ int countDiagnalAttacks(
         while (true) {
             if (!isInBoard(p)) break;
 
-            int pp = board.at(p);
+            Piece pp = board.at(p);
 
             if (pp == bishop || pp == queen) cnt++;
 
-            if (pp != EMPTY) break; 
+            if (pp != Piece::EMPTY) break; 
 
             p.row += BISHOP_QUEEN_DR[i];
             p.col += BISHOP_QUEEN_DC[i];
@@ -118,8 +119,8 @@ int countStraightAttacks(
     // 假設 pos 與 player 合法
     // 枚舉所有直向的合法走法 O(16)
     int cnt = 0;
-    Piece rook = playerPieceCharToPiece(player, 'R');
-    Piece queen = playerPieceCharToPiece(player, 'Q');
+    Piece rook = makePiece(player, 'R');
+    Piece queen = makePiece(player, 'Q');
 
     for (int i = 0; i < 4; i++) {
         Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
@@ -127,11 +128,11 @@ int countStraightAttacks(
         while (true) {
             if (!isInBoard(p)) break;
 
-            int pp = board.at(p);
+            Piece pp = board.at(p);
 
             if (pp == rook || pp == queen) cnt++;
 
-            if (pp != EMPTY) break; 
+            if (pp != Piece::EMPTY) break; 
 
             p.row += ROOK_QUEEN_DR[i];
             p.col += ROOK_QUEEN_DC[i];
@@ -155,7 +156,7 @@ int PawnAttackers(
         Position p = {pos.row - pdr, pos.col + pdc};
         if (!isInBoard(p)) continue;
 
-        if (board.at(p) == playerPieceCharToPiece(player, 'P')) buffer[cnt++] = p;
+        if (board.at(p) == makePiece(player, 'P')) buffer[cnt++] = p;
     }
 
     return cnt;
@@ -170,7 +171,7 @@ int KnightAttackers(
     // 假設 pos 與 player 合法，且 buffer 空間足夠
     // 枚舉所有騎士的合法走法 O(8)
     int cnt = 0;
-    Piece knight = playerPieceCharToPiece(player, 'N');
+    Piece knight = makePiece(player, 'N');
     
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
@@ -190,7 +191,7 @@ int BishopAttackers(
     // 假設 pos 與 player 合法，且 buffer 空間足夠
     // 枚舉所有主教的合法走法 O(16)
     int cnt = 0;
-    Piece bishop = playerPieceCharToPiece(player, 'B');
+    Piece bishop = makePiece(player, 'B');
 
     for (int i = 0; i < 4; i++) {
         Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
@@ -198,11 +199,11 @@ int BishopAttackers(
         while (true) {
             if (!isInBoard(p)) break;
 
-            int pp = board.at(p);
+            Piece pp = board.at(p);
 
             if (pp == bishop) buffer[cnt++] = p;
 
-            if (pp != EMPTY) break; 
+            if (pp != Piece::EMPTY) break; 
 
             p.row += BISHOP_QUEEN_DR[i];
             p.col += BISHOP_QUEEN_DC[i];
@@ -221,7 +222,7 @@ int RookAttackers(
     // 假設 pos 與 player 合法，且 buffer 空間足夠
     // 枚舉所有城堡的合法走法 O(16)
     int cnt = 0;
-    Piece rook = playerPieceCharToPiece(player, 'R');
+    Piece rook = makePiece(player, 'R');
 
     for (int i = 0; i < 4; i++) {
         Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
@@ -229,11 +230,11 @@ int RookAttackers(
         while (true) {
             if (!isInBoard(p)) break;
 
-            int pp = board.at(p);
+            Piece pp = board.at(p);
 
             if (pp == rook) buffer[cnt++] = p;
 
-            if (pp != EMPTY) break; 
+            if (pp != Piece::EMPTY) break; 
 
             p.row += ROOK_QUEEN_DR[i];
             p.col += ROOK_QUEEN_DC[i];
@@ -252,7 +253,7 @@ int QueenAttackers(
     // 假設 pos 與 player 合法，且 buffer 空間足夠
     // 枚舉所有皇后的合法走法 O(32)
     int cnt = 0;
-    Piece queen = playerPieceCharToPiece(player, 'Q');
+    Piece queen = makePiece(player, 'Q');
 
     for (int i = 0; i < 4; i++) {
         Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
@@ -260,11 +261,11 @@ int QueenAttackers(
         while (true) {
             if (!isInBoard(p)) break;
 
-            int pp = board.at(p);
+            Piece pp = board.at(p);
 
             if (pp == queen) buffer[cnt++] = p;
 
-            if (pp != EMPTY) break; 
+            if (pp != Piece::EMPTY) break; 
 
             p.row += BISHOP_QUEEN_DR[i];
             p.col += BISHOP_QUEEN_DC[i];
@@ -277,11 +278,11 @@ int QueenAttackers(
         while (true) {
             if (!isInBoard(p)) break;
 
-            int pp = board.at(p);
+            Piece pp = board.at(p);
 
             if (pp == queen) buffer[cnt++] = p;
 
-            if (pp != EMPTY) break; 
+            if (pp != Piece::EMPTY) break; 
 
             p.row += ROOK_QUEEN_DR[i];
             p.col += ROOK_QUEEN_DC[i];

@@ -8,7 +8,7 @@ int evaluateKnightMobility (
     const Board &board,
     Player player
 ) {
-    Piece knight = playerPieceCharToPiece(player, 'N');
+    Piece knight = makePiece(player, 'N');
     int cnt = 0;
 
     for (int r = 0; r < 8; r++) {
@@ -29,7 +29,7 @@ int evaluateBishopMobility (
     const Board &board,
     Player player
 ) {
-    Piece bishop = playerPieceCharToPiece(player, 'B');
+    Piece bishop = makePiece(player, 'B');
     int cnt = 0;
 
     for (int r = 0; r < 8; r++) {
@@ -50,7 +50,7 @@ int evaluateRookMobility (
     const Board &board,
     Player player
 ) {
-    Piece rook = playerPieceCharToPiece(player, 'R');
+    Piece rook = makePiece(player, 'R');
     int cnt = 0;
 
     for (int r = 0; r < 8; r++) {

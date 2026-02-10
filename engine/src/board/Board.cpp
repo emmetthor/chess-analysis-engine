@@ -16,28 +16,28 @@ void Board::init() {
 
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
-            board[r][c] = EMPTY;
+            board[r][c] = Piece::EMPTY;
         }
     }
 
     //黑方棋子
-    board[0][0] = board[0][7] = BROOK;
-    board[0][1] = board[0][6] = BKNIGHT;
-    board[0][2] = board[0][5] = BBISHOP;
-    board[0][3] = BQUEEN;
-    board[0][4] = BKING;
+    board[0][0] = board[0][7] = Piece::BROOK;
+    board[0][1] = board[0][6] = Piece::BKNIGHT;
+    board[0][2] = board[0][5] = Piece::BBISHOP;
+    board[0][3] = Piece::BQUEEN;
+    board[0][4] = Piece::BKING;
     for (int c = 0; c < 8; c++) {
-        board[1][c] = BPAWN;
+        board[1][c] = Piece::BPAWN;
     }
 
     //白方棋子
-    board[7][0] = board[7][7] = WROOK;
-    board[7][1] = board[7][6] = WKNIGHT;
-    board[7][2] = board[7][5] = WBISHOP;
-    board[7][3] = WQUEEN;
-    board[7][4] = WKING;
+    board[7][0] = board[7][7] = Piece::WROOK;
+    board[7][1] = board[7][6] = Piece::WKNIGHT;
+    board[7][2] = board[7][5] = Piece::WBISHOP;
+    board[7][3] = Piece::WQUEEN;
+    board[7][4] = Piece::WKING;
     for (int c = 0; c < 8; c++) {
-        board[6][c] = WPAWN;
+        board[6][c] = Piece::WPAWN;
     }
 
     materialScore = 0;

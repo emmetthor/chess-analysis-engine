@@ -78,10 +78,13 @@ const int PST[6][8][8] = {
 };
 
 int evaluatePieceSquare(Piece p, Position pp) {
+    int pIndex = pieceToIndex(p);
+    int wp = pieceToIndex(Piece::WPAWN);
+    int bp = pieceToIndex(Piece::BPAWN);
     if (isWhite(p)) {
-        return PST[p - WPAWN][pp.row][pp.col];
+        return PST[pIndex - wp][pp.row][pp.col];
     } else if (isBlack(p)) {
-        return PST[p - BPAWN][7 - pp.row][7 - pp.col];
+        return PST[pIndex - bp][7 - pp.row][7 - pp.col];
     }
 
     return 0;

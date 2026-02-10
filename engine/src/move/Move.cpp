@@ -59,7 +59,7 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
             // 兩格中間那格
             midPos = (move.from.row + move.to.row) / 2;
 
-            if (board.at(move.to) != EMPTY || board.at({midPos, move.to.col}) != EMPTY) {
+            if (board.at(move.to) != Piece::EMPTY || board.at({midPos, move.to.col}) != Piece::EMPTY) {
                 //debug::log("isPawnMoveLegal: Pawn can't capture a piece in front of it\n");
                 return false;
             }
@@ -68,7 +68,7 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
         }
 
         if (moveForWard == 1) {
-            if (board.at(move.to) != EMPTY) {
+            if (board.at(move.to) != Piece::EMPTY) {
                 //debug::log("isPawnMoveLegal: Pawn can't capture a piece in front of it\n");
                 return false;
             }
@@ -82,7 +82,7 @@ bool isPawnMoveLegal(const Board &board, const Move &move) {
 
     // 斜吃
     else if (moveSideward == 1) {
-        if (board.at(move.to) == EMPTY) {
+        if (board.at(move.to) == Piece::EMPTY) {
             //debug::log("isPawnMoveLegal: Pawn can't capure nothing\n");
             return false;
         }
@@ -142,7 +142,7 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
     bool allEmpty = true;
     for (int r = fromRow + dr, c = fromCol + dc; r != toRow, c != toCol; r += dr, c += dc) {
         //debug::log(r, ", ", c, '\n');
-        if (board.at({r, c}) != EMPTY) {
+        if (board.at({r, c}) != Piece::EMPTY) {
             allEmpty = false;
             break;
         }
@@ -171,7 +171,7 @@ bool isRookMoveLegal(const Board &board, const Move &move) {
 
         bool allEmpty = 1;
         for (int r = fromRow + 1; r <= toRow - 1; r++) {
-            if (board.at({r, move.from.col}) != EMPTY) {
+            if (board.at({r, move.from.col}) != Piece::EMPTY) {
                 allEmpty = 0;
                 break;
             }
@@ -190,7 +190,7 @@ bool isRookMoveLegal(const Board &board, const Move &move) {
 
         bool allEmpty = 1;
         for (int c = fromCol + 1; c <= toCol - 1; c++) {
-            if (board.at({move.from.row, c}) != EMPTY) {
+            if (board.at({move.from.row, c}) != Piece::EMPTY) {
                 allEmpty = 0;
                 break;
             }
@@ -220,7 +220,7 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
 
             bool allEmpty = 1;
             for (int r = fromRow + 1; r <= toRow - 1; r++) {
-                if (board.at({r, move.from.col}) != EMPTY) {
+                if (board.at({r, move.from.col}) != Piece::EMPTY) {
                     allEmpty = 0;
                     break;
                 }
@@ -239,7 +239,7 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
 
             bool allEmpty = 1;
             for (int c = fromCol + 1; c <= toCol - 1; c++) {
-                if (board.at({move.from.row, c}) != EMPTY) {
+                if (board.at({move.from.row, c}) != Piece::EMPTY) {
                     allEmpty = 0;
                     break;
                 }
@@ -260,7 +260,7 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
 
         bool allEmpty = true;
         for (int r = fromRow + dr, c = fromCol + dc; r != toRow, c != toCol; r += dr, c += dc) {
-            if (board.at({r, c}) != EMPTY) {
+            if (board.at({r, c}) != Piece::EMPTY) {
                 allEmpty = false;
                 break;
             }
@@ -303,10 +303,10 @@ bool isCastleLegal(const Board &board, const Move &move) {
     if (player == PLAYER_WHITE) {
         if (move.castle == SHORT_CASTLE) {
             if (
-                board.at({7, 4}) == WKING &&
-                board.at({7, 6}) == EMPTY &&
-                board.at({7, 7}) == WROOK &&
-                board.at({7, 5}) == EMPTY &&
+                board.at({7, 4}) == Piece::WKING &&
+                board.at({7, 6}) == Piece::EMPTY &&
+                board.at({7, 7}) == Piece::WROOK &&
+                board.at({7, 5}) == Piece::EMPTY &&
                 isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 6}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 5}, opponent(player)) == false &&
@@ -316,11 +316,11 @@ bool isCastleLegal(const Board &board, const Move &move) {
             }
         } else {
             if (
-                board.at({7, 4}) == WKING &&
-                board.at({7, 2}) == EMPTY &&
-                board.at({7, 0}) == WROOK &&
-                board.at({7, 3}) == EMPTY &&
-                board.at({7, 1}) == EMPTY &&
+                board.at({7, 4}) == Piece::WKING &&
+                board.at({7, 2}) == Piece::EMPTY &&
+                board.at({7, 0}) == Piece::WROOK &&
+                board.at({7, 3}) == Piece::EMPTY &&
+                board.at({7, 1}) == Piece::EMPTY &&
                 isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 2}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 3}, opponent(player)) == false &&
@@ -332,10 +332,10 @@ bool isCastleLegal(const Board &board, const Move &move) {
     } else {
         if (move.castle == SHORT_CASTLE) {
             if (
-                board.at({0, 4}) == BKING &&
-                board.at({0, 6}) == EMPTY &&
-                board.at({0, 7}) == BROOK &&
-                board.at({0, 5}) == EMPTY &&
+                board.at({0, 4}) == Piece::BKING &&
+                board.at({0, 6}) == Piece::EMPTY &&
+                board.at({0, 7}) == Piece::BROOK &&
+                board.at({0, 5}) == Piece::EMPTY &&
                 isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 6}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 5}, opponent(player)) == false &&
@@ -345,11 +345,11 @@ bool isCastleLegal(const Board &board, const Move &move) {
             }
         } else {
             if (
-                board.at({0, 4}) == BKING &&
-                board.at({0, 2}) == EMPTY &&
-                board.at({0, 0}) == BROOK &&
-                board.at({0, 3}) == EMPTY &&
-                board.at({0, 1}) == EMPTY &&
+                board.at({0, 4}) == Piece::BKING &&
+                board.at({0, 2}) == Piece::EMPTY &&
+                board.at({0, 0}) == Piece::BROOK &&
+                board.at({0, 3}) == Piece::EMPTY &&
+                board.at({0, 1}) == Piece::EMPTY &&
                 isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 2}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 3}, opponent(player)) == false &&
@@ -366,7 +366,7 @@ bool isCastleLegal(const Board &board, const Move &move) {
 bool isPromoteLegal(const Board &board, const Move &move) {
     if (!isPawnMoveLegal(board, move)) return false;
 
-    if (move.promotionPiece == EMPTY) return false;
+    if (move.promotionPiece == Piece::EMPTY) return false;
 
     if (move.player == PLAYER_WHITE && move.to.row == 0) return true;
     if (move.player == PLAYER_BLACK && move.to.row == 7) return true;
@@ -402,8 +402,8 @@ CastleMove getCastleMove(Move &move) {
     res.rookFrom    = castleMoveMap[player][move.castle][2];
     res.rookTo      = castleMoveMap[player][move.castle][3];
 
-    res.kingPiece = playerPieceCharToPiece(player, 'K');
-    res.rookPiece = playerPieceCharToPiece(player, 'R');
+    res.kingPiece = makePiece(player, 'K');
+    res.rookPiece = makePiece(player, 'R');
 
     return res;
 }
@@ -438,7 +438,7 @@ bool isMoveLegal(const Board &board, const Move &move) {
     Piece fromPiece = board.at(move.from);
 
     // 檢查移動棋子是否為空
-    if (fromPiece == EMPTY) {
+    if (fromPiece == Piece::EMPTY) {
         //debug::log("isMoveLegal: moving EMPTY\n");
         return false;
     }
@@ -452,34 +452,34 @@ bool isMoveLegal(const Board &board, const Move &move) {
     Piece toPiece = board.at(move.to);
 
     //檢查是否吃同色棋子
-    if (toPiece != EMPTY && isSameColor(move.movePiece, board.at(move.to))) {
+    if (toPiece != Piece::EMPTY && isSameColor(move.movePiece, board.at(move.to))) {
         //debug::log("isMoveLegal: ", pieceToChar(move.movePiece), " can't capture the same color pieces: ", pieceToChar(toPiece), '\n');
         return false;
     }
 
     switch (move.movePiece) {
-    case WPAWN:
-    case BPAWN:
+    case Piece::WPAWN:
+    case Piece::BPAWN:
         return isPawnMoveLegal(board, move);
 
-    case WKNIGHT:
-    case BKNIGHT:
+    case Piece::WKNIGHT:
+    case Piece::BKNIGHT:
         return isKnightMoveLegal(board, move);
 
-    case WBISHOP:
-    case BBISHOP:
+    case Piece::WBISHOP:
+    case Piece::BBISHOP:
         return isBishopMoveLegal(board, move);
 
-    case WROOK:
-    case BROOK:
+    case Piece::WROOK:
+    case Piece::BROOK:
         return isRookMoveLegal(board, move);
 
-    case WQUEEN:
-    case BQUEEN:
+    case Piece::WQUEEN:
+    case Piece::BQUEEN:
         return isQueenMoveLegal(board, move);
 
-    case WKING:
-    case BKING:
+    case Piece::WKING:
+    case Piece::BKING:
         return isKingMoveLegal(board, move);
 
     default:

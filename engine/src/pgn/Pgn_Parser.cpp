@@ -129,7 +129,7 @@ bool isPromote(std::string strSan) {
 SAN parsePieceSan(std::string strSan, Player player) {
     SAN san;
 
-    san.piece = playerPieceCharToPiece(player, strSan[0]);
+    san.piece = makePiece(player, strSan[0]);
 
     int sanSize = strSan.size();
 
@@ -184,7 +184,7 @@ Move parsePieceMove(SAN &strSan, Board &board) {
 SAN parsePawnSan(std::string strSan, Player player) {
     SAN san;
 
-    san.piece = playerPieceCharToPiece(player, 'P');
+    san.piece = makePiece(player, 'P');
 
     int sanSize = strSan.size();
 
@@ -216,7 +216,7 @@ SAN parsePawnSan(std::string strSan, Player player) {
     }
 
     if (san.isPromote == true) {
-        san.promorePiece = playerPieceCharToPiece(player, strSan[i]);
+        san.promorePiece = makePiece(player, strSan[i]);
     }
 
     return san;

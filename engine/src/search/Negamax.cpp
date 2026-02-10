@@ -10,6 +10,7 @@
 #include "evaluate/Evaluate.h"
 #include "move/Move_Order.h"
 #include "debug.h"
+#include "Structure_IO.h"
 
 #include <vector>
 #include <algorithm>
@@ -109,6 +110,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
 
     // 檢查 checkmate / stalemate
     if (nMoves == 0) {
+        //LOG_DEBUG(DebugCategory::SEARCH, "no move!");
         if (isInCheck(board, player)) return -INF + depth;
         else return 0;
     }

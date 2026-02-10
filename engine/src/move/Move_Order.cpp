@@ -17,7 +17,7 @@ int evaluateMoveScore(const Board &board, Move &move, Move &TTMove) {
         score += pieceValue(move.promotionPiece);
     }
 
-    if (move.capturePiece != EMPTY) {
+    if (move.capturePiece != Piece::EMPTY) {
         score += pieceValue(move.capturePiece) * 10 - pieceValue(move.movePiece);
     }
     

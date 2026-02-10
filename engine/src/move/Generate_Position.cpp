@@ -24,7 +24,7 @@ int generatePosFromPosWithJumpPiece(
         Piece atPiece = board.at(p);
 
         if (!isInBoard(p)) continue;
-        if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) continue;
+        if (atPiece != Piece::EMPTY && isSameColor(atPiece, movePiece)) continue;
 
         buffer[cnt++] = p;
     }
@@ -48,11 +48,11 @@ int generatePosFromPosWithSlidePiece(
         while (true) {
             if (!isInBoard(p)) break;
             Piece atPiece = board.at(p);
-            if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) break;
+            if (atPiece != Piece::EMPTY && isSameColor(atPiece, movePiece)) break;
 
             buffer[cnt++] = p;
 
-            if (atPiece != EMPTY) break;
+            if (atPiece != Piece::EMPTY) break;
 
             p.row += dr[i];
             p.col += dc[i];
@@ -77,7 +77,7 @@ int generateCaptureFromPosWithJumpPiece(
         Piece atPiece = board.at(p);
 
         if (!isInBoard(p)) continue;
-        if (atPiece == EMPTY) continue;
+        if (atPiece == Piece::EMPTY) continue;
         if (isSameColor(atPiece, movePiece)) continue;
 
         
@@ -105,9 +105,9 @@ int generateCaptureFromPosWithSlidePiece(
             if (!isInBoard(p)) break;
             Piece atPiece = board.at(p);
 
-            if (atPiece != EMPTY && isSameColor(atPiece, movePiece)) break;
+            if (atPiece != Piece::EMPTY && isSameColor(atPiece, movePiece)) break;
 
-            if (atPiece != EMPTY) {
+            if (atPiece != Piece::EMPTY) {
                 buffer[cnt++] = p;
                 break;
             }
@@ -127,27 +127,27 @@ int generatePiecePosFromPos(
     Position *buffer
 ) {
     switch (p) {
-    case WKNIGHT:
-    case BKNIGHT:
+    case Piece::WKNIGHT:
+    case Piece::BKNIGHT:
         return generatePosFromPosWithJumpPiece(board, pos, p, ndr, ndc, buffer);
 
-    case WBISHOP:
-    case BBISHOP:
+    case Piece::WBISHOP:
+    case Piece::BBISHOP:
         return generatePosFromPosWithSlidePiece(board, pos, p, bqdr, bqdc, buffer);
 
-    case WROOK:
-    case BROOK:
+    case Piece::WROOK:
+    case Piece::BROOK:
         return generatePosFromPosWithSlidePiece(board, pos, p, rqdr, rqdc, buffer);
 
-    case WQUEEN:
-    case BQUEEN: {
+    case Piece::WQUEEN:
+    case Piece::BQUEEN: {
         int n1 = generatePosFromPosWithSlidePiece(board, pos, p, rqdr, rqdc, buffer);
         int n2 = generatePosFromPosWithSlidePiece(board, pos, p, bqdr, bqdc, buffer + n1);
         return n1 + n2;
     }
 
-    case WKING:
-    case BKING:
+    case Piece::WKING:
+    case Piece::BKING:
         return generatePosFromPosWithJumpPiece(board, pos, p, kdr, kdc, buffer);
     }
 
@@ -161,27 +161,27 @@ int generatePieceCaptureFromPos(
     Position *buffer
 ) {
     switch (p) {
-    case WKNIGHT:
-    case BKNIGHT:
+    case Piece::WKNIGHT:
+    case Piece::BKNIGHT:
         return generateCaptureFromPosWithJumpPiece(board, pos, p, ndr, ndc, buffer);
 
-    case WBISHOP:
-    case BBISHOP:
+    case Piece::WBISHOP:
+    case Piece::BBISHOP:
         return generateCaptureFromPosWithSlidePiece(board, pos, p, bqdr, bqdc, buffer);
 
-    case WROOK:
-    case BROOK:
+    case Piece::WROOK:
+    case Piece::BROOK:
         return generateCaptureFromPosWithSlidePiece(board, pos, p, rqdr, rqdc, buffer);
 
-    case WQUEEN:
-    case BQUEEN: {
+    case Piece::WQUEEN:
+    case Piece::BQUEEN: {
         int n1 = generateCaptureFromPosWithSlidePiece(board, pos, p, rqdr, rqdc, buffer);
         int n2 = generateCaptureFromPosWithSlidePiece(board, pos, p, bqdr, bqdc, buffer + n1);
         return n1 + n2;
     }
 
-    case WKING:
-    case BKING:
+    case Piece::WKING:
+    case Piece::BKING:
         return generateCaptureFromPosWithJumpPiece(board, pos, p, kdr, kdc, buffer);
     }
 

@@ -27,7 +27,7 @@ int evaluateCenterControl(const Board &board) {
 
         Piece p = board.at(pos);
 
-        if (p == EMPTY) continue;
+        if (p == Piece::EMPTY) continue;
         if (isWhite(p)) whiteOccupy++;
         else if (isBlack(p)) blackOccupy++;
     }

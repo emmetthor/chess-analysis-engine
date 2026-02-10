@@ -94,12 +94,12 @@ int generateAllMoves(
 ) {
     int cnt = 0;
     Piece 
-        pawn    = playerPieceCharToPiece(player, 'P'),
-        knight  = playerPieceCharToPiece(player, 'N'),
-        bishop  = playerPieceCharToPiece(player, 'B'),
-        rook    = playerPieceCharToPiece(player, 'R'),
-        queen   = playerPieceCharToPiece(player, 'Q'),
-        king    = playerPieceCharToPiece(player, 'K');
+        pawn    = makePiece(player, 'P'),
+        knight  = makePiece(player, 'N'),
+        bishop  = makePiece(player, 'B'),
+        rook    = makePiece(player, 'R'),
+        queen   = makePiece(player, 'Q'),
+        king    = makePiece(player, 'K');
 
     cnt += generatePieceMoves(board, player, knight, buffer);
     cnt += generatePieceMoves(board, player, bishop, buffer + cnt);
@@ -126,7 +126,7 @@ int generateAllMoves(
             move.to = {r + dr, c};
             move.capturePiece = board.at(move.to);
 
-            if (isInBoard(move.to) && move.capturePiece == EMPTY) {
+            if (isInBoard(move.to) && move.capturePiece == Piece::EMPTY) {
                 if (move.to.row == promoteRank) {
                     for (auto promo : {knight, bishop, rook, queen}) {
                         move.isPromotion = 1;
@@ -144,8 +144,8 @@ int generateAllMoves(
                 move.to = {r + 2 * dr, c};
                 Position mid = {r + dr, c};
 
-                if (isInBoard(move.to) && board.at(move.to) == EMPTY && board.at(mid) == EMPTY) {
-                    move.capturePiece = EMPTY; // 兩步不能 capture
+                if (isInBoard(move.to) && board.at(move.to) == Piece::EMPTY && board.at(mid) == Piece::EMPTY) {
+                    move.capturePiece = Piece::EMPTY; // 兩步不能 capture
                     buffer[cnt++] = move;
                 }
             }
@@ -154,7 +154,7 @@ int generateAllMoves(
             for (int dc : {-1, 1}) {
                 Position to = {r + dr, c + dc};
                 if (!isInBoard(to)) continue;
-                if (board.at(to) == EMPTY) continue;
+                if (board.at(to) == Piece::EMPTY) continue;
                 if (isSameColor(board.at(to), pawn)) continue;
 
                 move.to = to;
@@ -178,7 +178,7 @@ int generateAllMoves(
         Move moveCastle;
         moveCastle.castle = len;
         moveCastle.player = player;
-        moveCastle.capturePiece = EMPTY;
+        moveCastle.capturePiece = Piece::EMPTY;
 
         CastleMove m = getCastleMove(moveCastle);
         moveCastle.from = m.kingFrom;
@@ -197,12 +197,12 @@ int generateCaptureMoves(
 ) {
     int cnt = 0;
     Piece 
-        pawn =      playerPieceCharToPiece(player, 'P'),
-        knight =    playerPieceCharToPiece(player, 'N'),
-        bishop =    playerPieceCharToPiece(player, 'B'),
-        rook =      playerPieceCharToPiece(player, 'R'),
-        queen =     playerPieceCharToPiece(player, 'Q'),
-        king =      playerPieceCharToPiece(player, 'K');
+        pawn =      makePiece(player, 'P'),
+        knight =    makePiece(player, 'N'),
+        bishop =    makePiece(player, 'B'),
+        rook =      makePiece(player, 'R'),
+        queen =     makePiece(player, 'Q'),
+        king =      makePiece(player, 'K');
 
     cnt += generatePieceCapture(board, player, knight, buffer);
     cnt += generatePieceCapture(board, player, bishop, buffer + cnt);
@@ -231,7 +231,7 @@ int generateCaptureMoves(
                 if (!isInBoard(to)) continue;
 
                 Piece atPiece = board.at(to);
-                if (atPiece == EMPTY) continue;
+                if (atPiece == Piece::EMPTY) continue;
                 if (isSameColor(atPiece, pawn)) continue;
 
                 move.to = to;

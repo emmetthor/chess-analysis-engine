@@ -12,7 +12,7 @@ bool isInCheck (
 ) {
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
-            Piece king = playerPieceCharToPiece(player, 'K');
+            Piece king = makePiece(player, 'K');
             if (board.at({r, c}) != king) continue;
 
             if (isSquareAttacked(board, {r, c}, opponent(player))) {

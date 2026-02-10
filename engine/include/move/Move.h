@@ -13,10 +13,10 @@ struct Move {
 
     Position from;
     Position to;
-    Piece movePiece, capturePiece = EMPTY;
+    Piece movePiece, capturePiece = Piece::EMPTY;
 
     bool isPromotion = false;
-    Piece promotionPiece = EMPTY;
+    Piece promotionPiece = Piece::EMPTY;
 
     Castle castle = NOT;
 

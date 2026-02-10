@@ -7,7 +7,6 @@
 const char colToPgn[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 const char rowToPgn[] = {'8', '7', '6', '5', '4', '3', '2', '1'};
 
-
 bool isStringAPosition(std::string s) {
     if (s.size() != 2) {
         return 0;

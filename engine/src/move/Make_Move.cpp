@@ -21,9 +21,9 @@ void castleMove(Board &board, Move &move) {
     //     << " | " << '(' << c.rookFrom.row << ' ' << c.rookFrom.col << ')' << " -> " << '(' << c.rookTo.row << ' ' << c.rookTo.col << ')'
     //     << " | " << c.kingPiece << ' ' << c.rookPiece << '\n';
 
-    board.set(c.kingFrom,   EMPTY);
+    board.set(c.kingFrom,   Piece::EMPTY);
     board.set(c.kingTo,     c.kingPiece);
-    board.set(c.rookFrom,   EMPTY);
+    board.set(c.rookFrom,   Piece::EMPTY);
     board.set(c.rookTo,     c.rookPiece);
 
     board.materialScore -= playerScoreControl * evaluatePieceSquare(c.kingPiece, c.kingFrom);
@@ -32,10 +32,10 @@ void castleMove(Board &board, Move &move) {
     board.materialScore -= playerScoreControl * evaluatePieceSquare(c.rookPiece, c.rookFrom);
     board.materialScore += playerScoreControl * evaluatePieceSquare(c.rookPiece, c.rookTo);
 
-    board.zobristKey ^= zobPiece[c.kingPiece][zobBoardPosition(c.kingFrom)];
-    board.zobristKey ^= zobPiece[c.kingPiece][zobBoardPosition(c.kingTo)];
-    board.zobristKey ^= zobPiece[c.rookPiece][zobBoardPosition(c.rookFrom)];
-    board.zobristKey ^= zobPiece[c.rookPiece][zobBoardPosition(c.rookTo)];
+    board.zobristKey ^= zobPiece[pieceToIndex(c.kingPiece)][zobBoardPosition(c.kingFrom)];
+    board.zobristKey ^= zobPiece[pieceToIndex(c.kingPiece)][zobBoardPosition(c.kingTo)];
+    board.zobristKey ^= zobPiece[pieceToIndex(c.rookPiece)][zobBoardPosition(c.rookFrom)];
+    board.zobristKey ^= zobPiece[pieceToIndex(c.rookPiece)][zobBoardPosition(c.rookTo)];
 }
 
 // 還原入堡
@@ -44,9 +44,9 @@ void undoCastleMove(Board &board, Move &move) {
     Player player = move.player;
 
     board.set(c.kingFrom,   c.kingPiece);
-    board.set(c.kingTo,     EMPTY);
+    board.set(c.kingTo,     Piece::EMPTY);
     board.set(c.rookFrom,   c.rookPiece);
-    board.set(c.rookTo,     EMPTY);
+    board.set(c.rookTo,     Piece::EMPTY);
 }
 
 int updateCastleRights(int castleRights, const Move &move) {
@@ -54,7 +54,7 @@ int updateCastleRights(int castleRights, const Move &move) {
     int fromCol = move.from.col;
 
     // 動 king → 清掉該方所有 castle bit
-    if (move.movePiece == playerPieceCharToPiece(player, 'K')) {
+    if (move.movePiece == makePiece(player, 'K')) {
         if (player == PLAYER_WHITE) {
             castleRights &= ~0b1100; // 清 bit2 bit3 → 白方 king + queen side
         } else {
@@ -63,7 +63,7 @@ int updateCastleRights(int castleRights, const Move &move) {
     }
 
     // 動 rook → 清掉對應側
-    else if (move.movePiece == playerPieceCharToPiece(player, 'R')) {
+    else if (move.movePiece == makePiece(player, 'R')) {
         if (player == PLAYER_WHITE) {
             if (fromCol == 0) castleRights &= ~0b0100; // WQ
             else if (fromCol == 7) castleRights &= ~0b1000; // WK
@@ -112,17 +112,17 @@ void makeMove(Board &board, Move &move) {
     }
 
     else if (move.isPromotion) {
-        board.set(move.from, EMPTY);
+        board.set(move.from, Piece::EMPTY);
         board.set(move.to, move.promotionPiece);
     }
 
     else {
-        board.set(move.from, EMPTY);
+        board.set(move.from, Piece::EMPTY);
         board.set(move.to, moved);
     }
 
     // 更新 material score
-    if (captured != EMPTY) {
+    if (captured != Piece::EMPTY) {
         board.materialScore += playerScoreControl * pieceValue(captured);
     }
 
@@ -146,7 +146,7 @@ void makeMove(Board &board, Move &move) {
         board.PSTScore += playerScoreControl * evaluatePieceSquare(moved, move.to);
     }
 
-    if (captured != EMPTY) {
+    if (captured != Piece::EMPTY) {
         board.PSTScore -= -playerScoreControl * evaluatePieceSquare(captured, move.to);
     }
 
@@ -161,17 +161,17 @@ void makeMove(Board &board, Move &move) {
     }
 
     else if (move.isPromotion) {
-        board.zobristKey ^= zobPiece[moved][fromZob];
-        board.zobristKey ^= zobPiece[move.promotionPiece][toZob];
+        board.zobristKey ^= zobPiece[pieceToIndex(moved)][fromZob];
+        board.zobristKey ^= zobPiece[pieceToIndex(move.promotionPiece)][toZob];
     }
 
     else {
-        board.zobristKey ^= zobPiece[moved][fromZob];
-        board.zobristKey ^= zobPiece[moved][toZob];
+        board.zobristKey ^= zobPiece[pieceToIndex(moved)][fromZob];
+        board.zobristKey ^= zobPiece[pieceToIndex(moved)][toZob];
     }
 
-    if (captured != EMPTY) {
-        board.zobristKey ^= zobPiece[captured][toZob];
+    if (captured != Piece::EMPTY) {
+        board.zobristKey ^= zobPiece[pieceToIndex(captured)][toZob];
     }
 
     if (computeZobrist(board, player) != board.zobristKey) {

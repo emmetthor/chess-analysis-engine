@@ -9,13 +9,13 @@
 #include "evaluate/Evaluate.h"
 #include "search/Negamax.h"
 #include "debug.h"
+#include "Structure_IO.h"
 
 #include <iostream>
 #include <chrono>
 #include <algorithm>
 
 int main() {
-    Debug::init();
     Debug::level = DebugLevel::INFO;
     LOG_INFO(DebugCategory::BOARD, "Engine start");
     // debug::set(1);
@@ -85,7 +85,7 @@ int main() {
     std::string s = "";
     while (s != "end") {
         auto start = std::chrono::high_resolution_clock::now();
-        SearchResult res = negamaxRoot(board, 6, player);
+        SearchResult res = negamaxRoot(board, 2, player);
         auto searchEnd = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
 

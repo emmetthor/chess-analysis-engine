@@ -10,6 +10,8 @@
 #include "evaluate/King_Safety.h"
 #include "evaluate/Mobility.h"
 
+#include "debug.h"
+
 #include <iostream>
 
 const int INF = 1e9;
