@@ -41,3 +41,7 @@ inline std::ostream& operator<<(std::ostream& os, const Move& move) {
     else os << pieceToChar(move.movePiece) << positionToPgn(move.from) << positionToPgn(move.to);
     return os;
 }
+
+inline std::ostream& operator<<(std::ostream& os, const Player player) {
+    return os << playerToIndex(player);
+}
