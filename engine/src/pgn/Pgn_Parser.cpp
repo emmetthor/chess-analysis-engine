@@ -142,7 +142,7 @@ SAN parsePieceSan(std::string strSan, Player player) {
     }
 
     if (strSan[i] != 'x' && isdigit(strSan[i])) {
-        san.fromPos.col = 8 - (strSan[i] - '0');
+        san.fromPos.row = 8 - (strSan[i] - '0');
         i++;
     }
 
