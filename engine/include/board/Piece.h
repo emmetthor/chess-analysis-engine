@@ -40,6 +40,8 @@ inline int pieceToIndex(Piece p) {
 }
 
 inline char pieceToChar(Piece p) {
+    int pIndex = pieceToIndex(p);
+    ENGINE_ASSERT(0 <= pIndex && pIndex <= 12);
     return PIECE_TO_CHAR[pieceToIndex(p)];
 }
 
