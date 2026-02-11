@@ -120,7 +120,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
 
-        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 && i >= 6 && searchDepth >= 1) {
+        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 && i >= 4 && searchDepth >= 1) {
             searchDepth -= 1;
         }
 
