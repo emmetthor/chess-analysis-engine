@@ -39,6 +39,8 @@ set(SOURCE_FILES
     src/search/TT.cpp
     src/search/Zobrist.cpp
 
+    src/fen/FEN_Parser.cpp
+
     src/debug.cpp
     src/main.cpp
 )

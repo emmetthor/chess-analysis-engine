@@ -8,6 +8,7 @@
 #include "pgn/Pgn_Parser.h"
 #include "evaluate/Evaluate.h"
 #include "search/Negamax.h"
+#include "fen/FEN_Parser.h"
 #include "debug.h"
 #include "Structure_IO.h"
 
@@ -18,7 +19,7 @@
 int main() {
     Debug::level = DebugLevel::INFO;
     LOG_INFO(DebugCategory::BOARD, "Engine start");
-    LOG_INFO(DebugCategory::BOARD, "input PGN:...");
+    // LOG_INFO(DebugCategory::BOARD, "input PGN:...");
 
 //     PGN pgn;
 //     pgn.cinPgnToSan();
@@ -54,36 +55,53 @@ int main() {
 //         makeMove(board, move);
 //     }
 
-    int cnt = 1;
-    PGN pgn;
-    Board board;
-    Player player = Player::WHITE;
-    // debug::set(1);
-    // attackMap.debugPrint();
+    // int cnt = 1;
+    // PGN pgn;
+    // Board board;
+    // Player player = Player::WHITE;
+    // // debug::set(1);
+    // // attackMap.debugPrint();
     
-    std::string s = "";
-    while (s != "end") {
-        auto start = std::chrono::high_resolution_clock::now();
-        SearchResult res = negamaxRoot(board, 6, player);
-        auto searchEnd = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
+    // std::string s = "";
+    // while (s != "end") {
+    //     auto start = std::chrono::high_resolution_clock::now();
+    //     SearchResult res = negamaxRoot(board, 6, player);
+    //     auto searchEnd = std::chrono::high_resolution_clock::now();
+    //     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
 
-        Move best = res.bestMove;
-        int score = res.bestScore;
+    //     Move best = res.bestMove;
+    //     int score = res.bestScore;
 
-        LOG_INFO(DebugCategory::BOARD, "best move: ", best);
-        LOG_INFO(DebugCategory::BOARD, "score: ", score);
-        LOG_INFO(DebugCategory::BOARD, "spent: ", duration, "ms");
+    //     LOG_INFO(DebugCategory::BOARD, "best move: ", best);
+    //     LOG_INFO(DebugCategory::BOARD, "score: ", score);
+    //     LOG_INFO(DebugCategory::BOARD, "spent: ", duration, "ms");
 
-        makeMove(board, best);
+    //     makeMove(board, best);
 
-        LOG_INFO(DebugCategory::BOARD, "current board: ", '\n', board);
+    //     LOG_INFO(DebugCategory::BOARD, "current board: ", '\n', board);
 
-        std::cin >> s;
-        Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
+    //     std::cin >> s;
+    //     Move oppoMove = pgn.SantoMoveSingle(board, s, opponent(player));
 
-        LOG_INFO(DebugCategory::BOARD, "current board: ", '\n', board);
-    }
+    //     LOG_INFO(DebugCategory::BOARD, "current board: ", '\n', board);
+    // }
 
-    return 0;
+    // return 0;
+
+    LOG_INFO(DebugCategory::BOARD, "input FEN: ");
+    Board board = cinFenToBoard();
+
+    LOG_INFO(DebugCategory::BOARD, "FEN parse complete.");
+
+    auto start = std::chrono::high_resolution_clock::now();
+    SearchResult res = negamaxRoot(board, 6, board.player);
+    auto searchEnd = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(searchEnd - start).count();
+
+    Move best = res.bestMove;
+    int score = res.bestScore;
+
+    LOG_INFO(DebugCategory::BOARD, "best move: ", best);
+    LOG_INFO(DebugCategory::BOARD, "score: ", score);
+    LOG_INFO(DebugCategory::BOARD, "spent: ", duration, "ms");
 }

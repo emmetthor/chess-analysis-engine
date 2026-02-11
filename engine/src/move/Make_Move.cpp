@@ -6,6 +6,7 @@
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
 #include "debug.h"
+#include "Structure_IO.h"
 
 #include <iostream>
 #include <assert.h>
@@ -169,11 +170,7 @@ void makeMove(Board &board, Move &move) {
         board.zobristKey ^= zobPiece[pieceToIndex(captured)][toZob];
     }
 
-    if (computeZobrist(board, player) != board.zobristKey) {
-        printMove(move);
-        assert(move == inValidMove);
-        assert(0);
-    }
+    assert(computeZobrist(board, opponent(player)) == board.zobristKey);
 }
 
 void undoMove(Board &board, Move &move) {
