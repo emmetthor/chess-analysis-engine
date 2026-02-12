@@ -36,8 +36,6 @@ void handleGo(std::istringstream &iss, Engine &engine) {
         }
     }
 
-    std::cout << engine.getBoard().player;
-
     Move move = engine.goDepth(depth);
 
     std::cout << "bestmove ";
@@ -59,7 +57,6 @@ void handlePosition(std::istringstream &iss, Engine &engine) {
             if (!fen.empty()) fen += " ";
             fen += token;
         }
-        std::cout << fen << '\n';
         engine.setPositionWithFen(fen);
         iss >> token;
     }
@@ -83,7 +80,7 @@ void uciLoop(Engine &engine) {
         iss >> token;
 
         if (token == "uci") {
-            std::cout << "id name YourEngineName\nid author EmmetThor\n";
+            std::cout << "id name engine1\nid author EmmetThor\n";
             std::cout << "uciok\n" << std::flush;
         }
         else if (token == "isready") {

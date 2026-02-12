@@ -120,16 +120,28 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
 
     sortMove(board, moves, nMoves, TTMove);
 
-    int searchDepth = depth - 1;
     for (int i = 0; i < nMoves; i++) {
+        int searchDepth = depth - 1;
         Move move = moves[i];
 
-        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 && i >= 6 && searchDepth >= 1) {
-            searchDepth -= 1;
+        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3) {
+            if (i >= 6) {
+                searchDepth = depth - 2;
+            }
+            else if (i >= 10) searchDepth = depth - 3;
         }
 
+        int score = 0;
         makeMove(board, move);
-        int score = -negamax(board, searchDepth, -beta, -alpha, opponent(player));
+        if (i == 0) {
+            // 第一步全搜
+            score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
+        } else {
+            score = -negamax(board, searchDepth, -alpha - 1, -alpha, opponent(player));
+            if (score > alpha && score < beta) {
+                score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
+            }
+        }
         undoMove(board, move);
 
         if (score >= beta) {
@@ -157,14 +169,8 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     return bestScore;
 }
 
-int lstNegamaxNodes = 0;
-int lstQuietscenceNodes = 0;
-int lstPorbeTTTimes = 0;
-int lstttProbe = 0;
-int lstttHit = 0;
-int lstttCut = 0;
-int lsttotalMoves = 0;
 SearchResult negamaxRoot(Board &board, int depth, Player player) {
+    auto startTime = std::chrono::steady_clock::now();
     SearchResult finalRes;
     finalRes.bestScore = -INF;
 
@@ -204,9 +210,12 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         finalRes = res;
     }
 
+    auto endTime = std::chrono::steady_clock::now();
+
     Table<std::string> outputTable;
     outputTable.colWidth = 25;
     outputTable.setTitles({"item", "result"});
+    outputTable.addRow({"time used", std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count()) + "ms"});
     outputTable.addRow({"Negamax nodes", std::to_string(negamaxNodes)});
     outputTable.addRow({"QuietScence nodes", std::to_string(quietscenceNodes)});
     outputTable.addRow({"tt Probe times", std::to_string(ttProbe)});
@@ -218,6 +227,7 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
     outputTable.addRow({"betaCut at move3", std::to_string(betaCutAtMove[2])});
     outputTable.addRow({"betaCut at move4", std::to_string(betaCutAtMove[3])});
     outputTable.addRow({"betaCut after move5", std::to_string(betaCutAtMove[4])});
+    outputTable.addRow({"score", std::to_string(finalRes.bestScore)});
 
     LOG_INFO(DebugCategory::SEARCH, "search result: \n", outputTable);
 
