@@ -31,7 +31,7 @@ inline int charToPieceIndex(char c) {
     case 'Q': return 4;
     case 'K': return 5;
     default:
-        ENGINE_ASSERT(0);
+        ENGINE_FATAL(DebugCategory::PIECE, "invalid input: ", c);
     }
 }
 
@@ -41,12 +41,19 @@ inline int pieceToIndex(Piece p) {
 
 inline char pieceToChar(Piece p) {
     int pIndex = pieceToIndex(p);
-    ENGINE_ASSERT(0 <= pIndex && pIndex <= 12);
+
+    if (!(0 <= pIndex && pIndex <= 12)) {
+        ENGINE_FATAL(DebugCategory::PIECE, "invalid piece index: ", pIndex);
+    }
+
     return PIECE_TO_CHAR[pieceToIndex(p)];
 }
 
 inline bool isWhite(Piece p) {
-    ENGINE_ASSERT(p != Piece::EMPTY);
+    if (p == Piece::EMPTY) {
+        ENGINE_FATAL(DebugCategory::PIECE, "empty piece does not have a color");
+    }
+
     int 
         wp = pieceToIndex(Piece::WPAWN),
         wk = pieceToIndex(Piece::WKING),
@@ -56,7 +63,10 @@ inline bool isWhite(Piece p) {
 }
 
 inline bool isBlack(Piece p) {
-    ENGINE_ASSERT(p != Piece::EMPTY);
+    if (p == Piece::EMPTY) {
+        ENGINE_FATAL(DebugCategory::PIECE, "empty piece does not have a color");
+    }
+
     int 
         bp = pieceToIndex(Piece::BPAWN),
         bk = pieceToIndex(Piece::BKING),
@@ -66,7 +76,12 @@ inline bool isBlack(Piece p) {
 }
 
 inline bool isSameColor(Piece p1, Piece p2) {
-    ENGINE_ASSERT(p1 != Piece::EMPTY);
-    ENGINE_ASSERT(p2 != Piece::EMPTY);
+    if (p1 == Piece::EMPTY) {
+        ENGINE_FATAL(DebugCategory::PIECE, "empty piece does not have a color");
+    }
+    if (p2 == Piece::EMPTY) {
+        ENGINE_FATAL(DebugCategory::PIECE, "empty piece does not have a color");
+    }
+    
     return isWhite(p1) == isWhite(p2);
 }
