@@ -237,9 +237,9 @@ public:
         if (!(categoryMask & (1u << int(cat)))) return;
 
         std::ostringstream oss;
-        oss << "[" << std::left << std::setw(7) << categoryToStr(cat)
+        oss << "[" << std::left << std::setw(10) << categoryToStr(cat)
             << "][" << std::setw(5) << levelToStr(lvl)
-            << "][" << std::setw(20) << (std::string(file) + ":" + std::to_string(line))
+            << "][" << std::setw(100) << (std::string(file) + ":" + std::to_string(line))
             << "][" << std::setw(12) << func << "] ";
         (oss << ... << std::forward<Args>(args)); // fold expression
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <ostream>
 #include "board/Board.h"
 #include "board/Piece.h"
@@ -48,4 +49,41 @@ inline std::ostream& operator<<(std::ostream& os, const Player player) {
 
 inline std::ostream& operator<<(std::ostream& os, const Piece p) {
     return os << pieceToChar(p);
+}
+
+template <typename T>
+struct Table {
+    std::vector<std::string> titles;      // 標題列
+    std::vector<std::vector<T>> rows;     // 內容列
+
+    // 設定標題
+    void setTitles(const std::vector<std::string>& t) { titles = t; }
+
+    // 新增一行
+    void addRow(const std::vector<T>& row) { rows.push_back(row); }
+
+    // 設定欄寬 (預設 12)
+    size_t colWidth = 12;
+};
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Table<T>& table) {
+    os << std::left;
+
+    // 標題列
+    for (const auto& title : table.titles)
+        os << std::setw(table.colWidth) << title;
+    os << "\n";
+
+    // 分隔線
+    os << std::string(table.colWidth * table.titles.size(), '-') << "\n";
+
+    // 內容列
+    for (const auto& row : table.rows) {
+        for (const auto& cell : row)
+            os << std::setw(table.colWidth) << cell;
+        os << "\n";
+    }
+
+    return os;
 }

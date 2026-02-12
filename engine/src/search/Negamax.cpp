@@ -24,6 +24,9 @@ static const int MAX_QS_DEPTH = 6;
 bool startDebug = 0;
 bool exactDebug = 0;
 
+int totalMoves = 0;
+int betaCutAtMove[5] = {};
+
 int quietscenceNodes = 0;
 int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
     quietscenceNodes++;
@@ -106,6 +109,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     // 生成所有走法
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, player, moves);
+    totalMoves += nMoves;
 
     // 檢查 checkmate / stalemate
     if (nMoves == 0) {
@@ -120,7 +124,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
 
-        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 && i >= 4 && searchDepth >= 1) {
+        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 && i >= 6 && searchDepth >= 1) {
             searchDepth -= 1;
         }
 
@@ -132,6 +136,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
             // cutoff 存 LOWER
             storeTT(board.zobristKey, depth, beta, LOWER, move);
 
+            betaCutAtMove[(i >= 4 ? 4 : i)]++;
             return beta;
         }
         if (score > alpha) alpha = score;
@@ -158,6 +163,7 @@ int lstPorbeTTTimes = 0;
 int lstttProbe = 0;
 int lstttHit = 0;
 int lstttCut = 0;
+int lsttotalMoves = 0;
 SearchResult negamaxRoot(Board &board, int depth, Player player) {
     SearchResult finalRes;
     finalRes.bestScore = -INF;
@@ -187,20 +193,6 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
             }
         }
 
-        // 輸出節點數
-        if (d == depth) {
-            LOG_INFO(DebugCategory::SEARCH, "negamaxNodes = ", negamaxNodes);
-            LOG_INFO(DebugCategory::SEARCH, "qquietscenceNodes ", quietscenceNodes);
-            LOG_INFO(DebugCategory::SEARCH, "ttProbe = ", ttProbe);
-            LOG_INFO(DebugCategory::SEARCH, "ttCut = ", ttCut);
-            LOG_INFO(DebugCategory::SEARCH, "ttHit = ", ttHit);
-        }
-        lstNegamaxNodes = negamaxNodes;
-        lstQuietscenceNodes = quietscenceNodes;
-        lstttProbe = ttProbe;
-        lstttCut = ttCut;
-        lstttHit = ttHit;
-
         // iterative
         for (int i = 0; i < nMoves; i++) {
             if (moves[i] == res.bestMove) {
@@ -211,6 +203,23 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
 
         finalRes = res;
     }
+
+    Table<std::string> outputTable;
+    outputTable.colWidth = 25;
+    outputTable.setTitles({"item", "result"});
+    outputTable.addRow({"Negamax nodes", std::to_string(negamaxNodes)});
+    outputTable.addRow({"QuietScence nodes", std::to_string(quietscenceNodes)});
+    outputTable.addRow({"tt Probe times", std::to_string(ttProbe)});
+    outputTable.addRow({"tt Cut times", std::to_string(ttCut)});
+    outputTable.addRow({"tt Hit times", std::to_string(ttHit)});
+    outputTable.addRow({"average move / node", std::to_string((double)totalMoves / negamaxNodes)});
+    outputTable.addRow({"betaCut at move1", std::to_string(betaCutAtMove[0])});
+    outputTable.addRow({"betaCut at move2", std::to_string(betaCutAtMove[1])});
+    outputTable.addRow({"betaCut at move3", std::to_string(betaCutAtMove[2])});
+    outputTable.addRow({"betaCut at move4", std::to_string(betaCutAtMove[3])});
+    outputTable.addRow({"betaCut after move5", std::to_string(betaCutAtMove[4])});
+
+    LOG_INFO(DebugCategory::SEARCH, "search result: \n", outputTable);
 
     return finalRes;
 }

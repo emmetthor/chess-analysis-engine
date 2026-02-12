@@ -74,7 +74,7 @@ int main() {
         LOG_INFO(DebugCategory::BOARD, "best move: ", best);
         LOG_INFO(DebugCategory::BOARD, "score: ", score);
         LOG_INFO(DebugCategory::BOARD, "spent: ", duration, "ms");
-
+        
         makeMove(board, best);
 
         LOG_INFO(DebugCategory::BOARD, "current board: ", '\n', board);
