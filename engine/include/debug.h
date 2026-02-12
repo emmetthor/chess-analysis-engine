@@ -243,7 +243,7 @@ public:
             << "][" << std::setw(12) << func << "] ";
         (oss << ... << std::forward<Args>(args)); // fold expression
 
-        std::cout << oss.str() << '\n';
+        std::cerr << oss.str() << '\n';
     }
 
     template <typename... Args>
