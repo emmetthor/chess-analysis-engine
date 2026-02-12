@@ -89,3 +89,16 @@ int evaluatePieceSquare(Piece p, Position pp) {
 
     return 0;
 }
+
+int computePST(const Board board) {
+    int res = 0;
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            Piece p = board.board[r][c];
+            if (p == Piece::EMPTY) continue;
+
+            res += evaluatePieceSquare(p, {r, c}) * (isWhite(p) ? 1 : -1);
+        }
+    }
+    return res;
+}

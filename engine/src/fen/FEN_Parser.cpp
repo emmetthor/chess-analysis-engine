@@ -2,13 +2,18 @@
 #include "debug.h"
 #include "Structure_IO.h"
 #include "search/Zobrist.h"
+#include "evaluate/Material_Point.h"
+#include "evaluate/PST.h"
 #include <iostream>
 
 Board cinFenToBoard() {
     Board board;
 
     std::string boardStr, player, castling, enpass, halfmove, fullmove;
-    ENGINE_ASSERT(std::cin >> boardStr >> player >> castling >> enpass >> halfmove >> fullmove);
+    if (!(std::cin >> boardStr >> player >> castling >> enpass >> halfmove >> fullmove)) {
+        LOG_ERROR(DebugCategory::BOARD, "FEN is incomplete.");
+        ENGINE_ASSERT(0);
+    }
 
     int row = 0, col = 0;
     for (auto c : boardStr) {
@@ -47,6 +52,9 @@ Board cinFenToBoard() {
         }
     }
 
+    // 初始化分析參數
+    board.materialScore = computePieceValue(board);
+    board.PSTScore = computePST(board);
     board.zobristKey = computeZobrist(board, board.player);
 
     return board;

@@ -4,3 +4,5 @@
 #include "board/Board.h"
 
 int pieceValue(const Piece p);
+
+int computePieceValue(const Board board);
