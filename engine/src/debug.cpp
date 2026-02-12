@@ -25,6 +25,7 @@ const char* Debug::categoryToStr(DebugCategory cat) {
         case DebugCategory::SEARCH:     return "SEARCH";
         case DebugCategory::ATK:        return "ATK";
         case DebugCategory::GENERATE:   return "GENERATE";
+        case DebugCategory::PIECE:      return "PIECE";
     }
     return "UNK";
 }
