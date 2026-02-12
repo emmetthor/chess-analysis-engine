@@ -310,7 +310,7 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 6}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 5}, opponent(player)) == false &&
-                (board.castleRights & 0b1000) == 1
+                (board.castleRights & 0b1000)
             ) {
                 return true;
             }
@@ -324,7 +324,7 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 isSquareAttacked(board, {7, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 2}, opponent(player)) == false &&
                 isSquareAttacked(board, {7, 3}, opponent(player)) == false &&
-                (board.castleRights & 0b0100) == 1
+                (board.castleRights & 0b0100)
             ) {
                 return true;
             }
@@ -339,7 +339,7 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 6}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 5}, opponent(player)) == false &&
-                (board.castleRights & 0b0010) == 1
+                (board.castleRights & 0b0010)
             ) {
                 return true;
             }
@@ -353,7 +353,7 @@ bool isCastleLegal(const Board &board, const Move &move) {
                 isSquareAttacked(board, {0, 4}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 2}, opponent(player)) == false &&
                 isSquareAttacked(board, {0, 3}, opponent(player)) == false &&
-                (board.castleRights & 0b0001) == 1
+                (board.castleRights & 0b0001)
             ) {
                 return true;
             }

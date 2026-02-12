@@ -1,5 +1,7 @@
 #include "evaluate/Material_Point.h"
 
+#include "board/Board.h"
+
 int pieceValue(const Piece p) {
     switch (p) {
     case Piece::WKING:
@@ -28,4 +30,19 @@ int pieceValue(const Piece p) {
     }
 
     return 0;
+}
+
+int computePieceValue(const Board board) {
+    int res = 0;
+    
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            Piece p = board.board[r][c];
+            if (p == Piece::EMPTY) continue;
+
+            res += pieceValue(p) * (isWhite(p) ? 1 : -1);
+        }
+    }
+
+    return res;
 }

@@ -1,24 +1,10 @@
-#include "board/Board.h"
-#include "board/Piece.h"
-#include "move/Move.h"
-#include "board/Attack.h"
-#include "move/Generate_Move.h"
-#include "move/Make_Move.h"
-#include "board/Check.h"
-#include "pgn/Pgn_Parser.h"
-#include "evaluate/Evaluate.h"
-#include "search/Negamax.h"
-#include "debug.h"
-#include "Structure_IO.h"
-
-#include <iostream>
-#include <chrono>
-#include <algorithm>
+#include "Engine.h"
+#include "UCI/UCI.h"
 
 int main() {
     Debug::level = DebugLevel::INFO;
-    LOG_INFO(DebugCategory::BOARD, "Engine start");
-    LOG_INFO(DebugCategory::BOARD, "input PGN:...");
+    LOG_INFO(DebugCategory::BOARD, "engine start");
+    Engine engine;
 
 //     PGN pgn;
 //     pgn.cinPgnToSan();

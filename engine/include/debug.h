@@ -217,7 +217,7 @@
 #endif
 
 enum class DebugLevel { INFO, DEBUG, WARN, ERROR };
-enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH, ATK, GENERATE};
+enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH, ATK, GENERATE, PIECE};
 
 class Debug {
 public:
@@ -243,13 +243,35 @@ public:
             << "][" << std::setw(12) << func << "] ";
         (oss << ... << std::forward<Args>(args)); // fold expression
 
+        std::cerr << oss.str() << '\n';
+    }
+
+    template <typename... Args>
+    [[noreturn]] static void fatal(
+        DebugCategory cat,
+        const char* file,
+        int line,
+        const char* func,
+        Args&&... args
+    ) {
+        std::ostringstream oss;
+        oss << "[" << std::left << std::setw(7) << categoryToStr(cat)
+            << "][" << std::setw(20) << (std::string(file) + ":" + std::to_string(line))
+            << "][" << std::setw(12) << func << "] ";
+        (oss << ... << std::forward<Args>(args)); // fold expression
+
         std::cout << oss.str() << '\n';
+
+        std::abort();
     }
 
 private:
     static const char* levelToStr(DebugLevel lvl);
     static const char* categoryToStr(DebugCategory cat);
 };
+
+#define ENGINE_FATAL(cat, ...)\
+    Debug::fatal(cat, __FILE__, __LINE__, __func__, __VA_ARGS__)
 
 #if ENGINE_DEBUG
 #define LOG_DEBUG(cat, ...) \
