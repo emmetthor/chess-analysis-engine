@@ -5,14 +5,15 @@
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
 #include <iostream>
+#include <sstream>
 
-Board cinFenToBoard() {
+Board cinFenToBoard(const std::string &fen) {
     Board board;
 
+    std::istringstream iss(fen);
     std::string boardStr, player, castling, enpass, halfmove, fullmove;
-    if (!(std::cin >> boardStr >> player >> castling >> enpass >> halfmove >> fullmove)) {
-        LOG_ERROR(DebugCategory::BOARD, "FEN is incomplete.");
-        ENGINE_ASSERT(0);
+    if (!(iss >> boardStr >> player >> castling >> enpass >> halfmove >> fullmove)) {
+        ENGINE_FATAL(DebugCategory::BOARD, "FEN is incomplete.");
     }
 
     int row = 0, col = 0;
@@ -48,7 +49,7 @@ Board cinFenToBoard() {
         case 'k': board.castleRights |= 0b0010; break;
         case 'q': board.castleRights |= 0b0001; break;
         case '-': break;
-        default:  ENGINE_ASSERT(c == 'K' || c == 'Q' || c == 'k' || c == 'q'); break;
+        default:  ENGINE_FATAL(DebugCategory::BOARD, "FEN castling is incomplete.", c); break;
         }
     }
 
@@ -56,6 +57,6 @@ Board cinFenToBoard() {
     board.materialScore = computePieceValue(board);
     board.PSTScore = computePST(board);
     board.zobristKey = computeZobrist(board, board.player);
-
+    
     return board;
 }

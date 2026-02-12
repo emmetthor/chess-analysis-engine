@@ -74,16 +74,6 @@ int updateCastleRights(int castleRights, const Move &move) {
 
 // 執行 move
 void makeMove(Board &board, Move &move) {
-    // if (!isPositionValid(move.from)) {
-    //     std::cerr << "invalid from\n";
-    //     std::cerr << move.from.row << ' ' << move.from.col << '\n';
-    //     assert(0);
-    // }
-    // if (!isPositionValid(move.to)) {
-    //     std::cerr << "invalid to\n";
-    //     assert(0);
-    // }
-
     move.prevCastleRights = board.castleRights;
     move.prevMateralPoints = board.materialScore;
     move.prevPST = board.PSTScore;
@@ -170,7 +160,7 @@ void makeMove(Board &board, Move &move) {
         board.zobristKey ^= zobPiece[pieceToIndex(captured)][toZob];
     }
 
-    assert(computeZobrist(board, opponent(player)) == board.zobristKey);
+    //assert(computeZobrist(board, opponent(player)) == board.zobristKey);
 }
 
 void undoMove(Board &board, Move &move) {

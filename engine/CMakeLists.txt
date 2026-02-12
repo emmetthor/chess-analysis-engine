@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(include)
 
 # add_definitions(-D_GLIBCXX_DEBUG)
-# add_definitions(-DENGINE_DEBUG)
+add_definitions(-DENGINE_DEBUG)
 
 # 目標檔案
 set(SOURCE_FILES
@@ -41,8 +41,12 @@ set(SOURCE_FILES
 
     src/fen/FEN_Parser.cpp
 
+    src/UCI/UCI.cpp
+    src/UCI/UCI_Move_Parser.cpp
+
     src/debug.cpp
     src/main.cpp
+    src/Engine.cpp
 )
 
 # 建立執行檔
