@@ -20,25 +20,46 @@ const int INF = 1e9;
 int evaluate(Board &board, const Player player) {
 }
 
-int boardEvaluate(const Board &board, bool quick = false) {
+int boardEvaluate(const Board &board, EVALUATE_MODE m) {
     int res = 0;
+    switch (m) {
+    case EVALUATE_MODE::POSITION:
+        res += evaluateKingSafety(board, Player::WHITE);
+        res -= evaluateKingSafety(board, Player::BLACK);
 
-    res += board.materialScore;
-    res += board.PSTScore;
-    res += evaluateCastleRights(board);
+        res += evaluateKnightMobility(board, Player::WHITE);
+        res -= evaluateKnightMobility(board, Player::BLACK);
+        res += evaluateBishopMobility(board, Player::WHITE);
+        res -= evaluateBishopMobility(board, Player::BLACK);
+        res += evaluateRookMobility(board, Player::WHITE);
+        res -= evaluateRookMobility(board, Player::BLACK);
 
-    if (quick) return res;
+        res += evaluateCastleRights(board);
 
-    // slow
-    res += evaluateKingSafety(board, Player::WHITE);
-    res -= evaluateKingSafety(board, Player::BLACK);
-
-    res += evaluateKnightMobility(board, Player::WHITE);
-    res -= evaluateKnightMobility(board, Player::BLACK);
-    res += evaluateBishopMobility(board, Player::WHITE);
-    res -= evaluateBishopMobility(board, Player::BLACK);
-    res += evaluateRookMobility(board, Player::WHITE);
-    res -= evaluateRookMobility(board, Player::BLACK);
+        break;
     
+    case EVALUATE_MODE::QUICK:
+        res += board.materialScore;
+        res += board.PSTScore;
+
+        break;
+
+    case EVALUATE_MODE::FULL:
+        res += evaluateKingSafety(board, Player::WHITE);
+        res -= evaluateKingSafety(board, Player::BLACK);
+
+        res += evaluateKnightMobility(board, Player::WHITE);
+        res -= evaluateKnightMobility(board, Player::BLACK);
+        res += evaluateBishopMobility(board, Player::WHITE);
+        res -= evaluateBishopMobility(board, Player::BLACK);
+        res += evaluateRookMobility(board, Player::WHITE);
+        res -= evaluateRookMobility(board, Player::BLACK);
+
+        res += evaluateCastleRights(board);
+        
+        res += board.materialScore;
+        res += board.PSTScore;
+    }
+
     return res;
 }

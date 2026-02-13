@@ -30,7 +30,7 @@ int betaCutAtMove[5] = {};
 int quietscenceNodes = 0;
 int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
     quietscenceNodes++;
-    int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, 1);
+    int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, EVALUATE_MODE::FULL);
     if (standerdPoint >= beta) return beta;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
@@ -54,9 +54,9 @@ int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
         makeMove(board, move);
 
         int score = 0;
-        if (!isInCheck(board, player)) {
-            score = -quietscence(board, -beta, -alpha, opponent(player), depth + 1);
-        }
+        ENGINE_ASSERT(!isInCheck(board, player));
+        score = -quietscence(board, -beta, -alpha, opponent(player), depth + 1);
+
         undoMove(board, move);
 
         if (score >= beta) return beta;
@@ -130,7 +130,6 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
             if (i >= 6) {
                 searchDepth = depth - 2;
             }
-            else if (i >= 10) searchDepth = depth - 3;
         }
 
         int score = 0;
@@ -184,6 +183,8 @@ SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
+
+        std::cout << move << '\n';
 
         // 遞迴下一層
         makeMove(board, move);
