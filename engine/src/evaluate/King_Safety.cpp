@@ -17,14 +17,16 @@ int evaluateKingSafety(const Board &board, Player player) {
 
     int danger = 0;
 
-    for (auto dr : {-1, -1, -1, 0, 1, 1, 1, 0}) {
-        for (auto dc : {-1, 0, 1, 1, -1, 0, 1, -1}) {
-            Position p = {kingPos.row + dr, kingPos.col + dc};
-            if (!isInBoard(p)) continue;
+    int dr[] = {-1, -1, -1, 0, 1, 1, 1, 0};
+    int dc[] = {-1, 0, 1, 1, -1, 0, 1, -1};
 
-            danger += countSquareAttacks(board, p, opponent(player));
-        }
+    for (int i = 0; i < 8; i++) {
+        Position p = {kingPos.row + dr[i], kingPos.col + dc[i]};
+        if (!isInBoard(p)) continue;
+
+        danger += countSquareAttacks(board, p, opponent(player));
     }
+
 
     return -danger * 8;
 }
