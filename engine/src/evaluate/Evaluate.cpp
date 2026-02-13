@@ -9,6 +9,7 @@
 #include "evaluate/PST.h"
 #include "evaluate/King_Safety.h"
 #include "evaluate/Mobility.h"
+#include "evaluate/Castle_Rights.h"
 
 #include "debug.h"
 
@@ -24,6 +25,7 @@ int boardEvaluate(const Board &board, bool quick = false) {
 
     res += board.materialScore;
     res += board.PSTScore;
+    res += evaluateCastleRights(board);
 
     if (quick) return res;
 

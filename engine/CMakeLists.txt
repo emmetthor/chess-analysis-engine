@@ -30,6 +30,7 @@ set(SOURCE_FILES
     src/evaluate/King_Safety.cpp
     src/evaluate/SEE.cpp
     src/evaluate/Mobility.cpp
+    src/evaluate/Castle_Rights.cpp
 
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp
