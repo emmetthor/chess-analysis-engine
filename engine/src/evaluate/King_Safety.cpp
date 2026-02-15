@@ -1,15 +1,17 @@
 #include "board/Attack.h"
 #include "evaluate/King_Safety.h"
 #include "pgn/Pgn_Transformer.h"
+#include "Structure_IO.h"
+
+#include <iostream>
 
 Position findKing(const Board &board, Player player) {
     Piece king = makePiece(player, 'K');
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            if (board.at({r, c}) == king) return {r, c};
-        }
-    }
-    return {-1,-1}; // 沒找到
+    int kingIndex = pieceToIndex(king);
+    int kingCount = board.pieceCount[kingIndex];
+    const Position *posArray = board.piecePos[kingIndex];
+
+    return posArray[0];
 }
 
 int evaluateKingSafety(const Board &board, Player player) {

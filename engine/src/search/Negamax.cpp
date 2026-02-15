@@ -52,6 +52,7 @@ int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
         if (!move.isPromotion && pieceValue(move.movePiece) >= pieceValue(captured) + 200) continue;
 
         makeMove(board, move);
+        std::cout << depth << ' ' << move << '\n';
 
         int score = 0;
         ENGINE_ASSERT(!isInCheck(board, player));
@@ -134,6 +135,9 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
 
         int score = 0;
         makeMove(board, move);
+
+        std::cout << "nega move: " << move << '\n';
+        std::cout << board << '\n';
         if (i == 0) {
             // 第一步全搜
             score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
@@ -186,6 +190,8 @@ SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player
 
         // 遞迴下一層
         makeMove(board, move);
+        std::cout << "root move: " << move << '\n';
+        ENGINE_ASSERT(!isInCheck(board, player));
         int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
         undoMove(board, move);
 

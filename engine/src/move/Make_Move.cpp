@@ -180,6 +180,11 @@ void makeMove(Board &board, Move &move) {
 
     // 更新piecePos
 
+    if (captured != Piece::EMPTY) {
+        int captureIndex = pieceToIndex(captured);
+        board.piecePosDelete(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
+    }
+
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
         // castleMove 完成
     }
@@ -197,10 +202,7 @@ void makeMove(Board &board, Move &move) {
         board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.to);
     }
 
-    if (captured != Piece::EMPTY) {
-        int captureIndex = pieceToIndex(captured);
-        board.piecePosDelete(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
-    }
+    ENGINE_ASSERT(validatePiecePos(board));
 }
 
 void undoMove(Board &board, Move &move) {
@@ -253,4 +255,6 @@ void undoMove(Board &board, Move &move) {
         int captureIndex = pieceToIndex(captured);
         board.piecePosAdd(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
     }
+
+    ENGINE_ASSERT(validatePiecePos(board));
 }

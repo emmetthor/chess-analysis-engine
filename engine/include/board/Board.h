@@ -75,6 +75,27 @@ struct Board {
     int castleRights;
     uint64_t zobristKey;
 
-    void piecePosDelete(Position *posArray, int &count, const Position &target);
-    void piecePosAdd(Position *posArray, int &count, const Position &add);
+    inline void piecePosDelete(Position *posArray, int &count, const Position &target) {
+        for (int i = 0; i < count; i++) {
+            if (posArray[i] == target) {
+                posArray[i] = posArray[count - 1];
+                count--;
+                return;
+            }
+        }
+
+        ENGINE_FATAL(DebugCategory::BOARD, "can't find piece position");
+    }
+    inline void piecePosAdd(Position *posArray, int &count, const Position &add) {
+        posArray[count++] = add;
+    }
+
+    inline const Position* getPiecePos(Piece p) const {
+        return piecePos[pieceToIndex(p)];
+    }
+    inline const int getPieceCount(Piece p) const {
+        return pieceCount[pieceToIndex(p)];
+    }
 };
+
+bool validatePiecePos(const Board &b);

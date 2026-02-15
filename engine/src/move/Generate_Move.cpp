@@ -27,26 +27,22 @@ int generatePieceMoves(
     Move move;
     move.player = player;
     move.movePiece = movePiece;
+    int pieceCount = board.getPieceCount(movePiece);
+    const auto *posArray = board.getPiecePos(movePiece);
 
     Position posBuffer[30];
             
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            Position pos = {r, c};
-            Piece p = board.at(pos);
+    for (int i = 0; i < pieceCount; i++) {
+        Position pos = posArray[i];
+        move.from = pos;
 
-            if (p != movePiece) continue;
+        int n = generatePiecePosFromPos(board, pos, movePiece, posBuffer);
 
-            move.from = pos;
+        for (int i = 0; i < n; i++) {
+            move.to = posBuffer[i];
+            move.capturePiece = board.at({move.to});
 
-            int n = generatePiecePosFromPos(board, pos, movePiece, posBuffer);
-
-            for (int i = 0; i < n; i++) {
-                move.to = posBuffer[i];
-                move.capturePiece = board.at({move.to});
-
-                buffer[cnt++] = move;
-            }
+            buffer[cnt++] = move;
         }
     }
 
@@ -66,26 +62,22 @@ int generatePieceCapture(
     Move move;
     move.player = player;
     move.movePiece = movePiece;
+    int pieceCount = board.getPieceCount(movePiece);
+    const auto *posArray = board.getPiecePos(movePiece);
 
     Position posBuffer[30];
             
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            Position pos = {r, c};
-            Piece p = board.at(pos);
+    for (int i = 0; i < pieceCount; i++) {
+        Position pos = posArray[i];
+        move.from = pos;
 
-            if (p != movePiece) continue;
+        int n = generatePieceCaptureFromPos(board, pos, movePiece, posBuffer);
 
-            move.from = pos;
+        for (int i = 0; i < n; i++) {
+            move.to = posBuffer[i];
+            move.capturePiece = board.at({move.to});
 
-            int n = generatePieceCaptureFromPos(board, pos, movePiece, posBuffer);
-
-            for (int i = 0; i < n; i++) {
-                move.to = posBuffer[i];
-                move.capturePiece = board.at({move.to});
-
-                buffer[cnt++] = move;
-            }
+            buffer[cnt++] = move;
         }
     }
 
@@ -118,64 +110,63 @@ int generateAllMoves(
     int dr = (player == Player::WHITE ? -1 : 1);
     int startRank = (player == Player::WHITE ? 6 : 1);
     int promoteRank = (player == Player::WHITE ? 0 : 7);
+    int pawnCount = board.getPieceCount(pawn);
+    const auto *posArray = board.getPiecePos(pawn);
 
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            if (board.at({r, c}) != pawn) continue;
+    for (int i = 0; i < pawnCount; i++) {
+        auto [r, c] = posArray[i];
+        Move move;
+        move.player = player;
+        move.from = posArray[i];
+        move.movePiece = pawn;
+        move.isPromotion = 0;
 
-            Move move;
-            move.player = player;
-            move.from = {r, c};
-            move.movePiece = pawn;
-            move.isPromotion = 0;
+        // 一步
+        move.to = {r + dr, c};
+        move.capturePiece = board.at(move.to);
 
-            // 一步
-            move.to = {r + dr, c};
-            move.capturePiece = board.at(move.to);
-
-            if (isInBoard(move.to) && move.capturePiece == Piece::EMPTY) {
-                if (move.to.row == promoteRank) {
-                    for (auto promo : {knight, bishop, rook, queen}) {
-                        move.isPromotion = 1;
-                        move.promotionPiece = promo;
-                        buffer[cnt++] = move;
-                    }
-                    move.isPromotion = 0;
-                } else {
+        if (isInBoard(move.to) && move.capturePiece == Piece::EMPTY) {
+            if (move.to.row == promoteRank) {
+                for (auto promo : {knight, bishop, rook, queen}) {
+                    move.isPromotion = 1;
+                    move.promotionPiece = promo;
                     buffer[cnt++] = move;
                 }
+                move.isPromotion = 0;
+            } else {
+                buffer[cnt++] = move;
             }
+        }
 
-            // 兩步
-            if (r == startRank) {
-                move.to = {r + 2 * dr, c};
-                Position mid = {r + dr, c};
+        // 兩步
+        if (r == startRank) {
+            move.to = {r + 2 * dr, c};
+            Position mid = {r + dr, c};
 
-                if (isInBoard(move.to) && board.at(move.to) == Piece::EMPTY && board.at(mid) == Piece::EMPTY) {
-                    move.capturePiece = Piece::EMPTY; // 兩步不能 capture
-                    buffer[cnt++] = move;
-                }
+            if (isInBoard(move.to) && board.at(move.to) == Piece::EMPTY && board.at(mid) == Piece::EMPTY) {
+                move.capturePiece = Piece::EMPTY; // 兩步不能 capture
+                buffer[cnt++] = move;
             }
+        }
 
-            // capture
-            for (int dc : {-1, 1}) {
-                Position to = {r + dr, c + dc};
-                if (!isInBoard(to)) continue;
-                if (board.at(to) == Piece::EMPTY) continue;
-                if (isSameColor(board.at(to), pawn)) continue;
+        // capture
+        for (int dc : {-1, 1}) {
+            Position to = {r + dr, c + dc};
+            if (!isInBoard(to)) continue;
+            if (board.at(to) == Piece::EMPTY) continue;
+            if (isSameColor(board.at(to), pawn)) continue;
 
-                move.to = to;
-                move.capturePiece = board.at(to);
-                if (to.row == promoteRank) {
-                    for (auto promo : {knight, bishop, rook, queen}) {
-                        move.isPromotion = 1;
-                        move.promotionPiece = promo;
-                        buffer[cnt++] = move;
-                    }
-                    move.isPromotion = 0;
-                } else {
+            move.to = to;
+            move.capturePiece = board.at(to);
+            if (to.row == promoteRank) {
+                for (auto promo : {knight, bishop, rook, queen}) {
+                    move.isPromotion = 1;
+                    move.promotionPiece = promo;
                     buffer[cnt++] = move;
                 }
+                move.isPromotion = 0;
+            } else {
+                buffer[cnt++] = move;
             }
         }
     }
@@ -223,38 +214,37 @@ int generateCaptureMoves(
     int dr = (player == Player::WHITE ? -1 : 1);
     int startRank = (player == Player::WHITE ? 6 : 1);
     int promoteRank = (player == Player::WHITE ? 0 : 7);
+    int pawnCount = board.getPieceCount(pawn);
+    const auto *posArray = board.getPiecePos(pawn);
 
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            if (board.at({r, c}) != pawn) continue;
+    for (int i = 0; i < pawnCount; i++) {
+        auto [r, c] = posArray[i];
+        Move move;
+        move.player = player;
+        move.from = {r, c};
+        move.movePiece = pawn;
+        move.isPromotion = 0;
 
-            Move move;
-            move.player = player;
-            move.from = {r, c};
-            move.movePiece = pawn;
-            move.isPromotion = 0;
+        // capture
+        for (int dc : {-1, 1}) {
+            Position to = {r + dr, c + dc};
+            if (!isInBoard(to)) continue;
 
-            // capture
-            for (int dc : {-1, 1}) {
-                Position to = {r + dr, c + dc};
-                if (!isInBoard(to)) continue;
+            Piece atPiece = board.at(to);
+            if (atPiece == Piece::EMPTY) continue;
+            if (isSameColor(atPiece, pawn)) continue;
 
-                Piece atPiece = board.at(to);
-                if (atPiece == Piece::EMPTY) continue;
-                if (isSameColor(atPiece, pawn)) continue;
-
-                move.to = to;
-                move.capturePiece = atPiece;
-                if (to.row == promoteRank) {
-                    for (auto promo : {knight, bishop, rook, queen}) {
-                        move.isPromotion = 1;
-                        move.promotionPiece = promo;
-                        buffer[cnt++] = move;
-                    }
-                    move.isPromotion = 0;
-                } else {
+            move.to = to;
+            move.capturePiece = atPiece;
+            if (to.row == promoteRank) {
+                for (auto promo : {knight, bishop, rook, queen}) {
+                    move.isPromotion = 1;
+                    move.promotionPiece = promo;
                     buffer[cnt++] = move;
                 }
+                move.isPromotion = 0;
+            } else {
+                buffer[cnt++] = move;
             }
         }
     }

@@ -41,6 +41,12 @@ void Board::init() {
         board[6][c] = Piece::WPAWN;
     }
 
+    for (int i = 1; i <= 12; i++) {
+        pieceCount[i] = 0;
+        for (int j = 0; j < 10; j++) {
+            piecePos[i][j] = {-1, -1};
+        }
+    }
     for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
             Piece p = board[r][c];
@@ -68,18 +74,17 @@ void Board::set(Position pos, Piece p) {
     board[pos.row][pos.col] = p;
 }
 
-void Board::piecePosDelete(Position *posArray, int &count, const Position &target) {
-    for (int i = 0; i < count; i++) {
-        if (posArray[i] == target) {
-            posArray[i] = posArray[count - 1];
-            count--;
-            return;
+bool validatePiecePos(const Board &b) {
+    for (int i=0;i<8;i++)
+        for (int j=0;j<8;j++) {
+            Piece p = b.board[i][j];
+            if (p==Piece::EMPTY) continue;
+            int idx = pieceToIndex(p);
+            bool found = false;
+            for (int k=0;k<b.pieceCount[idx];k++)
+                if (b.piecePos[idx][k] == Position{i,j})
+                    found = true;
+            if (!found) return false;
         }
-    }
-
-    ENGINE_FATAL(DebugCategory::BOARD, "can't find piece position: ", target, ' ', count);
-}
-
-void Board::piecePosAdd(Position *posArray, int &count, const Position &add) {
-    posArray[count++] = add;
+    return true;
 }
