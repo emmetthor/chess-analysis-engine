@@ -32,6 +32,14 @@ void castleMove(Board &board, Move &move) {
     board.zobristKey ^= zobPiece[pieceToIndex(c.kingPiece)][zobBoardPosition(c.kingTo)];
     board.zobristKey ^= zobPiece[pieceToIndex(c.rookPiece)][zobBoardPosition(c.rookFrom)];
     board.zobristKey ^= zobPiece[pieceToIndex(c.rookPiece)][zobBoardPosition(c.rookTo)];
+
+    int kingIndex = pieceToIndex(c.kingPiece);
+    int rookIndex = pieceToIndex(c.rookPiece);
+
+    board.piecePosDelete(board.piecePos[kingIndex], board.pieceCount[kingIndex], c.kingFrom);
+    board.piecePosAdd(board.piecePos[kingIndex], board.pieceCount[kingIndex], c.kingTo);
+    board.piecePosDelete(board.piecePos[rookIndex], board.pieceCount[rookIndex], c.rookFrom);
+    board.piecePosAdd(board.piecePos[rookIndex], board.pieceCount[rookIndex], c.rookTo);
 }
 
 // 還原入堡
@@ -43,6 +51,14 @@ void undoCastleMove(Board &board, Move &move) {
     board.set(c.kingTo,     Piece::EMPTY);
     board.set(c.rookFrom,   c.rookPiece);
     board.set(c.rookTo,     Piece::EMPTY);
+
+    int kingIndex = pieceToIndex(c.kingPiece);
+    int rookIndex = pieceToIndex(c.rookPiece);
+
+    board.piecePosDelete(board.piecePos[kingIndex], board.pieceCount[kingIndex], c.kingTo);
+    board.piecePosAdd(board.piecePos[kingIndex], board.pieceCount[kingIndex], c.kingFrom);
+    board.piecePosDelete(board.piecePos[rookIndex], board.pieceCount[rookIndex], c.rookTo);
+    board.piecePosAdd(board.piecePos[rookIndex], board.pieceCount[rookIndex], c.rookFrom);
 }
 
 int updateCastleRights(int castleRights, const Move &move) {
@@ -160,7 +176,31 @@ void makeMove(Board &board, Move &move) {
         board.zobristKey ^= zobPiece[pieceToIndex(captured)][toZob];
     }
 
-    //assert(computeZobrist(board, opponent(player)) == board.zobristKey);
+    //WARN assert(computeZobrist(board, opponent(player)) == board.zobristKey);
+
+    // 更新piecePos
+
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+        // castleMove 完成
+    }
+
+    else if (move.isPromotion) {
+        int moveIndex = pieceToIndex(moved);
+        int promotionIndex = pieceToIndex(move.promotionPiece);
+        board.piecePosDelete(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
+        board.piecePosAdd(board.piecePos[promotionIndex], board.pieceCount[promotionIndex], move.to);
+    }
+    
+    else {
+        int moveIndex = pieceToIndex(moved);
+        board.piecePosDelete(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
+        board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.to);
+    }
+
+    if (captured != Piece::EMPTY) {
+        int captureIndex = pieceToIndex(captured);
+        board.piecePosDelete(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
+    }
 }
 
 void undoMove(Board &board, Move &move) {
@@ -188,5 +228,29 @@ void undoMove(Board &board, Move &move) {
     else {
         board.set(move.from, moved);
         board.set(move.to, captured);
+    }
+
+    // 回復 piecePos
+
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+        // undoCastleMove 完成
+    }
+
+    else if (move.isPromotion) {
+        int moveIndex = pieceToIndex(moved);
+        int promotionIndex = pieceToIndex(move.promotionPiece);
+        board.piecePosDelete(board.piecePos[promotionIndex], board.pieceCount[promotionIndex], move.to);
+        board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
+    }
+
+    else {
+        int moveIndex = pieceToIndex(moved);
+        board.piecePosDelete(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.to);
+        board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
+    }
+
+    if (captured != Piece::EMPTY) {
+        int captureIndex = pieceToIndex(captured);
+        board.piecePosAdd(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
     }
 }

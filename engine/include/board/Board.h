@@ -60,6 +60,8 @@ struct Board {
     void set(Position pos, Piece p);
     
     Piece board[8][8];
+    Position piecePos[13][10];
+    int pieceCount[13] = {};
     int materialScore;
     int PSTScore;
     Player player;
@@ -72,4 +74,7 @@ struct Board {
     */
     int castleRights;
     uint64_t zobristKey;
+
+    void piecePosDelete(Position *posArray, int &count, const Position &target);
+    void piecePosAdd(Position *posArray, int &count, const Position &add);
 };

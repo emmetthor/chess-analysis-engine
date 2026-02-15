@@ -184,8 +184,6 @@ SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
 
-        std::cout << move << '\n';
-
         // 遞迴下一層
         makeMove(board, move);
         int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
