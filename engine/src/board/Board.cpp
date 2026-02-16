@@ -75,16 +75,17 @@ void Board::set(Position pos, Piece p) {
 }
 
 bool validatePiecePos(const Board &b) {
-    for (int i=0;i<8;i++)
-        for (int j=0;j<8;j++) {
-            Piece p = b.board[i][j];
-            if (p==Piece::EMPTY) continue;
-            int idx = pieceToIndex(p);
-            bool found = false;
-            for (int k=0;k<b.pieceCount[idx];k++)
-                if (b.piecePos[idx][k] == Position{i,j})
-                    found = true;
-            if (!found) return false;
+    for (int i = 1; i <= 12; i++) {
+        Piece p = Piece(i);
+        int cnt = b.getPieceCount(p);
+        for (int j = 0; j < cnt; j++) {
+            auto [r, c] = b.getPiecePos(p)[j];
+            if (b.board[r][c] != p) {
+                //std::cout << p << ' ' << r << ' ' << c << '\n' << b << '\n';
+                return false;
+            }
         }
+    }
+
     return true;
 }

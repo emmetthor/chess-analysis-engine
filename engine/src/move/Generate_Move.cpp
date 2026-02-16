@@ -90,6 +90,7 @@ int generateAllMoves(
     Move *buffer
 ) {
     ENGINE_ASSERT(isPlayerValid(player));
+    ENGINE_ASSERT(validatePiecePos(board));
 
     int cnt = 0;
     Piece 
@@ -194,6 +195,7 @@ int generateCaptureMoves(
     Move *buffer
 ) {
     ENGINE_ASSERT(isPlayerValid(player));
+    ENGINE_ASSERT(validatePiecePos(board));
     
     int cnt = 0;
     Piece 
@@ -264,6 +266,8 @@ int filterLegalMoves(
     int cnt = 0;
     Board copyBoard = board;
 
+    ENGINE_ASSERT(validatePiecePos(board));
+
     for (int i = 0; i < nAllMoves; i++) {
         Move &move = allMoves[i];
         //if (!isMoveLegal(board, move)) continue; 已經是正確的
@@ -290,6 +294,8 @@ int generateAllLegalMoves(
     Move *buffer
 ) {
     ENGINE_ASSERT(isPlayerValid(player));
+
+    //std::cout << "generate board:\n" << board << '\n';
 
     Move allMoves[2000];
     int nAll = generateAllMoves(board, player, allMoves);

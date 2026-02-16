@@ -181,6 +181,7 @@ void makeMove(Board &board, Move &move) {
     // 更新piecePos
 
     if (captured != Piece::EMPTY) {
+        //std::cout << "capture delete\n";
         int captureIndex = pieceToIndex(captured);
         board.piecePosDelete(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
     }
@@ -202,6 +203,7 @@ void makeMove(Board &board, Move &move) {
         board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.to);
     }
 
+    //std::cout << move << '\n';
     ENGINE_ASSERT(validatePiecePos(board));
 }
 

@@ -10,6 +10,7 @@
 #include "evaluate/King_Safety.h"
 #include "evaluate/Mobility.h"
 #include "evaluate/Castle_Rights.h"
+#include "evaluate/Pawn_Structure.h"
 
 #include "debug.h"
 
@@ -35,6 +36,7 @@ int boardEvaluate(const Board &board, EVALUATE_MODE m) {
         res -= evaluateRookMobility(board, Player::BLACK);
 
         res += evaluateCastleRights(board);
+        res += evaluatePawnStructure(board);
 
         break;
     

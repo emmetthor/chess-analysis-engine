@@ -31,6 +31,7 @@ set(SOURCE_FILES
     src/evaluate/SEE.cpp
     src/evaluate/Mobility.cpp
     src/evaluate/Castle_Rights.cpp
+    src/evaluate/Pawn_Structure.cpp
 
     src/pgn/Pgn_Parser.cpp
     src/pgn/Valid_Piece.cpp

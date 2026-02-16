@@ -40,6 +40,7 @@ Move parseUCIMove(const std::string strMove, const Board &board) {
     move.to = {8 - (strMove[3] - '0'), strMove[2] - 'a'};
     move.player = board.player;
     move.movePiece = board.at(move.from);
+    move.capturePiece = board.board[move.to.row][move.to.col];
 
     move = parseCastle(move, board);
 
