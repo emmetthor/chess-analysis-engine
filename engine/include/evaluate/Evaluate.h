@@ -9,7 +9,7 @@ enum class EVALUATE_MODE {
 
 class Evaluate {
 public:
-    int evaluateBoard(const Board &board, EVALUATE_MODE m);
+    int evaluateBoard(const Board &board, EVALUATE_MODE m) const;
 private:
     int kingSafetyWeight = 8;
     int knightMobilityWeight = 4;

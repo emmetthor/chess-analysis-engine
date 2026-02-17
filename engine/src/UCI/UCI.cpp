@@ -36,7 +36,7 @@ void handleGo(std::istringstream &iss, Engine &engine) {
         }
     }
 
-    Move move = engine.goDepth(depth);
+    Move move = engine.goDepth(depth, engine.eval);
 
     std::cout << "bestmove ";
     printUCIMove(move);

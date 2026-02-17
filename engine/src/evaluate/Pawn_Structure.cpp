@@ -10,7 +10,11 @@ const int ISOLATE_PENALTY = 15;
 const int PASS_WEIGHT = 30;
 const int PASS_RANK_WEIGHT[] = {0, 150, 80, 40, 20, 10, 5};
 
-int doublePawn(const Board &board, Player player, int doublePawnWeight) {
+int doublePawn(
+    const Board &board,
+    Player player,
+    const int doublePawnWeight
+) {
     int index = playerToIndex(player);
 
     int cnt = 0;
@@ -23,7 +27,11 @@ int doublePawn(const Board &board, Player player, int doublePawnWeight) {
     return -cnt * doublePawnWeight;
 }
 
-int isolatePawn(const Board &board, Player player, int isolatedPawnWeight) {
+int isolatePawn(
+    const Board &board,
+    Player player,
+    const int isolatedPawnWeight
+) {
     int index = playerToIndex(player);
 
     int cnt = 0;
@@ -40,7 +48,12 @@ int isolatePawn(const Board &board, Player player, int isolatedPawnWeight) {
     return -cnt * isolatedPawnWeight;
 }
 
-int passedPawn(const Board &board, Player player, int passPawnWeight, int *passPawnRankWeight) {
+int passedPawn(
+    const Board &board,
+    Player player,
+    const int passPawnWeight,
+    const int *passPawnRankWeight
+) {
     int index = playerToIndex(player);
     int oppoIndex = playerToIndex(opponent(player));
     Piece myPawn = makePiece(player, 'P');
@@ -71,7 +84,13 @@ int passedPawn(const Board &board, Player player, int passPawnWeight, int *passP
     return res;
 }
 
-int evaluatePawnStructure(const Board &board, int doublePawnWeight, int isolatedPawnWeight, int passedPawnWeight, int *passedPawnRankWeight) {
+int evaluatePawnStructure(
+    const Board &board,
+    const int doublePawnWeight,
+    const int isolatedPawnWeight,
+    const int passedPawnWeight,
+    const int *passedPawnRankWeight
+) {
     int wpCnt = board.getPieceCount(wp);
     int bpCnt = board.getPieceCount(bp);
     const auto *wpArray = board.getPiecePos(wp);

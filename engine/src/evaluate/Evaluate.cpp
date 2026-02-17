@@ -18,7 +18,7 @@
 
 const int INF = 1e9;
 
-int Evaluate::evaluateBoard(const Board &board, EVALUATE_MODE m) {
+int Evaluate::evaluateBoard(const Board &board, EVALUATE_MODE m) const {
     int res = 0;
     switch (m) {
     case EVALUATE_MODE::FULL:

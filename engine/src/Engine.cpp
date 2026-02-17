@@ -38,8 +38,8 @@ void Engine::setPlayer(Player player) {
     board.player = player;
 }
 
-Move Engine::goDepth(int depth) {
-    SearchResult result = negamaxRoot(board, depth, board.player);
+Move Engine::goDepth(int depth, Evaluate eval) {
+    SearchResult result = negamaxRoot(board, depth, board.player, eval);
     return result.bestMove;
 }
 

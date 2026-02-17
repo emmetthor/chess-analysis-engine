@@ -29,9 +29,9 @@ int totalMoves = 0;
 int betaCutAtMove[5] = {};
 
 int quietscenceNodes = 0;
-int quietscence(Board &board, int alpha, int beta, Player player, int ply) {
+int quietscence(Board &board, int alpha, int beta, Player player, int ply, const Evaluate &eval) {
     quietscenceNodes++;
-    int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, EVALUATE_MODE::FULL);
+    int standerdPoint = (player == Player::WHITE ? 1 : -1) * eval.evaluateBoard(board, EVALUATE_MODE::FULL);
     if (standerdPoint >= beta) return beta;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
@@ -57,7 +57,14 @@ int quietscence(Board &board, int alpha, int beta, Player player, int ply) {
 
         int score = 0;
         ENGINE_ASSERT(!isInCheck(board, player));
-        score = -quietscence(board, -beta, -alpha, opponent(player), ply + 1);
+        score = -quietscence(
+            board,
+            -beta,
+            -alpha,
+            opponent(player),
+            ply + 1,
+            eval
+        );
 
         undoMove(board, move);
 
@@ -72,7 +79,7 @@ int negamaxNodes = 0;
 int ttProbe = 0;
 int ttHit = 0;
 int ttCut = 0;
-int negamax(Board &board, int depth, int alpha, int beta, Player player, int ply) {
+int negamax(Board &board, int depth, int alpha, int beta, Player player, int ply, const Evaluate &eval) {
     negamaxNodes++;
 
     //TT表 記憶化搜索
@@ -107,7 +114,14 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player, int ply
 
     // depth = 0 進入QS
     if (depth == 0) {
-        return quietscence(board, alpha, beta, player, 0);
+        return quietscence(
+            board,
+            alpha,
+            beta,
+            player,
+            0,
+            eval
+        );
     }
 
     // 生成所有走法
@@ -145,11 +159,35 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player, int ply
 
         if (i == 0) {
             // 第一步全搜
-            score = -negamax(board, depth - 1, -beta, -alpha, opponent(player), ply + 1);
+            score = -negamax(
+                board,
+                depth - 1,
+                -beta,
+                -alpha,
+                opponent(player),
+                ply + 1,
+                eval
+            );
         } else {
-            score = -negamax(board, searchDepth, -alpha - 1, -alpha, opponent(player), ply + 1);
+            score = -negamax(
+                board,
+                searchDepth,
+                -alpha - 1,
+                -alpha,
+                opponent(player),
+                ply + 1,
+                eval
+            );
             if (score > alpha && score < beta) {
-                score = -negamax(board, depth - 1, -beta, -alpha, opponent(player), ply + 1);
+                score = -negamax(
+                    board,
+                    depth - 1,
+                    -beta,
+                    -alpha,
+                    opponent(player),
+                    ply + 1,
+                    eval
+                );
             }
         }
 
@@ -184,7 +222,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player, int ply
     return bestScore;
 }
 
-SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player player, Move iterativeMove, int ply) {
+SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player player, Move iterativeMove, int ply, const Evaluate &eval) {
     SearchResult res;
     res.bestScore = -INF;
 
@@ -202,7 +240,15 @@ SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player
         // 遞迴下一層
         makeMove(board, move);
         //ENGINE_ASSERT(!isInCheck(board, player));
-        int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player), ply + 1);
+        int score = -negamax(
+            board,
+            depth - 1,
+            -beta,
+            -alpha,
+            opponent(player),
+            ply + 1,
+            eval
+        );
         undoMove(board, move);
 
         if (score > res.bestScore) {
@@ -221,7 +267,7 @@ SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player
     return res;
 }
 
-SearchResult negamaxRoot(Board &board, int depth, Player player) {
+SearchResult negamaxRoot(Board &board, int depth, Player player, const Evaluate &eval) {
     auto startTime = std::chrono::steady_clock::now();
 
     SearchResult finalRes = {inValidMove, -INF};
@@ -231,7 +277,16 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         SearchResult currentRes = {inValidMove, -INF};
 
         if (d == 1) {
-            currentRes = searchRootCore(board, d, -INF, INF, player, finalRes.bestMove, 0);
+            currentRes = searchRootCore(
+                board,
+                d,
+                -INF,
+                INF,
+                player,
+                finalRes.bestMove,
+                0,
+                eval
+            );
         } else {
             // aspiration window
             int window = 30;
@@ -239,7 +294,16 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
             int beta = lastScore + window;
 
             while (true) {
-                currentRes = searchRootCore(board, d, alpha, beta, player, finalRes.bestMove, 0);
+                currentRes = searchRootCore(
+                    board,
+                    d,
+                    alpha,
+                    beta,
+                    player,
+                    finalRes.bestMove,
+                    0,
+                    eval
+                );
 
                 int score = currentRes.bestScore;
 
