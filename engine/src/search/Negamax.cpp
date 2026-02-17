@@ -7,6 +7,7 @@
 #include "board/Check.h"
 #include "search/Negamax.h"
 #include "search/TT.h"
+#include "search/Killer_Move.h"
 #include "evaluate/Evaluate.h"
 #include "evaluate/Material_Point.h"
 #include "move/Move_Order.h"
@@ -28,7 +29,7 @@ int totalMoves = 0;
 int betaCutAtMove[5] = {};
 
 int quietscenceNodes = 0;
-int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
+int quietscence(Board &board, int alpha, int beta, Player player, int ply) {
     quietscenceNodes++;
     int standerdPoint = (player == Player::WHITE ? 1 : -1) * boardEvaluate(board, EVALUATE_MODE::FULL);
     if (standerdPoint >= beta) return beta;
@@ -37,7 +38,8 @@ int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
     Move captureMoves[256];
     int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
 
-    sortMove(board, captureMoves, nCaptureMoves, inValidMove);
+    advanceMoves adv = {inValidMove, killerMove[0][ply], killerMove[1][ply]};
+    sortMove(board, captureMoves, nCaptureMoves, adv);
 
     if (nCaptureMoves == 0) {
         return alpha;
@@ -55,7 +57,7 @@ int quietscence(Board &board, int alpha, int beta, Player player, int depth) {
 
         int score = 0;
         ENGINE_ASSERT(!isInCheck(board, player));
-        score = -quietscence(board, -beta, -alpha, opponent(player), depth + 1);
+        score = -quietscence(board, -beta, -alpha, opponent(player), ply + 1);
 
         undoMove(board, move);
 
@@ -70,7 +72,7 @@ int negamaxNodes = 0;
 int ttProbe = 0;
 int ttHit = 0;
 int ttCut = 0;
-int negamax(Board &board, int depth, int alpha, int beta, Player player) {
+int negamax(Board &board, int depth, int alpha, int beta, Player player, int ply) {
     negamaxNodes++;
 
     //TT表 記憶化搜索
@@ -95,7 +97,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
             }
         }
         
-        if (isMoveLegal(board, tt.bestMove)) TTMove = tt.bestMove;
+        //if (isMoveLegal(board, tt.bestMove)) TTMove = tt.bestMove;
     }
 
     int oriAlpha = alpha;
@@ -120,37 +122,48 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
         else return 0;
     }
 
-    sortMove(board, moves, nMoves, TTMove);
+    advanceMoves adv = {TTMove, killerMove[0][ply], killerMove[1][ply]};
+    sortMove(board, moves, nMoves, adv);
 
     for (int i = 0; i < nMoves; i++) {
         int searchDepth = depth - 1;
         Move move = moves[i];
 
-        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3) {
-            if (i >= 6) {
-                searchDepth = depth - 2;
+        if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 && !isInCheck(board, player)) {
+            if (i >= 4) {
+                searchDepth--;
+            }
+
+            if (i >= 7) {
+                searchDepth--;
             }
         }
 
         int score = 0;
+
         makeMove(board, move);
 
         if (i == 0) {
             // 第一步全搜
-            score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
+            score = -negamax(board, depth - 1, -beta, -alpha, opponent(player), ply + 1);
         } else {
-            score = -negamax(board, searchDepth, -alpha - 1, -alpha, opponent(player));
+            score = -negamax(board, searchDepth, -alpha - 1, -alpha, opponent(player), ply + 1);
             if (score > alpha && score < beta) {
-                score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
+                score = -negamax(board, depth - 1, -beta, -alpha, opponent(player), ply + 1);
             }
         }
+
         undoMove(board, move);
 
         if (score >= beta) {
+            betaCutAtMove[(i >= 4 ? 4 : i)]++;
             // cutoff 存 LOWER
             storeTT(board.zobristKey, depth, beta, LOWER, move);
 
-            betaCutAtMove[(i >= 4 ? 4 : i)]++;
+            if (move.capturePiece == Piece::EMPTY) {
+                addKillerMove(move, ply);
+            }
+
             return beta;
         }
         if (score > alpha) alpha = score;
@@ -171,7 +184,7 @@ int negamax(Board &board, int depth, int alpha, int beta, Player player) {
     return bestScore;
 }
 
-SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player player, Move iterativeMove) {
+SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player player, Move iterativeMove, int ply) {
     SearchResult res;
     res.bestScore = -INF;
 
@@ -180,16 +193,16 @@ SearchResult searchRootCore(Board &board, int depth, int alpha, int beta, Player
     int nMoves = generateAllLegalMoves(board, player, moves);
 
     // 排序
-    sortMove(board, moves, nMoves, iterativeMove);
+    advanceMoves adv = {iterativeMove, killerMove[0][ply], killerMove[1][ply]};
+    sortMove(board, moves, nMoves, adv);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
 
         // 遞迴下一層
         makeMove(board, move);
-        //std::cout << "root move: " << move << '\n';
-        ENGINE_ASSERT(!isInCheck(board, player));
-        int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player));
+        //ENGINE_ASSERT(!isInCheck(board, player));
+        int score = -negamax(board, depth - 1, -beta, -alpha, opponent(player), ply + 1);
         undoMove(board, move);
 
         if (score > res.bestScore) {
@@ -218,7 +231,7 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
         SearchResult currentRes = {inValidMove, -INF};
 
         if (d == 1) {
-            currentRes = searchRootCore(board, d, -INF, INF, player, finalRes.bestMove);
+            currentRes = searchRootCore(board, d, -INF, INF, player, finalRes.bestMove, 0);
         } else {
             // aspiration window
             int window = 30;
@@ -226,7 +239,7 @@ SearchResult negamaxRoot(Board &board, int depth, Player player) {
             int beta = lastScore + window;
 
             while (true) {
-                currentRes = searchRootCore(board, d, alpha, beta, player, finalRes.bestMove);
+                currentRes = searchRootCore(board, d, alpha, beta, player, finalRes.bestMove, 0);
 
                 int score = currentRes.bestScore;
 

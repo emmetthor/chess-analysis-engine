@@ -16,7 +16,8 @@ int negamax(
     int depth,
     int alpha,
     int beta,
-    Player player
+    Player player,
+    int ply
 );
 
 SearchResult negamaxRoot(

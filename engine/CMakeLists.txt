@@ -40,6 +40,7 @@ set(SOURCE_FILES
     src/search/Negamax.cpp
     src/search/TT.cpp
     src/search/Zobrist.cpp
+    src/search/Killer_Move.cpp
 
     src/fen/FEN_Parser.cpp
 

@@ -6,18 +6,27 @@
 
 #include <algorithm>
 
-int evaluateMoveScore(const Board &board, Move &move, Move &TTMove) {
+const int TT_SCORE = 1000000;
+const int CAPTURE_SCORE = 500000;
+const int KILLER_1_SCORE = 400000;
+const int KILLER_2_SCORE = 300000;
+const int PROMOTION_SCORE = 750000;
+
+int evaluateMoveScore(const Board &board, Move &move, advanceMoves &advMove) {
     int score = 0;
 
-    if (move == TTMove) score += 1000000;
+    if (move == advMove.TTMove) score += TT_SCORE;
+    if (move == advMove.killer1) score += KILLER_1_SCORE;
+    if (move == advMove.killer2) score += KILLER_2_SCORE;
 
     if (move.isPromotion) {
         // 最先看
-        score += 10000;
+        score += PROMOTION_SCORE;
         score += pieceValue(move.promotionPiece);
     }
 
     if (move.capturePiece != Piece::EMPTY) {
+        score += CAPTURE_SCORE;
         score += pieceValue(move.capturePiece) * 100 - pieceValue(move.movePiece);
     }
     
@@ -26,12 +35,12 @@ int evaluateMoveScore(const Board &board, Move &move, Move &TTMove) {
     return score;
 }
 
-void sortMove(const Board &board, Move *moves, int nMoves, Move &TTMove) {
+void sortMove(const Board &board, Move *moves, int nMoves, advanceMoves &advMove) {
     ScoreMove tmp[256];
 
     for (int i = 0; i < nMoves; i++) {
         tmp[i].move = moves[i];
-        tmp[i].score = evaluateMoveScore(board, moves[i], TTMove);
+        tmp[i].score = evaluateMoveScore(board, moves[i], advMove);
     }
 
     std::sort(tmp, tmp + nMoves,

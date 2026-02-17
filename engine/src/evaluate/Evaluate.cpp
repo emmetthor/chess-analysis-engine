@@ -61,6 +61,8 @@ int boardEvaluate(const Board &board, EVALUATE_MODE m) {
         
         res += board.materialScore;
         res += board.PSTScore;
+        
+        res += evaluatePawnStructure(board);
     }
 
     return res;

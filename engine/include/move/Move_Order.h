@@ -10,9 +10,14 @@ struct ScoreMove {
     int score;
 };
 
+struct advanceMoves {
+    Move TTMove, killer1, killer2;
+};
+
 void sortMove(
     const Board &board,
     Move *moves,
     int nMoves,
-    Move &TTMove
+    advanceMoves &advMove
 );
+
