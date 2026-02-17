@@ -2,7 +2,7 @@
 
 #include "board/Board.h"
 #include "fen/FEN_Parser.h"
-#include "search/Negamax.h"
+#include "search/Search.h"
 #include "move/Move.h"
 #include "move/Make_Move.h"
 
@@ -39,8 +39,8 @@ void Engine::setPlayer(Player player) {
 }
 
 Move Engine::goDepth(int depth, Evaluate eval) {
-    SearchResult result = negamaxRoot(board, depth, board.player, eval);
-    return result.bestMove;
+    Search search(eval);
+    return search.findBestMove(board, depth).bestMove;
 }
 
 void Engine::quit() {

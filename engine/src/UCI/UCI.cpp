@@ -21,7 +21,16 @@ void printUCIMove(const Move& move) {
     }
 
     if (move.isPromotion) {
-        std::cout << std::tolower(pieceToChar(move.promotionPiece));
+        char promotionChar = '.';
+        switch(pieceToChar(move.promotionPiece)) {
+        case 'Q': case 'q': promotionChar = 'q'; break;
+        case 'R': case 'r': promotionChar = 'r'; break;
+        case 'N': case 'n': promotionChar = 'n'; break;
+        case 'B': case 'b': promotionChar = 'b'; break;
+        default:
+        ENGINE_FATAL(DebugCategory::BOARD, "promotion piece is not valid: ", move.promotionPiece);
+        }
+        std::cout << promotionChar;
     }
 }
 

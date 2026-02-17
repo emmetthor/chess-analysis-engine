@@ -4,7 +4,6 @@
 #include "evaluate/Evaluate.h"
 #include "evaluate/Material_Point.h"
 #include "evaluate/Control_Center.h"
-#include "search/Negamax.h"
 #include "evaluate/Tempo.h"
 #include "evaluate/PST.h"
 #include "evaluate/King_Safety.h"

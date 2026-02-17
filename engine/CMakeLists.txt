@@ -37,10 +37,10 @@ set(SOURCE_FILES
     src/pgn/Valid_Piece.cpp
     src/pgn/Pgn_Transformer.cpp
 
-    src/search/Negamax.cpp
     src/search/TT.cpp
     src/search/Zobrist.cpp
     src/search/Killer_Move.cpp
+    src/search/Search.cpp
 
     src/fen/FEN_Parser.cpp
 

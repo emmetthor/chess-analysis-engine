@@ -1,0 +1,64 @@
+#pragma once
+
+#include "board/Board.h"
+#include "move/Move.h"
+#include "evaluate/Evaluate.h"
+
+struct SearchResult {
+    Move bestMove;
+    int bestScore;
+};
+
+struct SearchInfo {
+    int depth;
+    int score;
+    int nodes;
+    int qsnodes;
+    int timeMs;
+    int nps;
+};
+
+class Search {
+public:
+    Search (Evaluate &_eval);
+    SearchResult findBestMove(const Board &board, int depth);
+private:
+    Evaluate eval;
+
+    int quietscence(
+        Board &board,
+        int alpha,
+        int beta,
+        Player player,
+        int ply
+    );
+
+    int negamax(
+        Board &board,
+        int depth,
+        int alpha,
+        int beta,
+        Player player,
+        int ply
+    );
+
+    SearchResult searchRootCore(
+        Board &board,
+        int depth,
+        int alpha,
+        int beta,
+        Player player,
+        Move iterativeMove,
+        int ply
+    );
+
+
+    int negamaxNodes = 0;
+    int qsNodes = 0;
+    int ttProbe = 0;
+    int ttHit = 0;
+    int ttCut = 0;
+    const int INF = 1e9;
+    int totalMoves = 0;
+    int betaCutAtMove[5] = {};
+};
