@@ -18,52 +18,33 @@
 
 const int INF = 1e9;
 
-int evaluate(Board &board, const Player player) {
+int Evaluate::evaluateBoard(const Board &board, EVALUATE_MODE m) {
+    int res = 0;
+    switch (m) {
+    case EVALUATE_MODE::FULL:
+        res += evaluateKingSafety(board, Player::WHITE, kingSafetyWeight);
+        res -= evaluateKingSafety(board, Player::BLACK, kingSafetyWeight);
+
+        res += evaluateKnightMobility(board, Player::WHITE, knightMobilityWeight);
+        res -= evaluateKnightMobility(board, Player::BLACK, knightMobilityWeight);
+        res += evaluateBishopMobility(board, Player::WHITE, bishopMobilityWeight);
+        res -= evaluateBishopMobility(board, Player::BLACK, bishopMobilityWeight);
+        res += evaluateRookMobility(board, Player::WHITE, rookMobilityWeight);
+        res -= evaluateRookMobility(board, Player::BLACK, rookMobilityWeight);
+
+        res += evaluateCastleRights(board, castleWeight);
+        
+        res += board.materialScore;
+        res += board.PSTScore;
+        
+        res += evaluatePawnStructure(board, doublePawnWeight, isolatedPawnWeight, passPawnWeight, passPawnRankWeight);
+    }
+
+    return res;
 }
 
 int boardEvaluate(const Board &board, EVALUATE_MODE m) {
     int res = 0;
-    switch (m) {
-    case EVALUATE_MODE::POSITION:
-        res += evaluateKingSafety(board, Player::WHITE);
-        res -= evaluateKingSafety(board, Player::BLACK);
-
-        res += evaluateKnightMobility(board, Player::WHITE);
-        res -= evaluateKnightMobility(board, Player::BLACK);
-        res += evaluateBishopMobility(board, Player::WHITE);
-        res -= evaluateBishopMobility(board, Player::BLACK);
-        res += evaluateRookMobility(board, Player::WHITE);
-        res -= evaluateRookMobility(board, Player::BLACK);
-
-        res += evaluateCastleRights(board);
-        res += evaluatePawnStructure(board);
-
-        break;
-    
-    case EVALUATE_MODE::QUICK:
-        res += board.materialScore;
-        res += board.PSTScore;
-
-        break;
-
-    case EVALUATE_MODE::FULL:
-        res += evaluateKingSafety(board, Player::WHITE);
-        res -= evaluateKingSafety(board, Player::BLACK);
-
-        res += evaluateKnightMobility(board, Player::WHITE);
-        res -= evaluateKnightMobility(board, Player::BLACK);
-        res += evaluateBishopMobility(board, Player::WHITE);
-        res -= evaluateBishopMobility(board, Player::BLACK);
-        res += evaluateRookMobility(board, Player::WHITE);
-        res -= evaluateRookMobility(board, Player::BLACK);
-
-        res += evaluateCastleRights(board);
-        
-        res += board.materialScore;
-        res += board.PSTScore;
-        
-        res += evaluatePawnStructure(board);
-    }
 
     return res;
 }

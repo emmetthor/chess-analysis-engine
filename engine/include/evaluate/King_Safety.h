@@ -3,4 +3,4 @@
 #include "board/Board.h"
 #include "board/Attack.h"
 
-int evaluateKingSafety(const Board &board, Player player);
+int evaluateKingSafety(const Board &board, Player player, int weight);

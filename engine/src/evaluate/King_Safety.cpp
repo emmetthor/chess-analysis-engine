@@ -14,7 +14,7 @@ Position findKing(const Board &board, Player player) {
     return posArray[0];
 }
 
-int evaluateKingSafety(const Board &board, Player player) {
+int evaluateKingSafety(const Board &board, Player player, int weight) {
     Position kingPos = findKing(board, player);
 
     int danger = 0;
@@ -30,5 +30,5 @@ int evaluateKingSafety(const Board &board, Player player) {
     }
 
 
-    return -danger * 8;
+    return -danger * weight;
 }

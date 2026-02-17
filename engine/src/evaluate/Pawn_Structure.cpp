@@ -10,7 +10,7 @@ const int ISOLATE_PENALTY = 15;
 const int PASS_WEIGHT = 30;
 const int PASS_RANK_WEIGHT[] = {0, 150, 80, 40, 20, 10, 5};
 
-int doublePawn(const Board &board, Player player) {
+int doublePawn(const Board &board, Player player, int doublePawnWeight) {
     int index = playerToIndex(player);
 
     int cnt = 0;
@@ -20,10 +20,10 @@ int doublePawn(const Board &board, Player player) {
         }
     }
 
-    return -cnt * DOUBLE_PENALTY;
+    return -cnt * doublePawnWeight;
 }
 
-int isolatePawn(const Board &board, Player player) {
+int isolatePawn(const Board &board, Player player, int isolatedPawnWeight) {
     int index = playerToIndex(player);
 
     int cnt = 0;
@@ -37,10 +37,10 @@ int isolatePawn(const Board &board, Player player) {
         if (isIsolated) cnt += fileCount[index][c];
     }
 
-    return -cnt * ISOLATE_PENALTY;
+    return -cnt * isolatedPawnWeight;
 }
 
-int passedPawn(const Board &board, Player player) {
+int passedPawn(const Board &board, Player player, int passPawnWeight, int *passPawnRankWeight) {
     int index = playerToIndex(player);
     int oppoIndex = playerToIndex(opponent(player));
     Piece myPawn = makePiece(player, 'P');
@@ -65,13 +65,13 @@ int passedPawn(const Board &board, Player player) {
         }
 
         if (!isPassedPawn) continue;
-        res += PASS_WEIGHT + PASS_RANK_WEIGHT[abs(targetRank - r)];
+        res += passPawnWeight + passPawnRankWeight[abs(targetRank - r)];
     }
 
     return res;
 }
 
-int evaluatePawnStructure(const Board &board) {
+int evaluatePawnStructure(const Board &board, int doublePawnWeight, int isolatedPawnWeight, int passedPawnWeight, int *passedPawnRankWeight) {
     int wpCnt = board.getPieceCount(wp);
     int bpCnt = board.getPieceCount(bp);
     const auto *wpArray = board.getPiecePos(wp);
@@ -92,12 +92,12 @@ int evaluatePawnStructure(const Board &board) {
     }
 
     int res = 0;
-    res += doublePawn(board, Player::WHITE);
-    res -= doublePawn(board, Player::BLACK);
-    res += isolatePawn(board, Player::WHITE);
-    res -= isolatePawn(board, Player::BLACK);
-    res += passedPawn(board, Player::WHITE);
-    res -= passedPawn(board, Player::BLACK);
+    res += doublePawn(board, Player::WHITE, doublePawnWeight);
+    res -= doublePawn(board, Player::BLACK, doublePawnWeight);
+    res += isolatePawn(board, Player::WHITE, isolatedPawnWeight);
+    res -= isolatePawn(board, Player::BLACK, isolatedPawnWeight);
+    res += passedPawn(board, Player::WHITE, passedPawnWeight, passedPawnRankWeight);
+    res -= passedPawn(board, Player::BLACK, passedPawnWeight, passedPawnRankWeight);
 
     return res;
 }

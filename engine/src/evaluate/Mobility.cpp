@@ -2,11 +2,10 @@
 #include "evaluate/Mobility.h"
 #include "pgn/Pgn_Transformer.h"
 
-static const int MOBILITY_WEIGHT = 4;
-
 int evaluateKnightMobility (
     const Board &board,
-    Player player
+    Player player,
+    int knightMobilityWeight
 ) {
     int cnt = 0;
     Piece knight = makePiece(player, 'N');
@@ -20,12 +19,13 @@ int evaluateKnightMobility (
         cnt += nKnightPositions;
     }
 
-    return cnt * MOBILITY_WEIGHT;
+    return cnt * knightMobilityWeight;
 }
 
 int evaluateBishopMobility (
     const Board &board,
-    Player player
+    Player player,
+    int bishopMobilityWeight
 ) {
     int cnt = 0;
     Piece bishop = makePiece(player, 'N');
@@ -39,12 +39,13 @@ int evaluateBishopMobility (
         cnt += nBishopPositions;
     }
 
-    return cnt * MOBILITY_WEIGHT;
+    return cnt * bishopMobilityWeight;
 }
 
 int evaluateRookMobility (
     const Board &board,
-    Player player
+    Player player,
+    int rookMobilityWeight
 ) {
     int cnt = 0;
     Piece rook = makePiece(player, 'N');
@@ -58,5 +59,5 @@ int evaluateRookMobility (
         cnt += nRookPositions;
     }
 
-    return cnt * MOBILITY_WEIGHT;
+    return cnt * rookMobilityWeight;
 }
