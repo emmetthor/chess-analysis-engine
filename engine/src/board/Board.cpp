@@ -104,7 +104,7 @@ void computePiecePos(Board &board) {
 
             int pIndex = pieceToIndex(p);
             board.piecePos[pIndex][board.pieceCount[pIndex]++] = {r, c};
-            std::cout << p << ' ' << r << ' ' << c << '\n';
+            //std::cout << p << ' ' << r << ' ' << c << '\n';
         }
     }
 }

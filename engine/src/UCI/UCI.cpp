@@ -13,11 +13,12 @@ std::string castleMap[2][3] {
     {"invalid", "e8g8", "e8c8"}
 };
 
-void printUCIMove(const Move& move) {
+std::string UCIMoveToString(const Move& move) {
+    std::string res;
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
-        std::cout << castleMap[playerToIndex(move.player)][static_cast<int>(move.castle)];
+        res += castleMap[playerToIndex(move.player)][static_cast<int>(move.castle)];
     } else {
-        std::cout << positionToPgn(move.from) << positionToPgn(move.to);
+        res += positionToPgn(move.from) + positionToPgn(move.to);
     }
 
     if (move.isPromotion) {
@@ -30,8 +31,10 @@ void printUCIMove(const Move& move) {
         default:
         ENGINE_FATAL(DebugCategory::BOARD, "promotion piece is not valid: ", move.promotionPiece);
         }
-        std::cout << promotionChar;
+        res += promotionChar;
     }
+
+    return res;
 }
 
 
@@ -47,9 +50,7 @@ void handleGo(std::istringstream &iss, Engine &engine) {
 
     Move move = engine.goDepth(depth, engine.eval);
 
-    std::cout << "bestmove ";
-    printUCIMove(move);
-    std::cout << '\n' << std::flush;
+    std::cout << "bestmove " << UCIMoveToString(move) << '\n';
 }
 
 void handlePosition(std::istringstream &iss, Engine &engine) {
