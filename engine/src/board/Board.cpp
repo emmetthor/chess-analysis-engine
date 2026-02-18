@@ -89,3 +89,22 @@ bool validatePiecePos(const Board &b) {
 
     return true;
 }
+
+void computePiecePos(Board &board) {
+    for (int i = 1; i <= 12; i++) {
+        board.pieceCount[i] = 0;
+        for (int j = 0; j < 10; j++) {
+            board.piecePos[i][j] = {-1, -1};
+        }
+    }
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            Piece p = board.board[r][c];
+            if (p == Piece::EMPTY) continue;
+
+            int pIndex = pieceToIndex(p);
+            board.piecePos[pIndex][board.pieceCount[pIndex]++] = {r, c};
+            std::cout << p << ' ' << r << ' ' << c << '\n';
+        }
+    }
+}

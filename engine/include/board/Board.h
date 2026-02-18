@@ -99,3 +99,5 @@ struct Board {
 };
 
 bool validatePiecePos(const Board &b);
+
+void computePiecePos(Board &board);
