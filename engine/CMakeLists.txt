@@ -10,7 +10,7 @@ include_directories(include)
 add_definitions(-DENGINE_DEBUG)
 
 # 目標檔案
-set(SOURCE_FILES
+add_library(engine-core
     src/board/Piece.cpp
     src/board/Board.cpp
     src/board/Attack.cpp
@@ -48,13 +48,15 @@ set(SOURCE_FILES
     src/UCI/UCI_Move_Parser.cpp
 
     src/debug.cpp
-    src/main.cpp
     src/Engine.cpp
 )
 
-# 建立執行檔
-add_executable(chess-analysis-engine ${SOURCE_FILES})
+# 正式引擎
+add_executable(chess-analysis-engine src/main.cpp)
+target_link_libraries(chess-analysis-engine PRIVATE engine-core)
+set_target_properties(chess-analysis-engine PROPERTIES WIN32_EXECUTABLE OFF)
 
-set_target_properties(chess-analysis-engine PROPERTIES
-    WIN32_EXECUTABLE OFF
-)
+# test mate
+add_executable(test-mate ../bench/src/Mate_In_One.cpp)
+target_link_libraries(test-mate PRIVATE engine-core)
+set_target_properties(test-mate PROPERTIES WIN32_EXECUTABLE OFF)
