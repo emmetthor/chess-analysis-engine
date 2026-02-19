@@ -21,6 +21,7 @@ public:
         if (secPassed >= updateSecond || curr == total) {
             double speed = (curr - lstShow) / updateSecond;
             int esti = (total - curr == 0 ? 0 : (total - curr) / speed);
+            int elap = std::chrono::duration_cast<std::chrono::seconds>(now - start).count();
 
             std::cout << '\r' << std::string(100, ' ') << '\r';
 
@@ -31,6 +32,8 @@ public:
             << curr
             << '/'
             << total
+            << " | elapsed time: "
+            << elap
             << " | estimate time last: "
             << esti
             << 's';
