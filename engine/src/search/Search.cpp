@@ -221,7 +221,7 @@ int Search::negamax(
     // 檢查 checkmate / stalemate
     if (nMoves == 0) {
         //LOG_DEBUG(DebugCategory::SEARCH, "no move!");
-        if (isInCheck(board, player)) return -INF + depth;
+        if (isInCheck(board, player)) return -INF + ply;
         else return 0;
     }
 
