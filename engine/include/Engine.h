@@ -14,7 +14,7 @@ public:
     void setPositionWithFen(const std::string &fen);
     void checkReady();
 
-    Move goDepth(int depth, Evaluate eval);
+    Move goDepth(int depth, Evaluate eval, bool isPrintInfo = 1);
     Board getBoard();
     void move(Move move);
     void quit();

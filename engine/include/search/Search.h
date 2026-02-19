@@ -4,11 +4,6 @@
 #include "move/Move.h"
 #include "evaluate/Evaluate.h"
 
-struct SearchResult {
-    Move bestMove;
-    int bestScore;
-};
-
 struct SearchInfo {
     int depth;
     int score;
@@ -16,6 +11,11 @@ struct SearchInfo {
     int qsnodes;
     int timeMs;
     int nps;
+};
+struct SearchResult {
+    Move bestMove;
+    int bestScore;
+    SearchInfo info;
 };
 
 class Search {
@@ -62,3 +62,5 @@ private:
     int totalMoves = 0;
     int betaCutAtMove[5] = {};
 };
+
+void printInfo(SearchInfo info);

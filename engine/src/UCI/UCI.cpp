@@ -82,6 +82,12 @@ void handlePosition(std::istringstream &iss, Engine &engine) {
     }
 }
 
+void handleBench(std::istringstream &iss, Engine &engine) {
+    std::string token;
+    iss >> token;
+    // TODO
+}
+
 void uciLoop(Engine &engine) {
     std::string line;
     while (std::getline(std::cin, line)) {
@@ -107,6 +113,9 @@ void uciLoop(Engine &engine) {
         }
         else if (token == "PRINTBOARD") {
             std::cout << engine.getBoard() << '\n';
+        }
+        else if (token == "bench") {
+            handleBench(iss, engine);
         }
         else {
             std::cerr << "Unrecognized token.\n" << std::flush;

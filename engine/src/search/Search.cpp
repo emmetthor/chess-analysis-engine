@@ -100,13 +100,11 @@ SearchResult Search::findBestMove(const Board &board, int depth) {
 
         auto endTime = std::chrono::steady_clock::now();
 
-        info.depth = d;
-        info.nodes = negamaxNodes + qsNodes;
-        info.qsnodes = qsNodes;
-        info.timeMs = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-        info.score = finalRes.bestScore;
-
-        printInfo(info);
+        finalRes.info.depth = d;
+        finalRes.info.nodes = negamaxNodes + qsNodes;
+        finalRes.info.qsnodes = qsNodes;
+        finalRes.info.timeMs = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+        finalRes.info.score = finalRes.bestScore;
     }
 
     return finalRes;

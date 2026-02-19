@@ -38,9 +38,15 @@ void Engine::setPlayer(Player player) {
     board.player = player;
 }
 
-Move Engine::goDepth(int depth, Evaluate eval) {
+Move Engine::goDepth(int depth, Evaluate eval, bool isPrintInfo) {
     Search search(eval);
-    return search.findBestMove(board, depth).bestMove;
+    auto res = search.findBestMove(board, depth);
+
+    if (isPrintInfo) {
+        printInfo(res.info);
+    }
+
+    return res.bestMove;
 }
 
 void Engine::quit() {
