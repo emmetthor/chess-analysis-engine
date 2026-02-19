@@ -51,12 +51,17 @@ add_library(engine-core
     src/Engine.cpp
 )
 
+add_library(bench-lib
+    ../bench/src/Mate_In_One.cpp
+)
+
 # 正式引擎
 add_executable(chess-analysis-engine src/main.cpp)
 target_link_libraries(chess-analysis-engine PRIVATE engine-core)
 set_target_properties(chess-analysis-engine PROPERTIES WIN32_EXECUTABLE OFF)
 
 # test mate
-add_executable(test-mate ../bench/src/Mate_In_One.cpp)
-target_link_libraries(test-mate PRIVATE engine-core)
-set_target_properties(test-mate PROPERTIES WIN32_EXECUTABLE OFF)
+add_executable(test ../bench/src/Bench.cpp)
+target_link_libraries(bench-lib PUBLIC engine-core)
+target_link_libraries(test bench-lib)
+set_target_properties(test PROPERTIES WIN32_EXECUTABLE OFF)

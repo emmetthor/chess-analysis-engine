@@ -1,16 +1,13 @@
 #include "../../engine/include/Engine.h"
 #include "../../engine/include/UCI/UCI.h"
+#include "Mate_In_One.h"
+#include "Bench.h"
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <vector>
 #include <array>
 #include <iostream>
-
-struct TestData {
-    std::string fen;
-    std::string bestMove;
-};
 
 std::vector<TestData> readMateInOneFile(const std::string &filename) {
     std::vector<TestData> res;
@@ -35,12 +32,13 @@ std::vector<TestData> readMateInOneFile(const std::string &filename) {
     return res;
 }
 
-int main() {
+testResult testMateInOne(int testCnt) {
     std::cout.tie(0);
     std::ios::sync_with_stdio(0);
     auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
 
-    int testCnt = testData.size();
+    testCnt = std::max(testCnt, (int)testData.size());
+
     int failCnt = 0;
     std::vector<std::array<std::string, 3>> failed;
     for (int i = 0; i < testCnt; i++) {
@@ -59,12 +57,11 @@ int main() {
         }
     }
 
-    std::cout << "test complete.\n";
     std::cout << "success test cases: " << testCnt - failCnt << " / " << testCnt << '\n';
     std::cout << "failed test cases:\n";
     for (auto [a, b, c] : failed) {
         std::cout << a << " ; expected: " << b << " ; result: " << c << '\n';
     }
 
-    return 0;
+    return {testCnt, failCnt};
 }
