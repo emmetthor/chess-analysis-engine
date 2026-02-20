@@ -36,11 +36,11 @@ std::vector<TestData> readMateInOneFile(const std::string &filename) {
 testResult testMateInOne(int testCnt) {
     auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
 
-    // testCnt = std::min(testCnt, (int)testData.size());
+    testCnt = std::min(testCnt, (int)testData.size());
 
-    // int failCnt = 0;
-    // progressBar bar(testCnt, 1);
-    // std::vector<std::array<std::string, 3>> failed;
+    int failCnt = 0;
+    progressBar bar(testCnt, 1);
+    std::vector<std::array<std::string, 3>> failed;
     // for (int i = 0; i < testCnt; i++) {
     //     auto [fen, bestMove] = testData[i];
 
