@@ -36,7 +36,7 @@ std::vector<TestData> readMateInOneFile(const std::string &filename) {
 testResult testMateInOne(int testCnt) {
     auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
 
-    testCnt = std::max(testCnt, (int)testData.size());
+    testCnt = std::min(testCnt, (int)testData.size());
 
     int failCnt = 0;
     progressBar bar(testCnt, 1);
@@ -48,8 +48,8 @@ testResult testMateInOne(int testCnt) {
         engine.setPositionWithFen(fen);
         
         Evaluate eval;
-        std::string retMove = UCIMoveToString(engine.goDepth(3, eval, 0));
-        // 引擎應在三半步內確認一步將殺
+        std::string retMove = UCIMoveToString(engine.goDepth(2, 0));
+        // 引擎應在兩半步內確認一步將殺
 
         if (retMove != bestMove) {
             failCnt++;

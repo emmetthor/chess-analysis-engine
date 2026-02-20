@@ -3,6 +3,7 @@
 #include "board/Board.h"
 #include "move/Move.h"
 #include "evaluate/Evaluate.h"
+#include "search/Search.h"
 
 class Engine {
 public: 
@@ -14,14 +15,15 @@ public:
     void setPositionWithFen(const std::string &fen);
     void checkReady();
 
-    Move goDepth(int depth, Evaluate eval, bool isPrintInfo = 1);
+    Move goDepth(int depth, bool isPrintInfo = 1);
+    SearchResult fullInfoSearch(int depth);
     Board getBoard();
     void move(Move move);
     void quit();
     void changePlayer();
     void setPlayer(Player player);
+    const int MATE_BASIS = 1e9;
 
 private:
     Board board;
-    const int INF = 1e9;
 };

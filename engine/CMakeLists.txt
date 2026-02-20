@@ -54,6 +54,7 @@ add_library(engine-core
 add_library(bench-lib
     ../bench/src/Progress_Bar.cpp
     ../bench/src/Mate_In_One.cpp
+    ../bench/src/Mate_In_Two.cpp
 )
 
 # 正式引擎
