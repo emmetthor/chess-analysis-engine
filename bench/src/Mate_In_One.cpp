@@ -70,4 +70,5 @@ testResult testMateInOne(int testCnt) {
     // }
 
     // return {testCnt, failCnt};
+    return {0, 0};
 }
