@@ -5,8 +5,8 @@
 #include <iostream>
 
 int main() {
-    // std::cout << "========== Mate In One ==========\n";
-    // testMateInOne(10000);
+    std::cout << "========== Mate In One ==========\n";
+    testMateInOne(10000);
 
     // std::cout << "========== Mate In Two ==========\n";
     // testMateInTwo(10000);
