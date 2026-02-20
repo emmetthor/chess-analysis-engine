@@ -45,7 +45,7 @@ testResult testMateInOne(int testCnt) {
         auto [fen, bestMove] = testData[i];
 
         Engine engine;
-        engine.setPositionWithFen(fen);
+        //engine.setPositionWithFen(fen);
         
         // std::string retMove = UCIMoveToString(engine.goDepth(2, 0));
         // // 引擎應在兩半步內確認一步將殺
