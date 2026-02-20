@@ -34,9 +34,7 @@ std::vector<TestData> readMateInOneFile(const std::string &filename) {
 }
 
 testResult testMateInOne(int testCnt) {
-    // auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
-
-    Engine engine;
+    auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
 
     // testCnt = std::min(testCnt, (int)testData.size());
 
