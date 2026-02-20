@@ -44,6 +44,7 @@ testResult testMateInOne(int testCnt) {
     for (int i = 0; i < testCnt; i++) {
         auto [fen, bestMove] = testData[i];
 
+        std::cerr << "adding engine\n";
         Engine engine;
         //engine.setPositionWithFen(fen);
         
