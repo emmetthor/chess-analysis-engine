@@ -11,6 +11,7 @@
 #include <iostream>
 
 std::vector<TestData> readMateInOneFile(const std::string &filename) {
+    std::cout << "test openfile\n";
     std::vector<TestData> res;
 
     std::ifstream infile(filename);
@@ -18,6 +19,7 @@ std::vector<TestData> readMateInOneFile(const std::string &filename) {
         std::cout << "failed to open file: " << filename << '\n';
     }
 
+    std::cout << "test openfile2\n";
     std::string line;
     while (std::getline(infile, line)) {
         if (line.empty()) continue;
@@ -35,6 +37,11 @@ std::vector<TestData> readMateInOneFile(const std::string &filename) {
 
 testResult testMateInOne(int testCnt) {
     auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
+
+    std::cout << "engine test\n";
+    Engine engine;
+    std::cout << "eval test\n";
+    Evaluate eval;
 
     // testCnt = std::min(testCnt, (int)testData.size());
 
