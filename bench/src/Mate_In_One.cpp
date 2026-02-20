@@ -44,19 +44,18 @@ testResult testMateInOne(int testCnt) {
     for (int i = 0; i < testCnt; i++) {
         auto [fen, bestMove] = testData[i];
 
-        std::cerr << "adding engine\n";
         Engine engine;
-        //engine.setPositionWithFen(fen);
+        engine.setPositionWithFen(fen);
         
-        // std::string retMove = UCIMoveToString(engine.goDepth(2, 0));
-        // // 引擎應在兩半步內確認一步將殺
+        std::string retMove = UCIMoveToString(engine.goDepth(2, 0));
+        // 引擎應在兩半步內確認一步將殺
 
-        // if (retMove != bestMove) {
-        //     failCnt++;
-        //     failed.push_back({fen, bestMove, retMove});
-        // }
+        if (retMove != bestMove) {
+            failCnt++;
+            failed.push_back({fen, bestMove, retMove});
+        }
 
-        // bar.update(i + 1);
+        bar.update(i + 1);
     }
 
     bar.finish();
