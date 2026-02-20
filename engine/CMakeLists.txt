@@ -63,7 +63,13 @@ target_link_libraries(chess-analysis-engine PRIVATE engine-core)
 set_target_properties(chess-analysis-engine PROPERTIES WIN32_EXECUTABLE OFF)
 
 # test mate
-add_executable(test ../bench/src/Bench.cpp)
+
+enable_testing()
+
+# 新增執行
+add_executable(test-engine ../bench/src/Bench.cpp)
 target_link_libraries(bench-lib PUBLIC engine-core)
-target_link_libraries(test bench-lib)
-set_target_properties(test PROPERTIES WIN32_EXECUTABLE OFF)
+target_link_libraries(test-engine bench-lib)
+set_target_properties(test-engine PROPERTIES WIN32_EXECUTABLE OFF)
+
+add_test(NAME EngineTest COMMAND test-engine)
