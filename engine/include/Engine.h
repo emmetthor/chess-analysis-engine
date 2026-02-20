@@ -5,7 +5,7 @@
 #include "evaluate/Evaluate.h"
 #include "search/Search.h"
 
-class Engine {
+class   Engine {
 public: 
     Engine();
 
