@@ -47,7 +47,7 @@ testResult testMateInOne(int testCnt) {
         Engine engine;
         engine.setPositionWithFen(fen);
         
-        // std::string retMove = UCIMoveToString(engine.goDepth(2, 0));
+        std::string retMove = UCIMoveToString(engine.goDepth(2, 0));
         // 引擎應在兩半步內確認一步將殺
 
         // if (retMove != bestMove) {
