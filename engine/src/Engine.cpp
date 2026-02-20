@@ -7,7 +7,7 @@
 #include "move/Make_Move.h"
 
 Engine::Engine() {
-
+    std::cerr << "engine start\n";
 }
 
 void Engine::setStartPosition() {

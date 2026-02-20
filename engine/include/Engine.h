@@ -9,20 +9,20 @@ class Engine {
 public: 
     Engine();
 
-    // Evaluate eval;
+    Evaluate eval;
 
-    // void setStartPosition();
-    // void setPositionWithFen(const std::string &fen);
-    // void checkReady();
+    void setStartPosition();
+    void setPositionWithFen(const std::string &fen);
+    void checkReady();
 
-    // Move goDepth(int depth, bool isPrintInfo = 1);
-    // SearchResult fullInfoSearch(int depth);
-    // Board getBoard();
-    // void move(Move move);
-    // void quit();
-    // void changePlayer();
-    // void setPlayer(Player player);
-    // const int MATE_BASIS = 1e9;
+    Move goDepth(int depth, bool isPrintInfo = 1);
+    SearchResult fullInfoSearch(int depth);
+    Board getBoard();
+    void move(Move move);
+    void quit();
+    void changePlayer();
+    void setPlayer(Player player);
+    const int MATE_BASIS = 1e9;
 
 private:
     Board board;
