@@ -36,12 +36,12 @@ std::vector<TestData> readMateInOneFile(const std::string &filename) {
 }
 
 testResult testMateInOne(int testCnt) {
-    auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
+    //auto testData = readMateInOneFile("../bench/Mate_In_One.txt");
 
     std::cout << "engine test\n";
     Engine engine;
-    std::cout << "eval test\n";
-    Evaluate eval;
+    // std::cout << "eval test\n";
+    // Evaluate eval;
 
     // testCnt = std::min(testCnt, (int)testData.size());
 
