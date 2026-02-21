@@ -27,8 +27,8 @@ void initZobrist() {
 uint64_t computeZobrist(const Board &board, Player player) {
     uint64_t key = 0;
 
-    for (int r = 0; r < 8; ++r) {
-        for (int c = 0; c < 8; ++c) {
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
             Piece piece = board.at({r, c});
             if (piece != Piece::EMPTY) {
                 key ^= zobPiece[pieceToIndex(piece)][zobBoardPosition({r, c})];

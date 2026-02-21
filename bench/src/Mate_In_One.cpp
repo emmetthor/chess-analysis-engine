@@ -45,7 +45,7 @@ testResult testMateInOne(int testCnt) {
     std::vector<std::array<std::string, 3>> failed;
     for (int i = 0; i < testCnt; i++) {
         auto [fen, bestMove] = testData[i];
-
+        
         Engine engine;
         engine.setPositionWithFen(fen);
 
