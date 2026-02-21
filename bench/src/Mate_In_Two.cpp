@@ -59,5 +59,5 @@ testResult testMateInTwo(int testCnt) {
         std::cout << s << '\n';
     }
 
-    return {testCnt, failCnt};
+    return {testCnt, failCnt, 0};
 }

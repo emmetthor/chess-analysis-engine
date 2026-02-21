@@ -136,7 +136,7 @@ SearchResult Search::searchRootCore(
         // 遞迴下一層
         makeMove(board, move);
         //ENGINE_ASSERT(!isInCheck(board, player));
-
+        
         int score = -negamax(
             board,
             depth - 1,
@@ -222,7 +222,7 @@ int Search::negamax(
 
     // 檢查 checkmate / stalemate
     if (nMoves == 0) {
-        //LOG_DEBUG(DebugCategory::SEARCH, "no move!");
+        // LOG_DEBUG(DebugCategory::SEARCH, "no move!");
         if (isInCheck(board, player)) return -INF + ply;
         else return 0;
     }

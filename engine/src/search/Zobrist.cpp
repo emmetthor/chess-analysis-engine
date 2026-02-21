@@ -8,8 +8,8 @@ uint64_t zobCastle[16];
 uint64_t zobEnPassant[8];
 
 uint64_t rand64() {
-    std::mt19937_64 rng(114514);
-    std::uniform_int_distribution<uint64_t> dist(0, UINT64_MAX);
+    static std::mt19937_64 rng(114514);
+    static std::uniform_int_distribution<uint64_t> dist(0, UINT64_MAX);
     return dist(rng);
 }
 
