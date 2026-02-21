@@ -66,6 +66,13 @@ void Board::init() {
 
 // 回傳位於 pos 的 Piece
 Piece Board::at(Position pos) const {
+    if (pos.row < 0 || pos.row >= 8) {
+        ENGINE_FATAL(DebugCategory::BOARD, "invalid row: ", pos);
+    }
+    if (pos.col < 0 || pos.col >= 8) {
+        ENGINE_FATAL(DebugCategory::BOARD, "invalid col: ", pos);
+    }
+
     return board[pos.row][pos.col];
 }
 

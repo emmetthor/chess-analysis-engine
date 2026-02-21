@@ -94,7 +94,11 @@ struct Board {
         return piecePos[pieceToIndex(p)];
     }
     inline const int getPieceCount(Piece p) const {
-        return pieceCount[pieceToIndex(p)];
+        int pIndex = pieceToIndex(p);
+        if (!(1 <= pIndex && pIndex <= 12)) {
+            ENGINE_FATAL(DebugCategory::BOARD, "pIndex is empty or invalid: ", pIndex);
+        }
+        return pieceCount[pIndex];
     }
 };
 

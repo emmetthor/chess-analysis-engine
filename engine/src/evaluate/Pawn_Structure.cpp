@@ -2,13 +2,6 @@
 #include "board/Board.h"
 
 int fileCount[2][8] = {};
-Piece wp = makePiece(Player::WHITE, 'P');
-Piece bp = makePiece(Player::BLACK, 'P');
-
-const int DOUBLE_PENALTY = 15;
-const int ISOLATE_PENALTY = 15;
-const int PASS_WEIGHT = 30;
-const int PASS_RANK_WEIGHT[] = {0, 150, 80, 40, 20, 10, 5};
 
 int doublePawn(
     const Board &board,
@@ -91,8 +84,12 @@ int evaluatePawnStructure(
     const int passedPawnWeight,
     const int *passedPawnRankWeight
 ) {
+    Piece wp = makePiece(Player::WHITE, 'P');
+    Piece bp = makePiece(Player::BLACK, 'P');
+
     int wpCnt = board.getPieceCount(wp);
     int bpCnt = board.getPieceCount(bp);
+    
     const auto *wpArray = board.getPiecePos(wp);
     const auto *bpArray = board.getPiecePos(bp);
 

@@ -32,9 +32,9 @@ int generatePosFromPosWithJumpPiece(
 
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + dr[i], pos.col + dc[i]};
-        Piece atPiece = board.at(p);
-
         if (!isInBoard(p)) continue;
+
+        Piece atPiece = board.at(p);
         if (atPiece != Piece::EMPTY && isSameColor(atPiece, movePiece)) continue;
 
         buffer[cnt++] = p;
@@ -91,9 +91,9 @@ int generateCaptureFromPosWithJumpPiece(
 
     for (int i = 0; i < 8; i++) {
         Position p = {pos.row + dr[i], pos.col + dc[i]};
-        Piece atPiece = board.at(p);
-
         if (!isInBoard(p)) continue;
+
+        Piece atPiece = board.at(p);
         if (atPiece == Piece::EMPTY) continue;
         if (isSameColor(atPiece, movePiece)) continue;
 
