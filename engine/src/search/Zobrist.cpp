@@ -14,7 +14,7 @@ uint64_t rand64() {
 }
 
 void initZobrist() {
-    for (int p = 1; p <= PIECE_NB; p++)
+    for (int p = 1; p < PIECE_NB; p++)
         for (int s = 0; s < 64; s++)
             zobPiece[p][s] = rand64();
 
