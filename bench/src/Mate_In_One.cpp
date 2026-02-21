@@ -1,5 +1,6 @@
 #include "../../engine/include/Engine.h"
 #include "../../engine/include/UCI/UCI.h"
+#include "../../engine/include/Structure_IO.h"
 #include "Mate_In_One.h"
 #include "Progress_Bar.h"
 #include "Bench.h"
@@ -46,16 +47,17 @@ testResult testMateInOne(int testCnt) {
 
         Engine engine;
         engine.setPositionWithFen(fen);
-        
-        std::string retMove = UCIMoveToString(engine.goDepth(2, 0));
+
+        Move move = engine.goDepth(2, 0);
+        std::string retMove = UCIMoveToString(move);
         // 引擎應在兩半步內確認一步將殺
 
-        // if (retMove != bestMove) {
-        //     failCnt++;
-        //     failed.push_back({fen, bestMove, retMove});
-        // }
+        if (retMove != bestMove) {
+            failCnt++;
+            failed.push_back({fen, bestMove, retMove});
+        }
 
-        // bar.update(i + 1);
+        bar.update(i + 1);
     }
 
     bar.finish();

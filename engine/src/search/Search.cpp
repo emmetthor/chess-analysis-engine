@@ -136,6 +136,7 @@ SearchResult Search::searchRootCore(
         // 遞迴下一層
         makeMove(board, move);
         //ENGINE_ASSERT(!isInCheck(board, player));
+
         int score = -negamax(
             board,
             depth - 1,
@@ -144,6 +145,7 @@ SearchResult Search::searchRootCore(
             opponent(player),
             ply + 1
         );
+
         undoMove(board, move);
 
         if (score > res.bestScore) {
@@ -324,6 +326,7 @@ int Search::quietscence(
     int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
 
     advanceMoves adv = {inValidMove, killerMove[0][ply], killerMove[1][ply]};
+
     sortMove(board, captureMoves, nCaptureMoves, adv);
 
     if (nCaptureMoves == 0) {

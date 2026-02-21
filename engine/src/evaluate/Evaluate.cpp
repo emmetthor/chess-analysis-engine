@@ -35,7 +35,7 @@ int Evaluate::evaluateBoard(const Board &board, EVALUATE_MODE m) const {
         
         res += board.materialScore;
         res += board.PSTScore;
-        
+
         res += evaluatePawnStructure(board, doublePawnWeight, isolatedPawnWeight, passPawnWeight, passPawnRankWeight);
     }
 
