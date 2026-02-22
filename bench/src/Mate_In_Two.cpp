@@ -32,7 +32,7 @@ testResult testMateInTwo(int testCnt) {
     testCnt = std::min(testCnt, (int)testData.size());
 
     int failCnt = 0;
-    progressBar bar(testCnt, 1);
+    progressBar bar(testCnt, 5);
     std::vector<std::string> failed;
     for (int i = 0; i < testCnt; i++) {
         std::string fen = testData[i];
@@ -48,7 +48,7 @@ testResult testMateInTwo(int testCnt) {
             failed.push_back(fen);
         }
 
-        bar.update(i + 1);
+        //bar.update(i + 1);
     }
 
     bar.finish();
