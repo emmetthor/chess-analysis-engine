@@ -41,7 +41,7 @@ testResult testMateInOne(int testCnt) {
 
     int failCnt = 0;
     int expectedFail = 0;
-    progressBar bar(testCnt, 1);
+    progressBar bar(testCnt, 5);
     std::vector<std::array<std::string, 3>> failed;
     for (int i = 0; i < testCnt; i++) {
         auto [fen, bestMove] = testData[i];
@@ -62,7 +62,7 @@ testResult testMateInOne(int testCnt) {
             }
         }
 
-        bar.update(i + 1);
+        //bar.update(i + 1);
     }
 
     bar.finish();
