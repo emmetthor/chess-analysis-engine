@@ -65,6 +65,9 @@ SearchResult Search::findBestMove(const Board &board, int depth) {
             int alpha = lastScore - window;
             int beta = lastScore + window;
 
+            alpha = -INF;
+            beta = INF;
+
             while (true) {
                 currentRes = searchRootCore(
                     copyBoard,
@@ -195,13 +198,14 @@ int Search::negamax(
 
     // depth = 0 進入QS
     if (depth == 0) {
-        return quietscence(
-            board,
-            alpha,
-            beta,
-            player,
-            ply
-        );
+        return eval.evaluateBoard(board, EVALUATE_MODE::FULL);
+        // return quietscence(
+        //     board,
+        //     alpha,
+        //     beta,
+        //     player,
+        //     ply
+        // );
     }
 
     // 生成所有走法
@@ -217,7 +221,7 @@ int Search::negamax(
     }
 
     advanceMoves adv = {ttMove, killerMove[0][ply], killerMove[1][ply]};
-    sortMove(board, moves, nMoves, adv);
+    //sortMove(board, moves, nMoves, adv);
 
     for (int i = 0; i < nMoves; i++) {
         int searchDepth = depth - 1;
@@ -237,76 +241,67 @@ int Search::negamax(
 
         makeMove(board, move);
 
+        score = -negamax(
+            board,
+            depth - 1,
+            -beta,
+            -alpha,
+            opponent(player),
+            ply + 1
+        );
+
         bool reserch = 0;
-        if (i == 0) {
-            // 第一步全搜
-            score = -negamax(
-                board,
-                depth - 1,
-                -beta,
-                -alpha,
-                opponent(player),
-                ply + 1
-            );
-        } else {
-            reserch = 1;
-            score = -negamax(
-                board,
-                depth - 1,
-                -beta,
-                -alpha,
-                opponent(player),
-                ply + 1
-            );
-            // score = -negamax(
-            //     board,
-            //     searchDepth,
-            //     -alpha - 1,
-            //     -alpha,
-            //     opponent(player),
-            //     ply + 1
-            // );
-            // if (score > alpha) {
-            //     reserch = 1;
-            //     score = -negamax(
-            //         board,
-            //         depth - 1,
-            //         -beta,
-            //         -alpha,
-            //         opponent(player),
-            //         ply + 1
-            //     );
-            // }
-        }
+        // if (i == 0) {
+        //     // 第一步全搜
+        //     score = -negamax(
+        //         board,
+        //         depth - 1,
+        //         -beta,
+        //         -alpha,
+        //         opponent(player),
+        //         ply + 1
+        //     );
+        // } else {
+        //     score = -negamax(
+        //         board,
+        //         searchDepth,
+        //         -alpha - 1,
+        //         -alpha,
+        //         opponent(player),
+        //         ply + 1
+        //     );
+        //     if (score > alpha) {
+        //         reserch = 1;
+        //         score = -negamax(
+        //             board,
+        //             depth - 1,
+        //             -beta,
+        //             -alpha,
+        //             opponent(player),
+        //             ply + 1
+        //         );
+        //     }
+        // }
+
         undoMove(board, move);
 
         if (score >= beta) {
-            betaCutAtMove[(i >= 4 ? 4 : i)]++;
-            // cutoff 存 LOWER
-            storeTT(board.zobristKey, depth, ply, score, LOWER, move);
-
-            if (move.capturePiece == Piece::EMPTY) {
-                addKillerMove(move, ply);
-            }
-
             return score;
         }
-        if (score > alpha) alpha = score;
-        if (score > bestScore) {
-            bestScore = score;
-            bestMove = move;
-            hasMove = 1;
+
+        if (score > alpha) {
+            alpha = score;
         }
     }
 
+    return alpha;
+
     TTFlag flag;
-    if (bestScore <= oriAlpha) flag = UPPER;
-    else if (bestScore >= beta) flag = LOWER;
+    if (alpha <= oriAlpha) flag = UPPER;
+    else if (alpha >= beta) flag = LOWER;
     else flag = EXACT;
 
-    storeTT(board.zobristKey, depth, ply, bestScore, flag, (hasMove ? bestMove : inValidMove));
-
-    return bestScore;
+    storeTT(board.zobristKey, depth, ply, alpha, flag, (hasMove ? bestMove : inValidMove));
 }
 
 int Search::quietscence(
@@ -318,7 +313,7 @@ int Search::quietscence(
 ) {
     qsNodes++;
     int standerdPoint = (player == Player::WHITE ? 1 : -1) * eval.evaluateBoard(board, EVALUATE_MODE::FULL);
-    if (standerdPoint >= beta) return beta;
+    if (standerdPoint >= beta) return standerdPoint;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
     Move captureMoves[256];
@@ -354,7 +349,7 @@ int Search::quietscence(
 
         undoMove(board, move);
 
-        if (score >= beta) return beta;
+        if (score >= beta) return score;
         if (score > alpha) alpha = score;
     }
 
