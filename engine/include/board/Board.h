@@ -31,6 +31,17 @@ struct Position {
     }
 };
 
+using Square = uint8_t;
+
+// 暫時使用這個轉換，之後再全面改治
+inline Position squareToPosition(Square square) {
+    return {square / 8, square % 8};
+}
+
+inline bool isValidSquare(Square square) {
+    return (0 <= square && square < 64 ? true : false);
+}
+
 inline bool isInBoard(Position pos) {
     return 0 <= pos.row && pos.row < 8 && 0 <= pos.col && pos.col < 8;
 }
