@@ -31,6 +31,9 @@ struct Position {
 inline Position squareToPosition(Square square) {
     return {square / 8, square % 8};
 }
+inline Square positionToSquare(Position pos) {
+    return pos.row * 8 + pos.col;
+}
 
 inline bool isValidSquare(Square square) {
     int intSquare = static_cast<int>(square);

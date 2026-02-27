@@ -9,10 +9,10 @@
 
 int generateAllLegalMoves(
     const Board &board,
-    Move *buffer
+    BitMove *buffer
 );
 
 int generateLegalCaptureMoves(
     const Board &board,
-    Move *buffer
+    BitMove *buffer
 );

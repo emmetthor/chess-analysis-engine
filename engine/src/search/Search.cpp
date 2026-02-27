@@ -132,8 +132,13 @@ SearchResult Search::searchRootCore(
     res.bestScore = -INF;
 
     // 生成所有走法
+    BitMove bitMoves[256];
+    int nMoves = generateAllLegalMoves(board, bitMoves);
+
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, moves);
+    for (int i = 0; i < nMoves; i++) {
+        moves[i] = bitMovetoOriMove(board, bitMoves[i]);
+    }
 
     // 排序
     advanceMoves adv = {iterativeMove, killerMove[0][ply], killerMove[1][ply]};
@@ -206,10 +211,13 @@ int Search::negamax(
     }
 
     // 生成所有走法
-    Move moves[256];
-    int nMoves = generateAllLegalMoves(board, moves);
-    totalMoves += nMoves;
+    BitMove bitMoves[256];
+    int nMoves = generateAllLegalMoves(board, bitMoves);
 
+    Move moves[256];
+    for (int i = 0; i < nMoves; i++) {
+        moves[i] = bitMovetoOriMove(board, bitMoves[i]);
+    }
     // 檢查 checkmate / stalemate
     if (nMoves == 0) {
         // LOG_DEBUG(DebugCategory::SEARCH, "no move!");
@@ -318,8 +326,14 @@ int Search::quietscence(
     if (standerdPoint >= beta) return standerdPoint;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
+    // 生成所有走法
+    BitMove bitMoves[256];
+    int nCaptureMoves = generateLegalCaptureMoves(board, bitMoves);
+
     Move captureMoves[256];
-    int nCaptureMoves = generateLegalCaptureMoves(board, captureMoves);
+    for (int i = 0; i < nCaptureMoves; i++) {
+        captureMoves[i] = bitMovetoOriMove(board, bitMoves[i]);
+    }
 
     advanceMoves adv = {inValidMove, killerMove[0][ply], killerMove[1][ply]};
 
