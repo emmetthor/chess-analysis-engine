@@ -3,6 +3,9 @@
 #include "board/Board.h"
 #include "move/Make_Move.h"
 #include "move/Generate_Move.h"
+#include "Structure_IO.h"
+
+#include <iostream>
 
 int perft(Board &board, int depth, Player player) {
     if (depth <= 0) return 1;
