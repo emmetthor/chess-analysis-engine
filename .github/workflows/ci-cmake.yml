@@ -30,10 +30,10 @@ jobs:
       run: |
         if [ "${{ github.event_name }}" = "push" ]; then
           echo "Push -> build only"
-          cmake -B ${{github.workspace}}/build -S engine -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake -B ${{github.workspace}}/build -S . -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         else
           echo "Merge -> full test"
-          cmake -B ${{github.workspace}}/build -S engine \
+          cmake -B ${{github.workspace}}/build -S . \
             -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \
             -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer"
         fi
