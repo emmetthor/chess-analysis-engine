@@ -147,9 +147,12 @@ SearchResult Search::searchRootCore(
 
         moveStk[backIterator++] = move;
 
+        if (player != board.player) {
+            ENGINE_FATAL(DebugCategory::SEARCH, "incorrect player");
+        }
+
         // 遞迴下一層
         makeMove(board, move);
-        //ENGINE_ASSERT(!isInCheck(board, player));
         
         int score = -negamax(
             board,
@@ -161,6 +164,7 @@ SearchResult Search::searchRootCore(
         );
 
         undoMove(board, move);
+
         backIterator--;
 
         // LOG_DEBUG(DebugCategory::SEARCH, "move: ", move, " | move score: ", score);
