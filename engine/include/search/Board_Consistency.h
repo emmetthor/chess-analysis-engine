@@ -11,7 +11,7 @@
 int boardConsistency(Board &board, int depth, Player player) {
     if (depth <= 0) return 1;
     
-    if (board.zobristKey != computeZobrist(board, player)) {
+    if (board.zobristKey != computeZobrist(board)) {
         ENGINE_FATAL(DebugCategory::BOARD, "different zobrist");
     }
 

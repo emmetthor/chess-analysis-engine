@@ -56,7 +56,7 @@ Board cinFenToBoard(const std::string &fen) {
     // 初始化分析參數
     board.materialScore = computePieceValue(board);
     board.PSTScore = computePST(board);
-    board.zobristKey = computeZobrist(board, board.player);
+    board.zobristKey = computeZobrist(board);
     computePiecePos(board);
 
     return board;
