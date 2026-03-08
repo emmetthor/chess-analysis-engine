@@ -27,7 +27,7 @@ int boardConsistency(Board &board, int depth, Player player) {
     int node = 0;
 
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];

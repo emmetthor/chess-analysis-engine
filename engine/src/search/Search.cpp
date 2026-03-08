@@ -136,7 +136,7 @@ SearchResult Search::searchRootCore(
 
     // 生成所有走法
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
 
     // 排序
     advanceMoves adv = {iterativeMove, killerMove[0][ply], killerMove[1][ply]};
@@ -217,7 +217,7 @@ int Search::negamax(
 
     // 生成所有走法
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
     totalMoves += nMoves;
 
     // 檢查 checkmate / stalemate
@@ -248,6 +248,10 @@ int Search::negamax(
         // }
 
         int score = 0;
+
+        if (player != board.player) {
+            ENGINE_FATAL(DebugCategory::SEARCH, "incorrect player");
+        }
 
         makeMove(board, move);
 
@@ -333,7 +337,7 @@ int Search::quietscence(
     if (standerdPoint > alpha) alpha = standerdPoint;
 
     Move captureMoves[256];
-    int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
+    int nCaptureMoves = generateLegalCaptureMoves(board, captureMoves);
 
     advanceMoves adv = {inValidMove, killerMove[0][ply], killerMove[1][ply]};
 

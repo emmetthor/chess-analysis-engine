@@ -12,7 +12,7 @@ int perft(Board &board, int depth, Player player) {
     int nodes = 0;
 
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
