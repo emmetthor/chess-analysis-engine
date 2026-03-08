@@ -62,7 +62,6 @@ SearchResult Search::findBestMove(const Board &board, int depth) {
                 d,
                 -INF,
                 INF,
-                board.player,
                 finalRes.bestMove,
                 0
             );
@@ -81,7 +80,6 @@ SearchResult Search::findBestMove(const Board &board, int depth) {
                     d,
                     alpha,
                     beta,
-                    board.player,
                     finalRes.bestMove,
                     0
                 );
@@ -127,7 +125,6 @@ SearchResult Search::searchRootCore(
     int depth,
     int alpha,
     int beta,
-    Player player,
     Move iterativeMove,
     int ply
 ) {
@@ -136,7 +133,7 @@ SearchResult Search::searchRootCore(
 
     // 生成所有走法
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
 
     // 排序
     advanceMoves adv = {iterativeMove, killerMove[0][ply], killerMove[1][ply]};
@@ -149,18 +146,17 @@ SearchResult Search::searchRootCore(
 
         // 遞迴下一層
         makeMove(board, move);
-        //ENGINE_ASSERT(!isInCheck(board, player));
         
         int score = -negamax(
             board,
             depth - 1,
             -beta,
             -alpha,
-            opponent(player),
             ply + 1
         );
 
         undoMove(board, move);
+
         backIterator--;
 
         // LOG_DEBUG(DebugCategory::SEARCH, "move: ", move, " | move score: ", score);
@@ -179,7 +175,6 @@ int Search::negamax(
     int depth,
     int alpha,
     int beta,
-    Player player,
     int ply
 ) {
     negamaxNodes++;
@@ -206,21 +201,20 @@ int Search::negamax(
             board,
             alpha,
             beta,
-            player,
             ply
         );
     }
 
     // 生成所有走法
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
     totalMoves += nMoves;
 
     // 檢查 checkmate / stalemate
     if (nMoves == 0) {
         // LOG_DEBUG(DebugCategory::SEARCH, "no move!");
         // std::cout << "checkmate\n" << board << '\n';
-        if (isInCheck(board, player)) return -MATE_SCORE + ply;
+        if (isInCheck(board, board.player)) return -MATE_SCORE + ply;
         else return 0;
     }
 
@@ -263,7 +257,6 @@ int Search::negamax(
                 depth - 1,
                 -beta,
                 -alpha,
-                opponent(player),
                 ply + 1
             );
         } else {
@@ -272,7 +265,6 @@ int Search::negamax(
                 searchDepth,
                 -alpha - 1,
                 -alpha,
-                opponent(player),
                 ply + 1
             );
             if (score > alpha) {
@@ -281,7 +273,6 @@ int Search::negamax(
                     depth - 1,
                     -beta,
                     -alpha,
-                    opponent(player),
                     ply + 1
                 );
             }
@@ -320,16 +311,15 @@ int Search::quietscence(
     Board &board,
     int alpha,
     int beta,
-    Player player,
     int ply
 ) {
     qsNodes++;
-    int standerdPoint = (player == Player::WHITE ? 1 : -1) * eval.evaluateBoard(board, EVALUATE_MODE::FULL);
+    int standerdPoint = (board.player == Player::WHITE ? 1 : -1) * eval.evaluateBoard(board, EVALUATE_MODE::FULL);
     if (standerdPoint >= beta) return standerdPoint;
     if (standerdPoint > alpha) alpha = standerdPoint;
 
     Move captureMoves[256];
-    int nCaptureMoves = generateLegalCaptureMoves(board, player, captureMoves);
+    int nCaptureMoves = generateLegalCaptureMoves(board, captureMoves);
 
     advanceMoves adv = {inValidMove, killerMove[0][ply], killerMove[1][ply]};
 
@@ -355,7 +345,6 @@ int Search::quietscence(
             board,
             -beta,
             -alpha,
-            opponent(player),
             ply + 1
         );
 

@@ -8,10 +8,10 @@
 
 #include <iostream>
 
-int boardConsistency(Board &board, int depth, Player player) {
+int boardConsistency(Board &board, int depth) {
     if (depth <= 0) return 1;
     
-    if (board.zobristKey != computeZobrist(board, player)) {
+    if (board.zobristKey != computeZobrist(board)) {
         ENGINE_FATAL(DebugCategory::BOARD, "different zobrist");
     }
 
@@ -27,12 +27,12 @@ int boardConsistency(Board &board, int depth, Player player) {
     int node = 0;
 
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
         makeMove(board, move);
-        node += boardConsistency(board, depth - 1, opponent(player));
+        node += boardConsistency(board, depth - 1);
         undoMove(board, move);
     }
 

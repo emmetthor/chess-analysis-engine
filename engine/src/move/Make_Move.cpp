@@ -204,6 +204,8 @@ void makeMove(Board &board, Move &move) {
 
     //std::cout << move << '\n';
     ENGINE_ASSERT(validatePiecePos(board));
+
+    board.player = opponent(board.player);
 }
 
 void undoMove(Board &board, Move &move) {
@@ -258,4 +260,6 @@ void undoMove(Board &board, Move &move) {
     }
 
     ENGINE_ASSERT(validatePiecePos(board));
+
+    board.player = opponent(board.player);
 }

@@ -24,7 +24,7 @@ void initZobrist() {
         zobCastle[i] = rand64();
 }
 
-uint64_t computeZobrist(const Board &board, Player player) {
+uint64_t computeZobrist(const Board &board) {
     uint64_t key = 0;
 
     for (int r = 0; r < 8; r++) {
@@ -36,7 +36,7 @@ uint64_t computeZobrist(const Board &board, Player player) {
         }
     }
 
-    if (player == Player::BLACK)
+    if (board.player == Player::BLACK)
         key ^= zobPlayer;
 
     key ^= zobCastle[board.castleRights];

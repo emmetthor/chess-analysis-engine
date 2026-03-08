@@ -7,17 +7,17 @@
 
 #include <iostream>
 
-int perft(Board &board, int depth, Player player) {
+int perft(Board &board, int depth) {
     if (depth <= 0) return 1;
     int nodes = 0;
 
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, player, moves);
+    int nMoves = generateAllLegalMoves(board, moves);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
         makeMove(board, move);
-        nodes += perft(board, depth - 1, opponent(player));
+        nodes += perft(board, depth - 1);
         undoMove(board, move);
     }
 

@@ -22,6 +22,4 @@ private:
     int passPawnRankWeight[7] = {0, 150, 80, 40, 20, 10, 5};
 };
 
-int evaluate(Board &board, const Player player);
-
 int boardEvaluate(const Board &board, EVALUATE_MODE m);

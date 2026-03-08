@@ -15,10 +15,10 @@
 
 int generatePieceMoves(
     const Board &board,
-    Player player,
     Piece movePiece,
     Move *buffer
 ) {
+    Player player = board.player;
     ENGINE_ASSERT(isPlayerValid(player));
     ENGINE_ASSERT(movePiece != Piece::EMPTY);
 
@@ -50,10 +50,10 @@ int generatePieceMoves(
 
 int generatePieceCapture(
     const Board &board,
-    Player player,
     Piece movePiece,
     Move *buffer
 ) {
+    Player player = board.player;
     ENGINE_ASSERT(isPlayerValid(player));
     ENGINE_ASSERT(movePiece != Piece::EMPTY);
 
@@ -85,9 +85,9 @@ int generatePieceCapture(
 
 int generateAllMoves(
     const Board &board,
-    const Player player,
     Move *buffer
 ) {
+    Player player = board.player;
     ENGINE_ASSERT(isPlayerValid(player));
     ENGINE_ASSERT(validatePiecePos(board));
 
@@ -100,13 +100,12 @@ int generateAllMoves(
         queen   = makePiece(player, 'Q'),
         king    = makePiece(player, 'K');
 
-    cnt += generatePieceMoves(board, player, knight, buffer);
-    cnt += generatePieceMoves(board, player, bishop, buffer + cnt);
-    cnt += generatePieceMoves(board, player, rook, buffer + cnt);
-    cnt += generatePieceMoves(board, player, queen, buffer + cnt);
-    cnt += generatePieceMoves(board, player, king, buffer + cnt);
+    cnt += generatePieceMoves(board, knight, buffer);
+    cnt += generatePieceMoves(board, bishop, buffer + cnt);
+    cnt += generatePieceMoves(board, rook, buffer + cnt);
+    cnt += generatePieceMoves(board, queen, buffer + cnt);
+    cnt += generatePieceMoves(board, king, buffer + cnt);
 
-    // pawn
     int dr = (player == Player::WHITE ? -1 : 1);
     int startRank = (player == Player::WHITE ? 6 : 1);
     int promoteRank = (player == Player::WHITE ? 0 : 7);
@@ -190,9 +189,9 @@ int generateAllMoves(
 
 int generateCaptureMoves(
     const Board &board,
-    const Player player,
     Move *buffer
 ) {
+    Player player = board.player;
     ENGINE_ASSERT(isPlayerValid(player));
     ENGINE_ASSERT(validatePiecePos(board));
     
@@ -205,11 +204,11 @@ int generateCaptureMoves(
         queen =     makePiece(player, 'Q'),
         king =      makePiece(player, 'K');
 
-    cnt += generatePieceCapture(board, player, knight, buffer);
-    cnt += generatePieceCapture(board, player, bishop, buffer + cnt);
-    cnt += generatePieceCapture(board, player, rook, buffer + cnt);
-    cnt += generatePieceCapture(board, player, queen, buffer + cnt);
-    cnt += generatePieceCapture(board, player, king, buffer + cnt);
+    cnt += generatePieceCapture(board, knight, buffer);
+    cnt += generatePieceCapture(board, bishop, buffer + cnt);
+    cnt += generatePieceCapture(board, rook, buffer + cnt);
+    cnt += generatePieceCapture(board, queen, buffer + cnt);
+    cnt += generatePieceCapture(board, king, buffer + cnt);
 
     // pawn
     int dr = (player == Player::WHITE ? -1 : 1);
@@ -255,7 +254,6 @@ int generateCaptureMoves(
 
 int filterLegalMoves(
     const Board &board,
-    const Player player,
     Move *allMoves,
     int nAllMoves,
     Move *buffer
@@ -272,12 +270,14 @@ int filterLegalMoves(
         //if (!isMoveLegal(board, move)) continue; 已經是正確的
 
         if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
-            if (!isCastleLegal(board, move)) continue;
+            if (!isCastleLegal(board, move)) {
+                continue;
+            }
         }
 
         makeMove(copyBoard, move);
 
-        if (!isInCheck(copyBoard, player)) {
+        if (!isInCheck(copyBoard, opponent(copyBoard.player))) {
             buffer[cnt++] = move;
         }
 
@@ -289,32 +289,28 @@ int filterLegalMoves(
 
 int generateAllLegalMoves(
     const Board &board,
-    const Player player,
     Move *buffer
 ) {
-    ENGINE_ASSERT(isPlayerValid(player));
-
-    //std::cout << "generate board:\n" << board << '\n';
+    ENGINE_ASSERT(isPlayerValid(board.player));
 
     Move allMoves[2000];
-    int nAll = generateAllMoves(board, player, allMoves);
+    int nAll = generateAllMoves(board, allMoves);
 
-    int nLegalMoves = filterLegalMoves(board, player, allMoves, nAll, buffer);
+    int nLegalMoves = filterLegalMoves(board, allMoves, nAll, buffer);
 
     return nLegalMoves;
 }
 
 int generateLegalCaptureMoves(
     const Board &board,
-    const Player player,
     Move *buffer
 ) {
     ENGINE_ASSERT(isPlayerValid(player));
     
     Move captureMoves[2000];
-    int ncaptureMoves = generateCaptureMoves(board, player, captureMoves);
+    int ncaptureMoves = generateCaptureMoves(board, captureMoves);
 
-    int nLegalMoves = filterLegalMoves(board, player, captureMoves, ncaptureMoves, buffer);
+    int nLegalMoves = filterLegalMoves(board, captureMoves, ncaptureMoves, buffer);
 
     return nLegalMoves;
 }

@@ -61,7 +61,7 @@ void Board::init() {
     castleRights = 0b1111;
 
     initZobrist();
-    zobristKey = computeZobrist(*this, Player::WHITE);
+    zobristKey = computeZobrist(*this);
 }
 
 // 回傳位於 pos 的 Piece
