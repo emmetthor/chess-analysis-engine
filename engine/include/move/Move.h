@@ -10,7 +10,7 @@ enum Castle {
     NOT, SHORT_CASTLE, LONG_CASTLE
 };
 
-using BitMove = uint32_t;
+
 /*
 bit  0  1  2 | 3  4  5 | Position from
 bit  6  7  8 | 9 10 11 | Position to
@@ -143,8 +143,6 @@ struct CastleMove {
 };
 
 void printMove(const Move &move);
-
-void moveDebugPrint(const Move &move);
 
 bool isMoveLegal(const Board &board, const Move &move);
 
