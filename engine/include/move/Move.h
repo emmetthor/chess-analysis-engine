@@ -97,6 +97,7 @@ inline BitMove makeBitMove(
 
     return res;
 }
+
 struct Move {
     Player player;
 

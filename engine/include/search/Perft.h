@@ -11,8 +11,10 @@ int perft(Board &board, int depth) {
     if (depth <= 0) return 1;
     int nodes = 0;
 
+    BitMove bitMoves[256];
     Move moves[256];
-    int nMoves = generateAllLegalMoves(board, moves);
+    int nMoves = generateAllLegalMoves(board, bitMoves);
+    for (int i = 0; i < nMoves; i++) moves[i] = bitMovetoOriMove(board, bitMoves[i]);
 
     for (int i = 0; i < nMoves; i++) {
         Move move = moves[i];
