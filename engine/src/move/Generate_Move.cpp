@@ -85,6 +85,13 @@ int generatePieceCapture(
     return cnt;
 }
 
+Square allCastles[4][2] = {
+    {positionToSquare({7, 4}), positionToSquare({7, 6})},
+    {positionToSquare({7, 4}), positionToSquare({7, 2})},
+    {positionToSquare({0, 4}), positionToSquare({0, 6})},
+    {positionToSquare({0, 4}), positionToSquare({0, 2})}
+};
+
 int generateAllMoves(
     const Board &board,
     BitMove *buffer
@@ -211,6 +218,18 @@ int generateAllMoves(
 
     //     buffer[cnt++] = moveCastle;
     // }
+
+    for (int i = 0; i < 4; i++) {
+        buffer[cnt++] = makeBitMove(
+            allCastles[i][0],
+            allCastles[i][1],
+            Piece::EMPTY,
+            false,
+            true,
+            false,
+            false
+        );
+    }
 
     return cnt;
 }

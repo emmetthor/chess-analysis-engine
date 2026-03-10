@@ -364,7 +364,7 @@ bool isCastleLegal(const Board &board, const Move &move) {
 }
 
 bool isCastleLegal(const Board &board, const BitMove move) {
-    Player player = (isWhite(board.at(squareToPosition(getFromSquare(move)))) ? Player::WHITE : Player::BLACK);
+    Player player = board.player;
     ENGINE_ASSERT(isPlayerValid(player));
 
     if (getFromSquare(move) == positionToSquare({7, 4}) && getToSquare(move) == positionToSquare({7, 6})) {
