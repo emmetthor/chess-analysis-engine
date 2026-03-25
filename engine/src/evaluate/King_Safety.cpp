@@ -9,6 +9,11 @@ Position findKing(const Board &board, Player player) {
     Piece king = makePiece(player, 'K');
     int kingIndex = pieceToIndex(king);
     int kingCount = board.pieceCount[kingIndex];
+
+    if (kingCount != 1) {
+        ENGINE_FATAL(DebugCategory::EVAL, "no king or multiple kings. | kingCount =", kingCount);
+    }
+
     const Position *posArray = board.piecePos[kingIndex];
 
     return posArray[0];

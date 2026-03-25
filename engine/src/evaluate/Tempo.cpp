@@ -1,8 +1,8 @@
 #include "evaluate/Tempo.h"
 
-const int TEMPO = 10;
 
-int evaluateTempo(const Board &board, const Player player) {
-    if (player == Player::WHITE) return TEMPO;
-    else return -TEMPO;
+
+int evaluateTempo(const Board &board, const Player player, const int tempo) {
+    if (player == Player::WHITE) return tempo;
+    else return -tempo;
 }
