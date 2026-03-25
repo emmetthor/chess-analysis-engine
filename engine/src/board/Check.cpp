@@ -7,7 +7,7 @@
 #include "Structure_IO.h"
 #include "debug.h"
 
-// 確認 player 方王有沒有被將軍
+// Check whether the king of the player is attacked.
 bool isInCheck (
     const Board &board,
     const Player player
