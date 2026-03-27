@@ -2,4 +2,4 @@
 
 #include "move/Move.h"
 
-Move parseUCIMove(const std::string strMove, const Board &board);
+Move parseUCIMove(const std::string strMove, const Board& board);

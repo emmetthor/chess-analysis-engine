@@ -2,8 +2,10 @@
 
 #include "board/Board.h"
 
-int pieceValue(const Piece p) {
-    switch (p) {
+int pieceValue(const Piece p)
+{
+    switch (p)
+    {
     case Piece::WKING:
     case Piece::BKING:
         break;
@@ -11,7 +13,7 @@ int pieceValue(const Piece p) {
     case Piece::WQUEEN:
     case Piece::BQUEEN:
         return 900;
-    
+
     case Piece::WKNIGHT:
     case Piece::BKNIGHT:
         return 320;
@@ -32,13 +34,17 @@ int pieceValue(const Piece p) {
     return 0;
 }
 
-int computePieceValue(const Board board) {
+int computePieceValue(const Board board)
+{
     int res = 0;
-    
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
+
+    for (int r = 0; r < 8; r++)
+    {
+        for (int c = 0; c < 8; c++)
+        {
             Piece p = board.board[r][c];
-            if (p == Piece::EMPTY) continue;
+            if (p == Piece::EMPTY)
+                continue;
 
             res += pieceValue(p) * (isWhite(p) ? 1 : -1);
         }

@@ -1,9 +1,10 @@
 #pragma once
 
-#include <string>
 #include "Bench.h"
+#include <string>
 
-struct TestData {
+struct TestData
+{
     std::string fen;
     std::string bestMove;
 };

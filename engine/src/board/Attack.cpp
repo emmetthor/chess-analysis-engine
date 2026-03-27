@@ -2,80 +2,81 @@
 
 #include "board/Attack.h"
 #include "board/Board.h"
-#include "move/Move_Direction.h"
 #include "debug.h"
+#include "move/Move_Direction.h"
 
-int countPawnAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
+int countPawnAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     int pdr = (player == Player::WHITE ? -1 : 1);
-    for (int pdc : {-1, 1}) {
+    for (int pdc : {-1, 1})
+    {
         Position p = {pos.row - pdr, pos.col + pdc};
-        if (!isInBoard(p)) continue;
+        if (!isInBoard(p))
+            continue;
 
-        if (board.at(p) == makePiece(player, 'P')) cnt++;
+        if (board.at(p) == makePiece(player, 'P'))
+            cnt++;
     }
 
     return cnt;
 }
 
-int countKingAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
+int countKingAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece king = makePiece(player, 'K');
-    
-    for (int i = 0; i < 8; i++) {
+
+    for (int i = 0; i < 8; i++)
+    {
         Position p = {pos.row + MoveDirection::KING_DR[i], pos.col + MoveDirection::KING_DC[i]};
 
-        if (isInBoard(p) && board.at(p) == king) cnt++;
+        if (isInBoard(p) && board.at(p) == king)
+            cnt++;
     }
 
     return cnt;
 }
 
-int countKnightAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
+int countKnightAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece knight = makePiece(player, 'N');
-    
-    for (int i = 0; i < 8; i++) {
+
+    for (int i = 0; i < 8; i++)
+    {
         Position p = {pos.row + MoveDirection::KNIGHT_DR[i], pos.col + MoveDirection::KNIGHT_DC[i]};
 
-        if (isInBoard(p) && board.at(p) == knight) cnt++;
+        if (isInBoard(p) && board.at(p) == knight)
+            cnt++;
     }
 
     return cnt;
 }
 
-int countDiagnalAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
+int countDiagnalAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece bishop = makePiece(player, 'B');
     Piece queen = makePiece(player, 'Q');
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i], pos.col + MoveDirection::BISHOP_QUEEN_DC[i]};
+    for (int i = 0; i < 4; i++)
+    {
+        Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i],
+                      pos.col + MoveDirection::BISHOP_QUEEN_DC[i]};
 
-        while (true) {
-            if (!isInBoard(p)) break;
+        while (true)
+        {
+            if (!isInBoard(p))
+                break;
 
             Piece pp = board.at(p);
 
-            if (pp == bishop || pp == queen) cnt++;
+            if (pp == bishop || pp == queen)
+                cnt++;
 
-            if (pp != Piece::EMPTY) break; 
+            if (pp != Piece::EMPTY)
+                break;
 
             p.row += MoveDirection::BISHOP_QUEEN_DR[i];
             p.col += MoveDirection::BISHOP_QUEEN_DC[i];
@@ -85,26 +86,29 @@ int countDiagnalAttacks(
     return cnt;
 }
 
-int countStraightAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
+int countStraightAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece rook = makePiece(player, 'R');
     Piece queen = makePiece(player, 'Q');
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i], pos.col + MoveDirection::ROOK_QUEEN_DC[i]};
+    for (int i = 0; i < 4; i++)
+    {
+        Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i],
+                      pos.col + MoveDirection::ROOK_QUEEN_DC[i]};
 
-        while (true) {
-            if (!isInBoard(p)) break;
+        while (true)
+        {
+            if (!isInBoard(p))
+                break;
 
             Piece pp = board.at(p);
 
-            if (pp == rook || pp == queen) cnt++;
+            if (pp == rook || pp == queen)
+                cnt++;
 
-            if (pp != Piece::EMPTY) break; 
+            if (pp != Piece::EMPTY)
+                break;
 
             p.row += MoveDirection::ROOK_QUEEN_DR[i];
             p.col += MoveDirection::ROOK_QUEEN_DC[i];
@@ -144,9 +148,10 @@ int countStraightAttacks(
 //     // 枚舉所有騎士的合法走法 O(8)
 //     int cnt = 0;
 //     Piece knight = makePiece(player, 'N');
-    
+
 //     for (int i = 0; i < 8; i++) {
-//         Position p = {pos.row + MoveDirection::KNIGHT_DR[i], pos.col + MoveDirection::KNIGHT_DC[i]};
+//         Position p = {pos.row + MoveDirection::KNIGHT_DR[i], pos.col +
+//         MoveDirection::KNIGHT_DC[i]};
 
 //         if (isInBoard(p) && board.at(p) == knight) buffer[cnt++] = p;
 //     }
@@ -166,7 +171,8 @@ int countStraightAttacks(
 //     Piece bishop = makePiece(player, 'B');
 
 //     for (int i = 0; i < 4; i++) {
-//         Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i], pos.col + MoveDirection::BISHOP_QUEEN_DC[i]};
+//         Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i], pos.col +
+//         MoveDirection::BISHOP_QUEEN_DC[i]};
 
 //         while (true) {
 //             if (!isInBoard(p)) break;
@@ -175,7 +181,7 @@ int countStraightAttacks(
 
 //             if (pp == bishop) buffer[cnt++] = p;
 
-//             if (pp != Piece::EMPTY) break; 
+//             if (pp != Piece::EMPTY) break;
 
 //             p.row += MoveDirection::BISHOP_QUEEN_DR[i];
 //             p.col += MoveDirection::BISHOP_QUEEN_DC[i];
@@ -197,7 +203,8 @@ int countStraightAttacks(
 //     Piece rook = makePiece(player, 'R');
 
 //     for (int i = 0; i < 4; i++) {
-//         Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i], pos.col + MoveDirection::ROOK_QUEEN_DC[i]};
+//         Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i], pos.col +
+//         MoveDirection::ROOK_QUEEN_DC[i]};
 
 //         while (true) {
 //             if (!isInBoard(p)) break;
@@ -206,7 +213,7 @@ int countStraightAttacks(
 
 //             if (pp == rook) buffer[cnt++] = p;
 
-//             if (pp != Piece::EMPTY) break; 
+//             if (pp != Piece::EMPTY) break;
 
 //             p.row += MoveDirection::ROOK_QUEEN_DR[i];
 //             p.col += MoveDirection::ROOK_QUEEN_DC[i];
@@ -228,7 +235,8 @@ int countStraightAttacks(
 //     Piece queen = makePiece(player, 'Q');
 
 //     for (int i = 0; i < 4; i++) {
-//         Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i], pos.col + MoveDirection::BISHOP_QUEEN_DC[i]};
+//         Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i], pos.col +
+//         MoveDirection::BISHOP_QUEEN_DC[i]};
 
 //         while (true) {
 //             if (!isInBoard(p)) break;
@@ -237,7 +245,7 @@ int countStraightAttacks(
 
 //             if (pp == queen) buffer[cnt++] = p;
 
-//             if (pp != Piece::EMPTY) break; 
+//             if (pp != Piece::EMPTY) break;
 
 //             p.row += MoveDirection::BISHOP_QUEEN_DR[i];
 //             p.col += MoveDirection::BISHOP_QUEEN_DC[i];
@@ -245,7 +253,8 @@ int countStraightAttacks(
 //     }
 
 //     for (int i = 0; i < 4; i++) {
-//         Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i], pos.col + MoveDirection::ROOK_QUEEN_DC[i]};
+//         Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i], pos.col +
+//         MoveDirection::ROOK_QUEEN_DC[i]};
 
 //         while (true) {
 //             if (!isInBoard(p)) break;
@@ -254,7 +263,7 @@ int countStraightAttacks(
 
 //             if (pp == queen) buffer[cnt++] = p;
 
-//             if (pp != Piece::EMPTY) break; 
+//             if (pp != Piece::EMPTY) break;
 
 //             p.row += MoveDirection::ROOK_QUEEN_DR[i];
 //             p.col += MoveDirection::ROOK_QUEEN_DC[i];
@@ -265,18 +274,17 @@ int countStraightAttacks(
 // }
 
 // Calculate attacks in the designated square.
-int countSquareAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
+int countSquareAttacks(const Board& board, Position pos, const Player player)
+{
     // 檢查位置合法性
-    if (!isInBoard(pos)) {
+    if (!isInBoard(pos))
+    {
         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
         ENGINE_ASSERT(isInBoard(pos));
     }
     // 檢查玩家合法性
-    if (!isPlayerValid(player)) {
+    if (!isPlayerValid(player))
+    {
         LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
         ENGINE_ASSERT(isPlayerValid(player));
     }
@@ -318,22 +326,20 @@ int countSquareAttacks(
 // }
 
 // Check whether the designated square is attacked.
-bool isSquareAttacked(
-    const Board &board,
-    Position pos, const
-    Player player
-) {
+bool isSquareAttacked(const Board& board, Position pos, const Player player)
+{
     // 檢查位置合法性
-    if (!isInBoard(pos)) {
+    if (!isInBoard(pos))
+    {
         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
         ENGINE_ASSERT(isInBoard(pos));
     }
     // 檢查玩家合法性
-    if (!isPlayerValid(player)) {
+    if (!isPlayerValid(player))
+    {
         LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
         ENGINE_ASSERT(isPlayerValid(player));
     }
 
     return (countSquareAttacks(board, pos, player) > 0 ? 1 : 0);
 }
-

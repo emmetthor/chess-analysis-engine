@@ -1,18 +1,19 @@
 #pragma once
 
 #include "board/Board.h"
-#include "move/Move.h"
 #include "evaluate/Evaluate.h"
+#include "move/Move.h"
 #include "search/Search.h"
 
-class Engine {
-public: 
+class Engine
+{
+  public:
     Engine();
 
     Evaluate eval;
 
     void setStartPosition();
-    void setPositionWithFen(const std::string &fen);
+    void setPositionWithFen(const std::string& fen);
     void checkReady();
 
     Move goDepth(int depth, bool isPrintInfo = 1);
@@ -23,6 +24,6 @@ public:
     void changePlayer();
     void setPlayer(Player player);
 
-private:
+  private:
     Board board;
 };

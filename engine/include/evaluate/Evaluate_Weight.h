@@ -1,4 +1,5 @@
-struct Evaluate_Weights {
+struct Evaluate_Weights
+{
     int kingSafetyWeight = 8;
     int knightMobilityWeight = 4;
     int bishopMobilityWeight = 4;

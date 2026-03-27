@@ -2,4 +2,4 @@
 
 #include "board/Board.h"
 
-int evaluateCenterControl(const Board &board);
+int evaluateCenterControl(const Board& board);

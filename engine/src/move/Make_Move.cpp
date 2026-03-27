@@ -1,21 +1,22 @@
 #include "move/Make_Move.h"
 #include "board/Board.h"
-#include "search/Zobrist.h"
+#include "debug.h"
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
-#include "debug.h"
+#include "search/Zobrist.h"
 #include <assert.h>
 
 // 入堡走子
-void castleMove(Board &board, Move &move) {
+void castleMove(Board& board, Move& move)
+{
     CastleMove c = getCastleMove(move);
     Player player = move.player;
     int playerScoreControl = (player == Player::WHITE ? 1 : -1);
 
-    board.set(c.kingFrom,   Piece::EMPTY);
-    board.set(c.kingTo,     c.kingPiece);
-    board.set(c.rookFrom,   Piece::EMPTY);
-    board.set(c.rookTo,     c.rookPiece);
+    board.set(c.kingFrom, Piece::EMPTY);
+    board.set(c.kingTo, c.kingPiece);
+    board.set(c.rookFrom, Piece::EMPTY);
+    board.set(c.rookTo, c.rookPiece);
 
     board.materialScore -= playerScoreControl * evaluatePieceSquare(c.kingPiece, c.kingFrom);
     board.materialScore += playerScoreControl * evaluatePieceSquare(c.kingPiece, c.kingTo);
@@ -38,14 +39,15 @@ void castleMove(Board &board, Move &move) {
 }
 
 // 還原入堡
-void undoCastleMove(Board &board, Move &move) {
+void undoCastleMove(Board& board, Move& move)
+{
     CastleMove c = getCastleMove(move);
     Player player = move.player;
 
-    board.set(c.kingFrom,   c.kingPiece);
-    board.set(c.kingTo,     Piece::EMPTY);
-    board.set(c.rookFrom,   c.rookPiece);
-    board.set(c.rookTo,     Piece::EMPTY);
+    board.set(c.kingFrom, c.kingPiece);
+    board.set(c.kingTo, Piece::EMPTY);
+    board.set(c.rookFrom, c.rookPiece);
+    board.set(c.rookTo, Piece::EMPTY);
 
     int kingIndex = pieceToIndex(c.kingPiece);
     int rookIndex = pieceToIndex(c.rookPiece);
@@ -56,27 +58,40 @@ void undoCastleMove(Board &board, Move &move) {
     board.piecePosAdd(board.piecePos[rookIndex], board.pieceCount[rookIndex], c.rookFrom);
 }
 
-int updateCastleRights(int castleRights, const Move &move) {
+int updateCastleRights(int castleRights, const Move& move)
+{
     Player player = move.player;
     int fromCol = move.from.col;
 
     // 動 king → 清掉該方所有 castle bit
-    if (move.movePiece == makePiece(player, 'K')) {
-        if (player == Player::WHITE) {
+    if (move.movePiece == makePiece(player, 'K'))
+    {
+        if (player == Player::WHITE)
+        {
             castleRights &= ~0b1100; // 清 bit2 bit3 → 白方 king + queen side
-        } else {
+        }
+        else
+        {
             castleRights &= ~0b0011; // 清 bit0 bit1 → 黑方 king + queen side
         }
     }
 
     // 動 rook → 清掉對應側
-    else if (move.movePiece == makePiece(player, 'R')) {
-        if (player == Player::WHITE) {
-            if (fromCol == 0) castleRights &= ~0b0100; // WQ
-            else if (fromCol == 7) castleRights &= ~0b1000; // WK
-        } else {
-            if (fromCol == 0) castleRights &= ~0b0001; // BQ
-            else if (fromCol == 7) castleRights &= ~0b0010; // BK
+    else if (move.movePiece == makePiece(player, 'R'))
+    {
+        if (player == Player::WHITE)
+        {
+            if (fromCol == 0)
+                castleRights &= ~0b0100; // WQ
+            else if (fromCol == 7)
+                castleRights &= ~0b1000; // WK
+        }
+        else
+        {
+            if (fromCol == 0)
+                castleRights &= ~0b0001; // BQ
+            else if (fromCol == 7)
+                castleRights &= ~0b0010; // BK
         }
     }
 
@@ -84,19 +99,20 @@ int updateCastleRights(int castleRights, const Move &move) {
 }
 
 // 執行 move
-void makeMove(Board &board, Move &move) {
+void makeMove(Board& board, Move& move)
+{
     move.prevCastleRights = board.castleRights;
     move.prevMateralPoints = board.materialScore;
     move.prevPST = board.PSTScore;
     move.prevZobrist = board.zobristKey;
 
     // 控制 castleRights
-    
+
     board.zobristKey ^= zobCastle[board.castleRights];
     board.castleRights = updateCastleRights(board.castleRights, move);
     board.zobristKey ^= zobCastle[board.castleRights];
 
-    //std::cout << board.castleRights << '\n';
+    // std::cout << board.castleRights << '\n';
 
     // 執行 move
     Piece captured = move.capturePiece;
@@ -104,46 +120,56 @@ void makeMove(Board &board, Move &move) {
     Player player = move.player;
     int playerScoreControl = (player == Player::WHITE ? 1 : -1);
 
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
+    {
         castleMove(board, move);
     }
 
-    else if (move.isPromotion) {
+    else if (move.isPromotion)
+    {
         board.set(move.from, Piece::EMPTY);
         board.set(move.to, move.promotionPiece);
     }
 
-    else {
+    else
+    {
         board.set(move.from, Piece::EMPTY);
         board.set(move.to, moved);
     }
 
     // 更新 material score
-    if (captured != Piece::EMPTY) {
+    if (captured != Piece::EMPTY)
+    {
         board.materialScore += playerScoreControl * pieceValue(captured);
     }
 
-    if (move.isPromotion) {
-        board.materialScore += playerScoreControl * (pieceValue(move.promotionPiece) - pieceValue(moved));
+    if (move.isPromotion)
+    {
+        board.materialScore +=
+            playerScoreControl * (pieceValue(move.promotionPiece) - pieceValue(moved));
     }
 
     // 更新 PST
 
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
+    {
         // castleMove 完成
     }
 
-    else if (move.isPromotion) {
+    else if (move.isPromotion)
+    {
         board.PSTScore -= playerScoreControl * evaluatePieceSquare(moved, move.from);
         board.PSTScore += playerScoreControl * evaluatePieceSquare(move.promotionPiece, move.to);
     }
 
-    else {
+    else
+    {
         board.PSTScore -= playerScoreControl * evaluatePieceSquare(moved, move.from);
         board.PSTScore += playerScoreControl * evaluatePieceSquare(moved, move.to);
     }
 
-    if (captured != Piece::EMPTY) {
+    if (captured != Piece::EMPTY)
+    {
         board.PSTScore -= -playerScoreControl * evaluatePieceSquare(captured, move.to);
     }
 
@@ -153,58 +179,68 @@ void makeMove(Board &board, Move &move) {
 
     board.zobristKey ^= zobPlayer;
 
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
+    {
         // castleMove 完成
     }
 
-    else if (move.isPromotion) {
+    else if (move.isPromotion)
+    {
         board.zobristKey ^= zobPiece[pieceToIndex(moved)][fromZob];
         board.zobristKey ^= zobPiece[pieceToIndex(move.promotionPiece)][toZob];
     }
 
-    else {
+    else
+    {
         board.zobristKey ^= zobPiece[pieceToIndex(moved)][fromZob];
         board.zobristKey ^= zobPiece[pieceToIndex(moved)][toZob];
     }
 
-    if (captured != Piece::EMPTY) {
+    if (captured != Piece::EMPTY)
+    {
         board.zobristKey ^= zobPiece[pieceToIndex(captured)][toZob];
     }
 
-    //WARN assert(computeZobrist(board, opponent(player)) == board.zobristKey);
+    // WARN assert(computeZobrist(board, opponent(player)) == board.zobristKey);
 
     // 更新piecePos
 
-    if (captured != Piece::EMPTY) {
-        //std::cout << "capture delete\n";
+    if (captured != Piece::EMPTY)
+    {
+        // std::cout << "capture delete\n";
         int captureIndex = pieceToIndex(captured);
         board.piecePosDelete(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
     }
 
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
+    {
         // castleMove 完成
     }
 
-    else if (move.isPromotion) {
+    else if (move.isPromotion)
+    {
         int moveIndex = pieceToIndex(moved);
         int promotionIndex = pieceToIndex(move.promotionPiece);
         board.piecePosDelete(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
-        board.piecePosAdd(board.piecePos[promotionIndex], board.pieceCount[promotionIndex], move.to);
+        board.piecePosAdd(board.piecePos[promotionIndex], board.pieceCount[promotionIndex],
+                          move.to);
     }
-    
-    else {
+
+    else
+    {
         int moveIndex = pieceToIndex(moved);
         board.piecePosDelete(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
         board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.to);
     }
 
-    //std::cout << move << '\n';
+    // std::cout << move << '\n';
     ENGINE_ASSERT(validatePiecePos(board));
 
     board.player = opponent(board.player);
 }
 
-void undoMove(Board &board, Move &move) {
+void undoMove(Board& board, Move& move)
+{
     board.castleRights = move.prevCastleRights;
     board.materialScore = move.prevMateralPoints;
     board.PSTScore = move.prevPST;
@@ -217,40 +253,48 @@ void undoMove(Board &board, Move &move) {
 
     move.capturePiece = captured;
 
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
+    {
         undoCastleMove(board, move);
     }
 
-    else if (move.isPromotion) {
+    else if (move.isPromotion)
+    {
         board.set(move.from, moved);
         board.set(move.to, captured);
     }
 
-    else {
+    else
+    {
         board.set(move.from, moved);
         board.set(move.to, captured);
     }
 
     // 回復 piecePos
 
-    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE) {
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
+    {
         // undoCastleMove 完成
     }
 
-    else if (move.isPromotion) {
+    else if (move.isPromotion)
+    {
         int moveIndex = pieceToIndex(moved);
         int promotionIndex = pieceToIndex(move.promotionPiece);
-        board.piecePosDelete(board.piecePos[promotionIndex], board.pieceCount[promotionIndex], move.to);
+        board.piecePosDelete(board.piecePos[promotionIndex], board.pieceCount[promotionIndex],
+                             move.to);
         board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
     }
 
-    else {
+    else
+    {
         int moveIndex = pieceToIndex(moved);
         board.piecePosDelete(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.to);
         board.piecePosAdd(board.piecePos[moveIndex], board.pieceCount[moveIndex], move.from);
     }
 
-    if (captured != Piece::EMPTY) {
+    if (captured != Piece::EMPTY)
+    {
         int captureIndex = pieceToIndex(captured);
         board.piecePosAdd(board.piecePos[captureIndex], board.pieceCount[captureIndex], move.to);
     }

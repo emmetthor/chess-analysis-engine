@@ -1,17 +1,19 @@
 #pragma GCC optimize("O3,unroll-loops")
 
 #include "evaluate/Evaluate.h"
-#include "evaluate/Tempo.h"
+#include "evaluate/Castle_Rights.h"
 #include "evaluate/King_Safety.h"
 #include "evaluate/Mobility.h"
-#include "evaluate/Castle_Rights.h"
 #include "evaluate/Pawn_Structure.h"
+#include "evaluate/Tempo.h"
 
 const int INF = 1e9;
 
-int Evaluate::evaluateBoard(const Board &board, EVALUATE_MODE m) const {
+int Evaluate::evaluateBoard(const Board& board, EVALUATE_MODE m) const
+{
     int res = 0;
-    switch (m) {
+    switch (m)
+    {
     case EVALUATE_MODE::FULL:
         res += evaluateKingSafety(board, Player::WHITE, evalWeight.kingSafetyWeight);
         res -= evaluateKingSafety(board, Player::BLACK, evalWeight.kingSafetyWeight);
@@ -24,16 +26,13 @@ int Evaluate::evaluateBoard(const Board &board, EVALUATE_MODE m) const {
         res -= evaluateRookMobility(board, Player::BLACK, evalWeight.rookMobilityWeight);
 
         res += evaluateCastleRights(board, evalWeight.castleWeight);
-        
+
         res += board.materialScore;
         res += board.PSTScore;
 
-        res += evaluatePawnStructure(
-            board,
-            evalWeight.doublePawnWeight,
-            evalWeight.isolatedPawnWeight,
-            evalWeight.passPawnWeight,
-            evalWeight.passPawnRankWeight);
+        res +=
+            evaluatePawnStructure(board, evalWeight.doublePawnWeight, evalWeight.isolatedPawnWeight,
+                                  evalWeight.passPawnWeight, evalWeight.passPawnRankWeight);
         res += evaluateTempo(board, board.player, evalWeight.tempo);
 
         break;
@@ -44,7 +43,8 @@ int Evaluate::evaluateBoard(const Board &board, EVALUATE_MODE m) const {
     return res;
 }
 
-int boardEvaluate(const Board &board, EVALUATE_MODE m) {
+int boardEvaluate(const Board& board, EVALUATE_MODE m)
+{
     int res = 0;
 
     return res;

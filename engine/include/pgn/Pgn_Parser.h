@@ -1,20 +1,21 @@
 #pragma once
 
-#include "move/Move.h"
 #include "board/Piece.h"
+#include "move/Move.h"
 
 #include <string>
 #include <vector>
 
-class PGN {
-public:
+class PGN
+{
+  public:
     void cinPgnToSan();
     void SantoMove();
     std::vector<Move> getMoves();
     int getMovesCount();
-    Move SantoMoveSingle(Board &board, std::string strSan, Player player);
+    Move SantoMoveSingle(Board& board, std::string strSan, Player player);
 
-private:
+  private:
     std::string whiteName, blackName, result, whiteElo, blackElo;
 
     std::vector<std::string> san_moves;
@@ -22,7 +23,8 @@ private:
     std::vector<Move> moves;
 };
 
-struct SAN {
+struct SAN
+{
     Piece piece, promorePiece;
     bool isCapture = false;
     bool isPromote = false;

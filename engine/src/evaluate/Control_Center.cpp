@@ -1,23 +1,20 @@
 #include "evaluate/Control_Center.h"
+#include "board/Attack.h"
 #include "board/Board.h"
 #include "board/Piece.h"
-#include "board/Attack.h"
 
-Position center[] = {
-    {3, 3},
-    {3, 4},
-    {4, 3},
-    {4, 4}
-};
+Position center[] = {{3, 3}, {3, 4}, {4, 3}, {4, 4}};
 
-int evaluateCenterControl(const Board &board) {
+int evaluateCenterControl(const Board& board)
+{
     return 0;
 
     int whitePawnControl = 0, blackPawnControl = 0;
     int whiteKnightControl = 0, blackKnightControl = 0;
     int whiteOccupy = 0, blackOccupy = 0;
 
-    for (Position pos : center) {
+    for (Position pos : center)
+    {
         whitePawnControl += countPawnAttacks(board, pos, Player::WHITE);
         whiteKnightControl += countKnightAttacks(board, pos, Player::WHITE);
         blackPawnControl += countPawnAttacks(board, pos, Player::BLACK);
@@ -25,13 +22,16 @@ int evaluateCenterControl(const Board &board) {
 
         Piece p = board.at(pos);
 
-        if (p == Piece::EMPTY) continue;
-        if (isWhite(p)) whiteOccupy++;
-        else if (isBlack(p)) blackOccupy++;
+        if (p == Piece::EMPTY)
+            continue;
+        if (isWhite(p))
+            whiteOccupy++;
+        else if (isBlack(p))
+            blackOccupy++;
     }
 
-    //std::cout << whitePawnControl << ' ' << whiteKnightControl << ' ' << whiteOccupy << '\n';
+    // std::cout << whitePawnControl << ' ' << whiteKnightControl << ' ' << whiteOccupy << '\n';
 
-    return whitePawnControl * 10 + whiteKnightControl * 8 + whiteOccupy * 8
-        - blackPawnControl * 10 - blackKnightControl * 8 - blackOccupy * 8;
+    return whitePawnControl * 10 + whiteKnightControl * 8 + whiteOccupy * 8 -
+           blackPawnControl * 10 - blackKnightControl * 8 - blackOccupy * 8;
 }

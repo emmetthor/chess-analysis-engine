@@ -1,37 +1,37 @@
 #pragma once
 
-#include "Type.h"
 #include "Piece.h"
+#include "Type.h"
 
 #include <cstdint>
 
-
 // Store direct position like `board[pos.row][pos.col]`.
-struct Position {
+struct Position
+{
     int row = -1;
     int col = -1;
 
-    bool operator==(const Position &other) const {
-        return
-            row == other.row &&
-            col == other.col;
+    bool operator==(const Position& other) const
+    {
+        return row == other.row && col == other.col;
     }
 };
 
-
 // Check whether a position is inside board. (8 x 8)
-inline bool isInBoard(Position pos) {
+inline bool isInBoard(Position pos)
+{
     return 0 <= pos.row && pos.row < 8 && 0 <= pos.col && pos.col < 8;
 }
 
-
 // Check whether a player is `Player::WHITE` or `Player::BLACK`.
-inline bool isPlayerValid(Player player) {
+inline bool isPlayerValid(Player player)
+{
     return player == Player::WHITE || player == Player::BLACK;
 }
 
 // Returns the opposide player.
-inline Player opponent(Player player) {
+inline Player opponent(Player player)
+{
     return (player == Player::WHITE ? Player::BLACK : Player::WHITE);
 }
 
@@ -39,14 +39,16 @@ inline Player opponent(Player player) {
 Make `Piece` using `Player` and `char`.
 Note that LOWERCASE chars are not accepted.
 */
-inline Piece makePiece(Player player, char pieceChar) {
+inline Piece makePiece(Player player, char pieceChar)
+{
     return MAKE_PIECE_MAP[static_cast<int>(player)][charToPieceIndex(pieceChar)];
 }
 
 /*
 Returns `static_cast<int>(player)`
 */
-inline int playerToIndex(Player player) {
+inline int playerToIndex(Player player)
+{
     return static_cast<int>(player);
 }
 
@@ -61,7 +63,8 @@ Invariants:
 - `piecePos` must be correct.
 - info to speed up modules must be correct.
 */
-struct Board {
+struct Board
+{
     Board();
 
     /*
@@ -84,20 +87,20 @@ struct Board {
 
     // Set the `pos` in the board to piece `p`.
     void set(Position pos, Piece p);
-    
+
     // Store pieces on the board.
     Piece board[8][8];
 
     // Store piece positions by their piece type.
     Position piecePos[13][10];
 
-    // Store the number of every pieces. 
+    // Store the number of every pieces.
     int pieceCount[13] = {};
 
     int materialScore;
     int PSTScore;
     Player player;
-    
+
     /*
     Store castling rights using bits.
     - 0001 black queen side
@@ -110,9 +113,12 @@ struct Board {
     uint64_t zobristKey;
 
     // Delete the piece in `target` in `piecePos[Piece]`.
-    inline void piecePosDelete(Position *posArray, int &count, const Position &target) {
-        for (int i = 0; i < count; i++) {
-            if (posArray[i] == target) {
+    inline void piecePosDelete(Position* posArray, int& count, const Position& target)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            if (posArray[i] == target)
+            {
                 posArray[i] = posArray[count - 1];
                 count--;
                 return;
@@ -123,19 +129,24 @@ struct Board {
     }
 
     // Add the Piece in `add` in `piecePos[Piece]`.
-    inline void piecePosAdd(Position *posArray, int &count, const Position &add) {
+    inline void piecePosAdd(Position* posArray, int& count, const Position& add)
+    {
         posArray[count++] = add;
     }
 
-    // Returns the array storing piece poitions by piece `p`. WARN the name does not mean it returns an array. 
-    inline const Position* getPiecePos(Piece p) const {
+    // Returns the array storing piece poitions by piece `p`. WARN the name does not mean it returns
+    // an array.
+    inline const Position* getPiecePos(Piece p) const
+    {
         return piecePos[pieceToIndex(p)];
     }
 
     // Returns the number of piece `p`.
-    inline const int getPieceCount(Piece p) const {
+    inline const int getPieceCount(Piece p) const
+    {
         int pIndex = pieceToIndex(p);
-        if (!(1 <= pIndex && pIndex <= 12)) {
+        if (!(1 <= pIndex && pIndex <= 12))
+        {
             ENGINE_FATAL(DebugCategory::BOARD, "pIndex is empty or invalid: ", pIndex);
         }
         return pieceCount[pIndex];
@@ -143,7 +154,7 @@ struct Board {
 };
 
 // Check whether every piece positions is correct.
-bool validatePiecePos(const Board &b);
+bool validatePiecePos(const Board& b);
 
 // Generate every piece positions by the current board.
-void computePiecePos(Board &board);
+void computePiecePos(Board& board);

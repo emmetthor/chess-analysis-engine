@@ -7,13 +7,15 @@ uint64_t zobPlayer;
 uint64_t zobCastle[16];
 uint64_t zobEnPassant[8];
 
-uint64_t rand64() {
+uint64_t rand64()
+{
     static std::mt19937_64 rng(114514);
     static std::uniform_int_distribution<uint64_t> dist(0, UINT64_MAX);
     return dist(rng);
 }
 
-void initZobrist() {
+void initZobrist()
+{
     for (int p = 1; p < PIECE_NB; p++)
         for (int s = 0; s < 64; s++)
             zobPiece[p][s] = rand64();
@@ -24,13 +26,17 @@ void initZobrist() {
         zobCastle[i] = rand64();
 }
 
-uint64_t computeZobrist(const Board &board) {
+uint64_t computeZobrist(const Board& board)
+{
     uint64_t key = 0;
 
-    for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
+    for (int r = 0; r < 8; r++)
+    {
+        for (int c = 0; c < 8; c++)
+        {
             Piece piece = board.at({r, c});
-            if (piece != Piece::EMPTY) {
+            if (piece != Piece::EMPTY)
+            {
                 key ^= zobPiece[pieceToIndex(piece)][zobBoardPosition({r, c})];
             }
         }
@@ -44,6 +50,7 @@ uint64_t computeZobrist(const Board &board) {
     return key;
 }
 
-int zobBoardPosition(Position pos) {
+int zobBoardPosition(Position pos)
+{
     return pos.row * 8 + pos.col;
 }
