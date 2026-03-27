@@ -1,6 +1,5 @@
 #include "fen/FEN_Parser.h"
 #include "debug.h"
-#include "Structure_IO.h"
 #include "search/Zobrist.h"
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
@@ -53,7 +52,7 @@ Board cinFenToBoard(const std::string &fen) {
         }
     }
 
-    // 初始化分析參數
+    // initialize variables.
     board.materialScore = computePieceValue(board);
     board.PSTScore = computePST(board);
     board.zobristKey = computeZobrist(board);
