@@ -134,7 +134,7 @@ bool isBishopMoveLegal(const Board &board, const Move &move) {
     int dc = (toCol - fromCol > 0 ? 1 : -1);
 
     bool allEmpty = true;
-    for (int r = fromRow + dr, c = fromCol + dc; r != toRow, c != toCol; r += dr, c += dc) {
+    for (int r = fromRow + dr, c = fromCol + dc; r != toRow && c != toCol; r += dr, c += dc) {
         //debug::log(r, ", ", c, '\n');
         if (board.at({r, c}) != Piece::EMPTY) {
             allEmpty = false;
@@ -253,7 +253,7 @@ bool isQueenMoveLegal(const Board &board, const Move &move) {
         int dc = (toCol - fromCol > 0 ? 1 : -1);
 
         bool allEmpty = true;
-        for (int r = fromRow + dr, c = fromCol + dc; r != toRow, c != toCol; r += dr, c += dc) {
+        for (int r = fromRow + dr, c = fromCol + dc; r != toRow && c != toCol; r += dr, c += dc) {
             if (board.at({r, c}) != Piece::EMPTY) {
                 allEmpty = false;
                 break;
