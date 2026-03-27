@@ -3,10 +3,7 @@
 #include "board/Board.h"
 #include "move/Make_Move.h"
 #include "move/Generate_Move.h"
-#include "Structure_IO.h"
 #include "search/Zobrist.h"
-
-#include <iostream>
 
 int boardConsistency(Board &board, int depth) {
     if (depth <= 0) return 1;

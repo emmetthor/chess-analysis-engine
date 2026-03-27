@@ -1,10 +1,6 @@
-#include <iostream>
-#include <string>
-
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "search/Zobrist.h"
-#include "pgn/Pgn_Transformer.h"
 #include "debug.h"
 #include "Structure_IO.h"
 

@@ -4,10 +4,8 @@
 #include "../../engine/include/Engine.h"
 
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
-#include <array>
 #include <iostream>
 
 std::vector<std::string> readMateInTwoFile(const std::string &filename) {

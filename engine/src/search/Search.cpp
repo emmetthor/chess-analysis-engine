@@ -14,10 +14,6 @@
 #include "move/Move_Order.h"
 #include "debug.h"
 #include "Structure_IO.h"
-
-#include <vector>
-#include <algorithm>
-#include <thread>
 #include <chrono>
 
 void Search::printMoveStk() {

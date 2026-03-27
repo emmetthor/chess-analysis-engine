@@ -1,11 +1,6 @@
 #include "board/Check.h"
 #include "board/Board.h"
 #include "board/Attack.h"
-#include "move/Generate_Move.h"
-#include "pgn/Pgn_Transformer.h"
-
-#include "Structure_IO.h"
-#include "debug.h"
 
 // Check whether the king of the player is attacked.
 bool isInCheck (

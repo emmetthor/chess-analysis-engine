@@ -1,19 +1,11 @@
 #pragma GCC optimize("O3,unroll-loops")
 
-#include "board/Check.h"
 #include "evaluate/Evaluate.h"
-#include "evaluate/Material_Point.h"
-#include "evaluate/Control_Center.h"
 #include "evaluate/Tempo.h"
-#include "evaluate/PST.h"
 #include "evaluate/King_Safety.h"
 #include "evaluate/Mobility.h"
 #include "evaluate/Castle_Rights.h"
 #include "evaluate/Pawn_Structure.h"
-
-#include "debug.h"
-
-#include <iostream>
 
 const int INF = 1e9;
 

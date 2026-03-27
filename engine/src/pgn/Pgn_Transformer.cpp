@@ -1,8 +1,4 @@
 #include "pgn/Pgn_Transformer.h"
-#include "debug.h"
-
-#include <iostream>
-#include <map>
 
 const char colToPgn[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 const char rowToPgn[] = {'8', '7', '6', '5', '4', '3', '2', '1'};

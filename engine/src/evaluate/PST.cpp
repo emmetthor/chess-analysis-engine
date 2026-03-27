@@ -1,7 +1,4 @@
 #include "evaluate/PST.h"
-#include "move/Move.h"
-
-#include <iostream>
 
 const int PST[6][8][8] = {
     // pawn

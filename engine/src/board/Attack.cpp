@@ -3,13 +3,7 @@
 #include "board/Attack.h"
 #include "board/Board.h"
 #include "move/Move_Direction.h"
-#include "move/Generate_Position.h"
-#include "pgn/Pgn_Transformer.h"
 #include "debug.h"
-#include "Structure_IO.h"
-
-#include <iostream>
-#include <vector>
 
 int countPawnAttacks(
     const Board &board,

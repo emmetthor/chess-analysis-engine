@@ -3,8 +3,6 @@
 #include "board/Piece.h"
 #include "board/Attack.h"
 
-#include <iostream>
-
 Position center[] = {
     {3, 3},
     {3, 4},

@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
 
 std::vector<Position> findValidPieceWithColume(Board &board, Piece p, int col) {
     std::vector<Position> res;

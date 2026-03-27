@@ -2,13 +2,7 @@
 #include "board/Piece.h"
 #include "move/Move.h"
 #include "board/Attack.h"
-#include "pgn/Pgn_Transformer.h"
-#include "evaluate/Material_Point.h"
-#include "evaluate/PST.h"
 #include "debug.h"
-
-#include <iostream>
-#include <string>
 #include <algorithm>
 #include <assert.h>
 

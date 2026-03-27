@@ -1,13 +1,9 @@
 #include "move/Make_Move.h"
 #include "board/Board.h"
-#include "pgn/Valid_Piece.h"
 #include "search/Zobrist.h"
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
 #include "debug.h"
-#include "Structure_IO.h"
-
-#include <iostream>
 #include <assert.h>
 
 // 入堡走子

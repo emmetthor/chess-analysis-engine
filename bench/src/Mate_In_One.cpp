@@ -1,6 +1,5 @@
 #include "../../engine/include/Engine.h"
 #include "../../engine/include/UCI/UCI.h"
-#include "../../engine/include/Structure_IO.h"
 #include "Mate_In_One.h"
 #include "Progress_Bar.h"
 #include "Bench.h"

@@ -1,9 +1,5 @@
 #include "board/Attack.h"
 #include "evaluate/King_Safety.h"
-#include "pgn/Pgn_Transformer.h"
-#include "Structure_IO.h"
-
-#include <iostream>
 
 Position findKing(const Board &board, Player player) {
     Piece king = makePiece(player, 'K');

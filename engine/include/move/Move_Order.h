@@ -2,9 +2,6 @@
 
 #include "move/Move.h"
 
-#include <vector>
-#include <string>
-
 struct ScoreMove {
     Move move;
     int score;

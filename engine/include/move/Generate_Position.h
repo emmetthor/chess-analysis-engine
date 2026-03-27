@@ -1,9 +1,6 @@
 #pragma once
 
 #include "board/Board.h"
-#include "move/Move.h"
-
-#include <vector>
 
 int generatePiecePosFromPos(
     const Board &board,

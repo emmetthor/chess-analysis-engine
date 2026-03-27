@@ -1,6 +1,5 @@
 #include "move/Generate_Position.h"
 #include "evaluate/Mobility.h"
-#include "pgn/Pgn_Transformer.h"
 
 int evaluateKnightMobility (
     const Board &board,

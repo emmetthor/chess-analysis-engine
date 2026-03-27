@@ -6,12 +6,7 @@
 #include "move/Make_Move.h"
 #include "move/Generate_Position.h"
 #include "board/Check.h"
-#include "board/Attack.h"
-#include "pgn/Pgn_Transformer.h"
-#include "Structure_IO.h"
 #include "debug.h"
-
-#include <vector>
 
 int generatePieceMoves(
     const Board &board,

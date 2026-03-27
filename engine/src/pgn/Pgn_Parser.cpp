@@ -1,9 +1,7 @@
 #include "pgn/Pgn_Parser.h"
 #include "board/Board.h"
 #include "move/Make_Move.h"
-#include "pgn/Valid_Piece.h"
 #include "pgn/Pgn_Transformer.h"
-#include "debug.h"
 
 #include <iostream>
 #include <string>

@@ -1,8 +1,5 @@
 #include "move/Generate_Position.h"
 #include "board/Board.h"
-#include "move/Move.h"
-#include "evaluate/Material_Point.h"
-#include "pgn/Pgn_Transformer.h"
 
 // WARN 這是第二次出現，之後要與 Attack 整合
 // 棋子移動的固定 map

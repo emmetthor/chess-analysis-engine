@@ -2,8 +2,6 @@
 
 #include "Type.h"
 #include "board/Board.h"
-#include "move/Generate_Position.h"
-#include "board/Attack.h"
 
 enum Castle {
     NOT, SHORT_CASTLE, LONG_CASTLE
