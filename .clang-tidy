@@ -3,9 +3,15 @@ Checks: >
   performance-*,
   readability-*,
   modernize-*,
-  cppcoreguidelines-*
+  clang-analyzer-*,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-owning-memory,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -readability-magic-numbers,
+  -readability-identifier-length
 
 WarningsAsErrors: ''
-HeaderFilterRegex: '.*'
+HeaderFilterRegex: 'engine/.*'
 AnalyzeTemporaryDtors: false
-FormatStyle: none
+FormatStyle: file
