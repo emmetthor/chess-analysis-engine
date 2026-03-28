@@ -1,19 +1,7 @@
 #include "move/Generate_Position.h"
+#include "move/Move_Direction.h"
 #include "board/Board.h"
 #include "debug.h"
-
-// WARN 這是第二次出現，之後要與 Attack 整合
-// 棋子移動的固定 map
-// jump piece
-static const int KNIGHT_DR[] = {1, 2, 2, 1, -1, -2, -2, -1};
-static const int KNIGHT_DC[] = {2, 1, -1, -2, -2, -1, 1, 2};
-static const int KING_DR[] = {1, 1, 1, 0, -1, -1, -1, 0};
-static const int KING_DC[] = {1, 0, -1, -1, -1, 0, 1, 1};
-// slide piece
-static const int ROOK_QUEEN_DR[] = {1, -1, 0, 0};
-static const int ROOK_QUEEN_DC[] = {0, 0, 1, -1};
-static const int BISHOP_QUEEN_DR[] = {1, 1, -1, -1};
-static const int BISHOP_QUEEN_DC[] = {1, -1, 1, -1};
 
 int generatePosFromPosWithJumpPiece(const Board& board,
                                     const Position& pos,
@@ -157,31 +145,31 @@ int generatePiecePosFromPos(const Board& board, const Position& pos, Piece p, Po
     {
         case Piece::WKNIGHT:
         case Piece::BKNIGHT:
-            return generatePosFromPosWithJumpPiece(board, pos, p, KNIGHT_DR, KNIGHT_DC, buffer);
+            return generatePosFromPosWithJumpPiece(board, pos, p, MoveDirection::KNIGHT_DR, MoveDirection::KNIGHT_DC, buffer);
 
         case Piece::WBISHOP:
         case Piece::BBISHOP:
             return generatePosFromPosWithSlidePiece(
-                board, pos, p, BISHOP_QUEEN_DR, BISHOP_QUEEN_DC, buffer);
+                board, pos, p, MoveDirection::BISHOP_QUEEN_DR, MoveDirection::BISHOP_QUEEN_DC, buffer);
 
         case Piece::WROOK:
         case Piece::BROOK:
             return generatePosFromPosWithSlidePiece(
-                board, pos, p, ROOK_QUEEN_DR, ROOK_QUEEN_DC, buffer);
+                board, pos, p, MoveDirection::ROOK_QUEEN_DR, MoveDirection::ROOK_QUEEN_DC, buffer);
 
         case Piece::WQUEEN:
         case Piece::BQUEEN:
         {
             int n1 = generatePosFromPosWithSlidePiece(
-                board, pos, p, ROOK_QUEEN_DR, ROOK_QUEEN_DC, buffer);
+                board, pos, p, MoveDirection::ROOK_QUEEN_DR, MoveDirection::ROOK_QUEEN_DC, buffer);
             int n2 = generatePosFromPosWithSlidePiece(
-                board, pos, p, BISHOP_QUEEN_DR, BISHOP_QUEEN_DC, buffer + n1);
+                board, pos, p, MoveDirection::BISHOP_QUEEN_DR, MoveDirection::BISHOP_QUEEN_DC, buffer + n1);
             return n1 + n2;
         }
 
         case Piece::WKING:
         case Piece::BKING:
-            return generatePosFromPosWithJumpPiece(board, pos, p, KING_DR, KING_DC, buffer);
+            return generatePosFromPosWithJumpPiece(board, pos, p, MoveDirection::KING_DR, MoveDirection::KING_DC, buffer);
 
         case Piece::WPAWN:
         case Piece::BPAWN:
@@ -204,31 +192,31 @@ int generatePieceCaptureFromPos(const Board& board, const Position& pos, Piece p
     {
         case Piece::WKNIGHT:
         case Piece::BKNIGHT:
-            return generateCaptureFromPosWithJumpPiece(board, pos, p, KNIGHT_DR, KNIGHT_DC, buffer);
+            return generateCaptureFromPosWithJumpPiece(board, pos, p, MoveDirection::KNIGHT_DR, MoveDirection::KNIGHT_DC, buffer);
 
         case Piece::WBISHOP:
         case Piece::BBISHOP:
             return generateCaptureFromPosWithSlidePiece(
-                board, pos, p, BISHOP_QUEEN_DR, ROOK_QUEEN_DC, buffer);
+                board, pos, p, MoveDirection::BISHOP_QUEEN_DR, MoveDirection::BISHOP_QUEEN_DC, buffer);
 
         case Piece::WROOK:
         case Piece::BROOK:
             return generateCaptureFromPosWithSlidePiece(
-                board, pos, p, ROOK_QUEEN_DR, ROOK_QUEEN_DC, buffer);
+                board, pos, p, MoveDirection::ROOK_QUEEN_DR, MoveDirection::ROOK_QUEEN_DC, buffer);
 
         case Piece::WQUEEN:
         case Piece::BQUEEN:
         {
             int n1 = generateCaptureFromPosWithSlidePiece(
-                board, pos, p, ROOK_QUEEN_DR, ROOK_QUEEN_DC, buffer);
+                board, pos, p, MoveDirection::ROOK_QUEEN_DR, MoveDirection::ROOK_QUEEN_DC, buffer);
             int n2 = generateCaptureFromPosWithSlidePiece(
-                board, pos, p, BISHOP_QUEEN_DR, ROOK_QUEEN_DC, buffer + n1);
+                board, pos, p, MoveDirection::BISHOP_QUEEN_DR, MoveDirection::BISHOP_QUEEN_DC, buffer + n1);
             return n1 + n2;
         }
 
         case Piece::WKING:
         case Piece::BKING:
-            return generateCaptureFromPosWithJumpPiece(board, pos, p, KING_DR, KING_DC, buffer);
+            return generateCaptureFromPosWithJumpPiece(board, pos, p, MoveDirection::KING_DR, MoveDirection::KING_DC, buffer);
 
         case Piece::WPAWN:
         case Piece::BPAWN:
