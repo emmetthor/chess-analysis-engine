@@ -7,25 +7,25 @@ Move parseCastle(Move& move, const Board& board)
     if (p == Piece::WKING || p == Piece::BKING)
     {
 
-        // 白短易位
+        // white king side
         if (move.from.row == 0 && move.from.col == 4 && move.to.row == 0 && move.to.col == 6)
         {
             move.castle = Castle::SHORT_CASTLE;
         }
 
-        // 白長易位
+        // white queen side
         if (move.from.row == 0 && move.from.col == 4 && move.to.row == 0 && move.to.col == 2)
         {
             move.castle = Castle::LONG_CASTLE;
         }
 
-        // 黑短易位
+        // black king side
         if (move.from.row == 7 && move.from.col == 4 && move.to.row == 7 && move.to.col == 6)
         {
             move.castle = Castle::SHORT_CASTLE;
         }
 
-        // 黑長易位
+        // black queen side
         if (move.from.row == 7 && move.from.col == 4 && move.to.row == 7 && move.to.col == 2)
         {
             move.castle = Castle::LONG_CASTLE;
