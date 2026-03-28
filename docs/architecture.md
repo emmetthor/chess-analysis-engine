@@ -59,3 +59,5 @@ Contains:
 
 Contains:
 
+- `makeCastleMove, undoCastleMove` especitally for castles.
+- `makeMove, undoMove`.
