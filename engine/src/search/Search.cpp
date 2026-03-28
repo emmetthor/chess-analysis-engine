@@ -42,6 +42,7 @@ Search::Search(Evaluate& _eval)
     eval = _eval;
 }
 
+// find the best move of the current board. (base search)
 SearchResult Search::findBestMove(const Board& board, int depth)
 {
     auto startTime = std::chrono::steady_clock::now();
@@ -90,13 +91,13 @@ SearchResult Search::findBestMove(const Board& board, int depth)
                     break; // success
                 }
 
-                window *= 2; // 指數成長
+                window *= 2;
 
                 if (window > 2000)
                 {
+                    // if it can't find, give it the widest window.
                     alpha = -INF;
                     beta = INF;
-                    // 太多次還沒找到，就給他最大窗口
                 }
             }
         }
@@ -117,17 +118,18 @@ SearchResult Search::findBestMove(const Board& board, int depth)
     return finalRes;
 }
 
+// search with different alpha and beta basis. (core search)
 SearchResult
 Search::searchRootCore(Board& board, int depth, int alpha, int beta, Move iterativeMove, int ply)
 {
     SearchResult res;
     res.bestScore = -INF;
 
-    // 生成所有走法
+    // generate all moves
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
 
-    // 排序
+    // sort moves
     advanceMoves adv = {iterativeMove, killerMove[0][ply], killerMove[1][ply]};
     sortMove(board, moves, nMoves, adv);
 
@@ -137,7 +139,7 @@ Search::searchRootCore(Board& board, int depth, int alpha, int beta, Move iterat
 
         moveStk[backIterator++] = move;
 
-        // 遞迴下一層
+        // recursive
         makeMove(board, move);
 
         int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
@@ -162,7 +164,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 {
     negamaxNodes++;
 
-    // TT表 記憶化搜索
+    // tt table
     ttProbe++;
     int ttScore = 0;
     TTEntry tt;
@@ -178,7 +180,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     Move bestMove;
     bool hasMove = 0;
 
-    // depth = 0 進入QS
+    // depth = 0 -> qs search
     if (depth == 0)
     {
         // return (player == Player::WHITE ? 1 : -1) * eval.evaluateBoard(board,
@@ -186,12 +188,12 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
         return quietscence(board, alpha, beta, ply);
     }
 
-    // 生成所有走法
+    // generate all moves
     Move moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
     totalMoves += nMoves;
 
-    // 檢查 checkmate / stalemate
+    // check checkmate / stalemate
     if (nMoves == 0)
     {
         // LOG_DEBUG(DebugCategory::SEARCH, "no move!");
@@ -212,6 +214,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         moveStk[backIterator++] = move;
 
+        // WARN LMR abandoned
         // if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 &&
         // !isInCheck(board, player)) {
         //     if (i >= 4) {
@@ -238,7 +241,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         if (i == 0)
         {
-            // 第一步全搜
+            // search fully in the first move (it may be the best move while setting a range of alpha and beta for other moves.)
             score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
         }
         else
@@ -286,6 +289,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     return bestScore;
 }
 
+// quietscence search (determine time complexity)
 int Search::quietscence(Board& board, int alpha, int beta, int ply)
 {
     qsNodes++;
@@ -312,7 +316,7 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
     {
         Move move = captureMoves[i];
 
-        // delta pruning 如果吃子太糟就直接跳過
+        // delta pruning
         Piece captured = move.capturePiece;
         ENGINE_ASSERT(!(!move.isPromotion && captured == Piece::EMPTY));
         if (!move.isPromotion && pieceValue(move.movePiece) >= pieceValue(captured) + 200)
