@@ -6,7 +6,7 @@
 #include "search/Zobrist.h"
 #include <assert.h>
 
-// 入堡走子
+// make a castle move.
 void castleMove(Board& board, Move& move)
 {
     CastleMove c = getCastleMove(move);
@@ -38,7 +38,7 @@ void castleMove(Board& board, Move& move)
     board.piecePosAdd(board.piecePos[rookIndex], board.pieceCount[rookIndex], c.rookTo);
 }
 
-// 還原入堡
+// undo a castle move.
 void undoCastleMove(Board& board, Move& move)
 {
     CastleMove c = getCastleMove(move);
@@ -58,47 +58,58 @@ void undoCastleMove(Board& board, Move& move)
     board.piecePosAdd(board.piecePos[rookIndex], board.pieceCount[rookIndex], c.rookFrom);
 }
 
+// update castle rights.
+// castle bit stores:
+// - bit0 black king side
+// - bit1 black queen side
+// - bit2 white king side
+// - bit3 white queen side
 int updateCastleRights(int castleRights, const Move& move)
 {
     Player player = move.player;
     int fromCol = move.from.col;
 
-    // 動 king → 清掉該方所有 castle bit
+    // move king -> remove every castle rights.
     if (move.movePiece == makePiece(player, 'K'))
     {
         if (player == Player::WHITE)
         {
-            castleRights &= ~0b1100; // 清 bit2 bit3 → 白方 king + queen side
+            // remove bit2 and bit3 -> white king and queen side.
+            castleRights &= ~0b1100;
         }
         else
         {
-            castleRights &= ~0b0011; // 清 bit0 bit1 → 黑方 king + queen side
+            // remove bit0 and bit1 -> white king and queen side.
+            castleRights &= ~0b0011;
         }
     }
 
-    // 動 rook → 清掉對應側
+    // move rook -> remove the side the rook moved from.
     else if (move.movePiece == makePiece(player, 'R'))
     {
         if (player == Player::WHITE)
         {
             if (fromCol == 0)
-                castleRights &= ~0b0100; // WQ
+                // white king side
+                castleRights &= ~0b0100;
             else if (fromCol == 7)
-                castleRights &= ~0b1000; // WK
+                // white queen side
+                castleRights &= ~0b1000;
         }
         else
         {
             if (fromCol == 0)
-                castleRights &= ~0b0001; // BQ
+                // black king side
+                castleRights &= ~0b0001;
             else if (fromCol == 7)
-                castleRights &= ~0b0010; // BK
+                // black queen side
+                castleRights &= ~0b0010;
         }
     }
 
     return castleRights;
 }
 
-// 執行 move
 void makeMove(Board& board, Move& move)
 {
     move.prevCastleRights = board.castleRights;
@@ -106,15 +117,14 @@ void makeMove(Board& board, Move& move)
     move.prevPST = board.PSTScore;
     move.prevZobrist = board.zobristKey;
 
-    // 控制 castleRights
-
+    // control castleRights
     board.zobristKey ^= zobCastle[board.castleRights];
     board.castleRights = updateCastleRights(board.castleRights, move);
     board.zobristKey ^= zobCastle[board.castleRights];
 
     // std::cout << board.castleRights << '\n';
 
-    // 執行 move
+    // make move.
     Piece captured = move.capturePiece;
     Piece moved = move.movePiece;
     Player player = move.player;
@@ -137,7 +147,7 @@ void makeMove(Board& board, Move& move)
         board.set(move.to, moved);
     }
 
-    // 更新 material score
+    // update material score.
     if (captured != Piece::EMPTY)
     {
         board.materialScore += playerScoreControl * pieceValue(captured);
@@ -149,11 +159,10 @@ void makeMove(Board& board, Move& move)
             playerScoreControl * (pieceValue(move.promotionPiece) - pieceValue(moved));
     }
 
-    // 更新 PST
-
+    // update PST
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
     {
-        // castleMove 完成
+        // finished by castleMove.
     }
 
     else if (move.isPromotion)
@@ -173,7 +182,7 @@ void makeMove(Board& board, Move& move)
         board.PSTScore -= -playerScoreControl * evaluatePieceSquare(captured, move.to);
     }
 
-    // 更新Zobrist
+    // update Zobrist.
     int fromZob = zobBoardPosition(move.from);
     int toZob = zobBoardPosition(move.to);
 
@@ -181,7 +190,7 @@ void makeMove(Board& board, Move& move)
 
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
     {
-        // castleMove 完成
+        // finished by castleMove.
     }
 
     else if (move.isPromotion)
@@ -203,8 +212,7 @@ void makeMove(Board& board, Move& move)
 
     // WARN assert(computeZobrist(board, opponent(player)) == board.zobristKey);
 
-    // 更新piecePos
-
+    // update piecePos.
     if (captured != Piece::EMPTY)
     {
         // std::cout << "capture delete\n";
@@ -214,7 +222,7 @@ void makeMove(Board& board, Move& move)
 
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
     {
-        // castleMove 完成
+        // finished by castleMove.
     }
 
     else if (move.isPromotion)
@@ -246,7 +254,7 @@ void undoMove(Board& board, Move& move)
     board.PSTScore = move.prevPST;
     board.zobristKey = move.prevZobrist;
 
-    // 執行 undo
+    // undo move.
     Piece captured = move.capturePiece;
     Piece moved = move.movePiece;
     Player player = move.player;
@@ -270,11 +278,10 @@ void undoMove(Board& board, Move& move)
         board.set(move.to, captured);
     }
 
-    // 回復 piecePos
-
+    // recover piecePos.
     if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
     {
-        // undoCastleMove 完成
+        // finished by undoCastleMove.
     }
 
     else if (move.isPromotion)
