@@ -1,6 +1,7 @@
 #include "evaluate/Material_Point.h"
 
 #include "board/Board.h"
+#include "debug.h"
 
 int pieceValue(const Piece p)
 {
@@ -29,6 +30,12 @@ int pieceValue(const Piece p)
         case Piece::WPAWN:
         case Piece::BPAWN:
             return 100;
+
+        case Piece::EMPTY:
+            ENGINE_FATAL(DebugCategory::EVAL, "empty piece doesn't have a value.");
+        
+        case Piece::PIECE_COUNT:
+            ENGINE_FATAL(DebugCategory::EVAL, "piece_count doesn't have a value.");
     }
 
     return 0;
