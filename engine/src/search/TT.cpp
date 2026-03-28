@@ -17,10 +17,10 @@ bool probeTT(uint64_t key,
 {
     TTEntry& tt = TT[TTIndex(key)];
 
-    // 如果 collide 直接跳掉
+    // stop when collide
     if (tt.key != key)
         return false;
-    // 如果是更淺就跳掉
+    // stop with lower depth
     if (tt.depth < depth)
         return false;
 
@@ -59,7 +59,7 @@ bool probeTT(uint64_t key,
 void storeTT(uint64_t key, int depth, int ply, int score, TTFlag flag, Move bestMove)
 {
     TTEntry& tt = TT[TTIndex(key)];
-    // depth check，保留較深的 entry
+    // depth check
     if (tt.key == key && depth < tt.depth)
         return;
 
