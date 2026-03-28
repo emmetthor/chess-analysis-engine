@@ -1,7 +1,7 @@
 #pragma once
 
-#include "board/Piece.h"
 #include "board/Board.h"
+#include "board/Piece.h"
 
 int pieceValue(const Piece p);
 

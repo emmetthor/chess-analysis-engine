@@ -2,6 +2,7 @@
     project(chess-analysis-engine)
 
     set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
     # 告訴 CMake include 目錄在哪
     include_directories(engine/include)
@@ -34,7 +35,6 @@
         engine/src/evaluate/Pawn_Structure.cpp
 
         engine/src/pgn/Pgn_Parser.cpp
-        engine/src/pgn/Valid_Piece.cpp
         engine/src/pgn/Pgn_Transformer.cpp
 
         engine/src/search/TT.cpp

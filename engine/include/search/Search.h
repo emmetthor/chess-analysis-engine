@@ -1,12 +1,13 @@
 #pragma once
 
 #include "board/Board.h"
-#include "move/Move.h"
 #include "evaluate/Evaluate.h"
+#include "move/Move.h"
 
 constexpr int MATE_SCORE = 1e6;
 
-struct SearchInfo {
+struct SearchInfo
+{
     int depth;
     int score;
     int nodes;
@@ -14,42 +15,28 @@ struct SearchInfo {
     int timeMs;
     int nps;
 };
-struct SearchResult {
+struct SearchResult
+{
     Move bestMove;
     int bestScore;
     SearchInfo info;
 };
 
-class Search {
+class Search
+{
 public:
-    Search (Evaluate &_eval);
-    SearchResult findBestMove(const Board &board, int depth);
+    Search(Evaluate& _eval);
+    SearchResult findBestMove(const Board& board, int depth);
+
 private:
     Evaluate eval;
 
-    int quietscence(
-        Board &board,
-        int alpha,
-        int beta,
-        int ply
-    );
+    int quietscence(Board& board, int alpha, int beta, int ply);
 
-    int negamax(
-        Board &board,
-        int depth,
-        int alpha,
-        int beta,
-        int ply
-    );
+    int negamax(Board& board, int depth, int alpha, int beta, int ply);
 
-    SearchResult searchRootCore(
-        Board &board,
-        int depth,
-        int alpha,
-        int beta,
-        Move iterativeMove,
-        int ply
-    );
+    SearchResult
+    searchRootCore(Board& board, int depth, int alpha, int beta, Move iterativeMove, int ply);
 
     void printMoveStk();
 

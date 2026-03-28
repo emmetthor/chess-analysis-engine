@@ -203,61 +203,75 @@
 #pragma once
 #include <cassert>
 #include <cstdint>
-#include <ostream>
-#include <iostream>
-#include <sstream>
-#include <fstream>
 #include <iomanip>
+#include <iostream>
+#include <ostream>
+#include <sstream>
 #include <utility>
 
 #ifdef ENGINE_DEBUG
-    #define ENGINE_ASSERT(x) assert(x)
+#define ENGINE_ASSERT(x) assert(x)
 #else
-    #define ENGINE_ASSERT(x) ((void)0)
+#define ENGINE_ASSERT(x) ((void)0)
 #endif
 
-enum class DebugLevel { INFO, DEBUG, WARN, ERROR };
-enum class DebugCategory { TT, MOVE, QS, EVAL, BOARD, SEARCH, ATK, GENERATE, PIECE};
+enum class DebugLevel
+{
+    INFO,
+    DEBUG,
+    WARN,
+    ERROR
+};
+enum class DebugCategory
+{
+    TT,
+    MOVE,
+    QS,
+    EVAL,
+    BOARD,
+    SEARCH,
+    ATK,
+    GENERATE,
+    PIECE
+};
 
-class Debug {
+class Debug
+{
 public:
     static DebugLevel level;
     static uint32_t categoryMask;
 
     template <typename... Args>
-    static void logStream(
-        DebugCategory cat,
-        DebugLevel lvl,
-        const char* file,
-        int line,
-        const char* func,
-        Args&&... args
-    ) {
-        if (lvl < level) return;
-        if (!(categoryMask & (1u << int(cat)))) return;
+    static void logStream(DebugCategory cat,
+                          DebugLevel lvl,
+                          const char* file,
+                          int line,
+                          const char* func,
+                          Args&&... args)
+    {
+        if (lvl < level)
+            return;
+        if (!(categoryMask & (1u << int(cat))))
+            return;
 
         std::ostringstream oss;
-        oss << "[" << std::left << std::setw(10) << categoryToStr(cat)
-            << "][" << std::setw(5) << levelToStr(lvl)
-            << "][" << std::setw(100) << (std::string(file) + ":" + std::to_string(line))
-            << "][" << std::setw(12) << func << "] ";
+        oss << "[" << std::left << std::setw(10) << categoryToStr(cat) << "][" << std::setw(5)
+            << levelToStr(lvl) << "][" << std::setw(100)
+            << (std::string(file) + ":" + std::to_string(line)) << "][" << std::setw(12) << func
+            << "] ";
         (oss << ... << std::forward<Args>(args)); // fold expression
 
         std::cerr << oss.str() << '\n';
     }
 
     template <typename... Args>
-    [[noreturn]] static void fatal(
-        DebugCategory cat,
-        const char* file,
-        int line,
-        const char* func,
-        Args&&... args
-    ) {
+    [[noreturn]] static void
+    fatal(DebugCategory cat, const char* file, int line, const char* func, Args&&... args)
+    {
         std::ostringstream oss;
-        oss << "[" << std::left << std::setw(7) << categoryToStr(cat)
-            << "][" << std::setw(20) << (std::string(file) + ":" + std::to_string(line))
-            << "][" << std::setw(12) << func << "] ";
+        oss << "[" << std::left << std::setw(7) << categoryToStr(cat) << "][" << std::setw(20)
+            << (std::string(file) + ":" + std::to_string(line)) << "][" << std::setw(12) << func
+            << "] ";
         (oss << ... << std::forward<Args>(args)); // fold expression
 
         std::cout << oss.str() << '\n';
@@ -270,20 +284,19 @@ private:
     static const char* categoryToStr(DebugCategory cat);
 };
 
-#define ENGINE_FATAL(cat, ...)\
-    Debug::fatal(cat, __FILE__, __LINE__, __func__, __VA_ARGS__)
+#define ENGINE_FATAL(cat, ...) Debug::fatal(cat, __FILE__, __LINE__, __func__, __VA_ARGS__)
 
 #if ENGINE_DEBUG
-#define LOG_DEBUG(cat, ...) \
+#define LOG_DEBUG(cat, ...)                                                                        \
     Debug::logStream(cat, DebugLevel::DEBUG, __FILE__, __LINE__, __func__, __VA_ARGS__)
 
-#define LOG_INFO(cat, ...) \
+#define LOG_INFO(cat, ...)                                                                         \
     Debug::logStream(cat, DebugLevel::INFO, __FILE__, __LINE__, __func__, __VA_ARGS__)
 
-#define LOG_WARN(cat, ...) \
+#define LOG_WARN(cat, ...)                                                                         \
     Debug::logStream(cat, DebugLevel::WARN, __FILE__, __LINE__, __func__, __VA_ARGS__)
 
-#define LOG_ERROR(cat, ...) \
+#define LOG_ERROR(cat, ...)                                                                        \
     Debug::logStream(cat, DebugLevel::ERROR, __FILE__, __LINE__, __func__, __VA_ARGS__)
 #else
 #define LOG_DEBUG(...)

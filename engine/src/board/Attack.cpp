@@ -2,309 +2,289 @@
 
 #include "board/Attack.h"
 #include "board/Board.h"
-#include "move/Move.h"
-#include "move/Generate_Position.h"
-#include "pgn/Pgn_Transformer.h"
 #include "debug.h"
-#include "Structure_IO.h"
+#include "move/Move_Direction.h"
 
-#include <iostream>
-#include <vector>
-
-// 棋子移動的固定 map
-// jump piece
-static const int KNIGHT_DR[]        = {  1,  2,  2,  1, -1, -2, -2, -1};
-static const int KNIGHT_DC[]        = {  2,  1, -1, -2, -2, -1,  1,  2};
-static const int KING_DR[]          = {  1,  1,  1,  0, -1, -1, -1,  0};
-static const int KING_DC[]          = {  1,  0, -1, -1, -1,  0,  1,  1};
-// slide piece
-static const int ROOK_QUEEN_DR[]    = {  1, -1,  0,  0};
-static const int ROOK_QUEEN_DC[]    = {  0,  0,  1, -1};
-static const int BISHOP_QUEEN_DR[]  = {  1,  1, -1, -1};
-static const int BISHOP_QUEEN_DC[]  = {  1, -1,  1, -1};
-
-int countPawnAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
-    // 假設 pos 與 player 合法
-    // 枚舉所有兵的合法走法 O(2)
+int countPawnAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     int pdr = (player == Player::WHITE ? -1 : 1);
-    for (int pdc : {-1, 1}) {
+    for (int pdc : {-1, 1})
+    {
         Position p = {pos.row - pdr, pos.col + pdc};
-        if (!isInBoard(p)) continue;
+        if (!isInBoard(p))
+            continue;
 
-        if (board.at(p) == makePiece(player, 'P')) cnt++;
+        if (board.at(p) == makePiece(player, 'P'))
+            cnt++;
     }
 
     return cnt;
 }
 
-int countKingAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
-    // 假設 pos 與 player 合法
-    // 枚舉所有王的合法走法 O(8)
+int countKingAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece king = makePiece(player, 'K');
-    
-    for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + KING_DR[i], pos.col + KING_DC[i]};
 
-        if (isInBoard(p) && board.at(p) == king) cnt++;
+    for (int i = 0; i < 8; i++)
+    {
+        Position p = {pos.row + MoveDirection::KING_DR[i], pos.col + MoveDirection::KING_DC[i]};
+
+        if (isInBoard(p) && board.at(p) == king)
+            cnt++;
     }
 
     return cnt;
 }
 
-int countKnightAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
-    // 假設 pos 與 player 合法
-    // 枚舉所有騎士的合法走法 O(8)
+int countKnightAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece knight = makePiece(player, 'N');
-    
-    for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
 
-        if (isInBoard(p) && board.at(p) == knight) cnt++;
+    for (int i = 0; i < 8; i++)
+    {
+        Position p = {pos.row + MoveDirection::KNIGHT_DR[i], pos.col + MoveDirection::KNIGHT_DC[i]};
+
+        if (isInBoard(p) && board.at(p) == knight)
+            cnt++;
     }
 
     return cnt;
 }
 
-int countDiagnalAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
-    // 假設 pos 與 player 合法
-    // 枚舉所有斜向的合法走法 O(16)
+int countDiagnalAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece bishop = makePiece(player, 'B');
     Piece queen = makePiece(player, 'Q');
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
+    for (int i = 0; i < 4; i++)
+    {
+        Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i],
+                      pos.col + MoveDirection::BISHOP_QUEEN_DC[i]};
 
-        while (true) {
-            if (!isInBoard(p)) break;
+        while (true)
+        {
+            if (!isInBoard(p))
+                break;
 
             Piece pp = board.at(p);
 
-            if (pp == bishop || pp == queen) cnt++;
+            if (pp == bishop || pp == queen)
+                cnt++;
 
-            if (pp != Piece::EMPTY) break; 
+            if (pp != Piece::EMPTY)
+                break;
 
-            p.row += BISHOP_QUEEN_DR[i];
-            p.col += BISHOP_QUEEN_DC[i];
+            p.row += MoveDirection::BISHOP_QUEEN_DR[i];
+            p.col += MoveDirection::BISHOP_QUEEN_DC[i];
         }
     }
 
     return cnt;
 }
 
-int countStraightAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
-    // 假設 pos 與 player 合法
-    // 枚舉所有直向的合法走法 O(16)
+int countStraightAttacks(const Board& board, Position pos, const Player player)
+{
     int cnt = 0;
     Piece rook = makePiece(player, 'R');
     Piece queen = makePiece(player, 'Q');
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
+    for (int i = 0; i < 4; i++)
+    {
+        Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i],
+                      pos.col + MoveDirection::ROOK_QUEEN_DC[i]};
 
-        while (true) {
-            if (!isInBoard(p)) break;
+        while (true)
+        {
+            if (!isInBoard(p))
+                break;
 
             Piece pp = board.at(p);
 
-            if (pp == rook || pp == queen) cnt++;
+            if (pp == rook || pp == queen)
+                cnt++;
 
-            if (pp != Piece::EMPTY) break; 
+            if (pp != Piece::EMPTY)
+                break;
 
-            p.row += ROOK_QUEEN_DR[i];
-            p.col += ROOK_QUEEN_DC[i];
+            p.row += MoveDirection::ROOK_QUEEN_DR[i];
+            p.col += MoveDirection::ROOK_QUEEN_DC[i];
         }
     }
 
     return cnt;
 }
 
-int PawnAttackers(
-    const Board &board,
-    Position pos,
-    const Player player,
-    Position *buffer
-) {
-    // 假設 pos 與 player 合法，且 buffer 空間足夠
-    // 枚舉所有兵的合法走法 O(2)
-    int cnt = 0;
-    int pdr = (player == Player::WHITE ? -1 : 1);
-    for (int pdc : {-1, 1}) {
-        Position p = {pos.row - pdr, pos.col + pdc};
-        if (!isInBoard(p)) continue;
+// int PawnAttackers(
+//     const Board &board,
+//     Position pos,
+//     const Player player,
+//     Position *buffer
+// ) {
+//     // 假設 pos 與 player 合法，且 buffer 空間足夠
+//     // 枚舉所有兵的合法走法 O(2)
+//     int cnt = 0;
+//     int pdr = (player == Player::WHITE ? -1 : 1);
+//     for (int pdc : {-1, 1}) {
+//         Position p = {pos.row - pdr, pos.col + pdc};
+//         if (!isInBoard(p)) continue;
 
-        if (board.at(p) == makePiece(player, 'P')) buffer[cnt++] = p;
-    }
+//         if (board.at(p) == makePiece(player, 'P')) buffer[cnt++] = p;
+//     }
 
-    return cnt;
-}
+//     return cnt;
+// }
 
-int KnightAttackers(
-    const Board &board,
-    Position pos,
-    const Player player,
-    Position *buffer
-) {
-    // 假設 pos 與 player 合法，且 buffer 空間足夠
-    // 枚舉所有騎士的合法走法 O(8)
-    int cnt = 0;
-    Piece knight = makePiece(player, 'N');
-    
-    for (int i = 0; i < 8; i++) {
-        Position p = {pos.row + KNIGHT_DR[i], pos.col + KNIGHT_DC[i]};
+// int KnightAttackers(
+//     const Board &board,
+//     Position pos,
+//     const Player player,
+//     Position *buffer
+// ) {
+//     // 假設 pos 與 player 合法，且 buffer 空間足夠
+//     // 枚舉所有騎士的合法走法 O(8)
+//     int cnt = 0;
+//     Piece knight = makePiece(player, 'N');
 
-        if (isInBoard(p) && board.at(p) == knight) buffer[cnt++] = p;
-    }
+//     for (int i = 0; i < 8; i++) {
+//         Position p = {pos.row + MoveDirection::KNIGHT_DR[i], pos.col +
+//         MoveDirection::KNIGHT_DC[i]};
 
-    return cnt;
-}
+//         if (isInBoard(p) && board.at(p) == knight) buffer[cnt++] = p;
+//     }
 
-int BishopAttackers(
-    const Board &board,
-    Position pos,
-    const Player player,
-    Position *buffer
-) {
-    // 假設 pos 與 player 合法，且 buffer 空間足夠
-    // 枚舉所有主教的合法走法 O(16)
-    int cnt = 0;
-    Piece bishop = makePiece(player, 'B');
+//     return cnt;
+// }
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
+// int BishopAttackers(
+//     const Board &board,
+//     Position pos,
+//     const Player player,
+//     Position *buffer
+// ) {
+//     // 假設 pos 與 player 合法，且 buffer 空間足夠
+//     // 枚舉所有主教的合法走法 O(16)
+//     int cnt = 0;
+//     Piece bishop = makePiece(player, 'B');
 
-        while (true) {
-            if (!isInBoard(p)) break;
+//     for (int i = 0; i < 4; i++) {
+//         Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i], pos.col +
+//         MoveDirection::BISHOP_QUEEN_DC[i]};
 
-            Piece pp = board.at(p);
+//         while (true) {
+//             if (!isInBoard(p)) break;
 
-            if (pp == bishop) buffer[cnt++] = p;
+//             Piece pp = board.at(p);
 
-            if (pp != Piece::EMPTY) break; 
+//             if (pp == bishop) buffer[cnt++] = p;
 
-            p.row += BISHOP_QUEEN_DR[i];
-            p.col += BISHOP_QUEEN_DC[i];
-        }
-    }
+//             if (pp != Piece::EMPTY) break;
 
-    return cnt;
-}
+//             p.row += MoveDirection::BISHOP_QUEEN_DR[i];
+//             p.col += MoveDirection::BISHOP_QUEEN_DC[i];
+//         }
+//     }
 
-int RookAttackers(
-    const Board &board,
-    Position pos,
-    const Player player,
-    Position *buffer
-) {
-    // 假設 pos 與 player 合法，且 buffer 空間足夠
-    // 枚舉所有城堡的合法走法 O(16)
-    int cnt = 0;
-    Piece rook = makePiece(player, 'R');
+//     return cnt;
+// }
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
+// int RookAttackers(
+//     const Board &board,
+//     Position pos,
+//     const Player player,
+//     Position *buffer
+// ) {
+//     // 假設 pos 與 player 合法，且 buffer 空間足夠
+//     // 枚舉所有城堡的合法走法 O(16)
+//     int cnt = 0;
+//     Piece rook = makePiece(player, 'R');
 
-        while (true) {
-            if (!isInBoard(p)) break;
+//     for (int i = 0; i < 4; i++) {
+//         Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i], pos.col +
+//         MoveDirection::ROOK_QUEEN_DC[i]};
 
-            Piece pp = board.at(p);
+//         while (true) {
+//             if (!isInBoard(p)) break;
 
-            if (pp == rook) buffer[cnt++] = p;
+//             Piece pp = board.at(p);
 
-            if (pp != Piece::EMPTY) break; 
+//             if (pp == rook) buffer[cnt++] = p;
 
-            p.row += ROOK_QUEEN_DR[i];
-            p.col += ROOK_QUEEN_DC[i];
-        }
-    }
+//             if (pp != Piece::EMPTY) break;
 
-    return cnt;
-}
+//             p.row += MoveDirection::ROOK_QUEEN_DR[i];
+//             p.col += MoveDirection::ROOK_QUEEN_DC[i];
+//         }
+//     }
 
-int QueenAttackers(
-    const Board &board,
-    Position pos,
-    const Player player,
-    Position *buffer
-) {
-    // 假設 pos 與 player 合法，且 buffer 空間足夠
-    // 枚舉所有皇后的合法走法 O(32)
-    int cnt = 0;
-    Piece queen = makePiece(player, 'Q');
+//     return cnt;
+// }
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + BISHOP_QUEEN_DR[i], pos.col + BISHOP_QUEEN_DC[i]};
+// int QueenAttackers(
+//     const Board &board,
+//     Position pos,
+//     const Player player,
+//     Position *buffer
+// ) {
+//     // 假設 pos 與 player 合法，且 buffer 空間足夠
+//     // 枚舉所有皇后的合法走法 O(32)
+//     int cnt = 0;
+//     Piece queen = makePiece(player, 'Q');
 
-        while (true) {
-            if (!isInBoard(p)) break;
+//     for (int i = 0; i < 4; i++) {
+//         Position p = {pos.row + MoveDirection::BISHOP_QUEEN_DR[i], pos.col +
+//         MoveDirection::BISHOP_QUEEN_DC[i]};
 
-            Piece pp = board.at(p);
+//         while (true) {
+//             if (!isInBoard(p)) break;
 
-            if (pp == queen) buffer[cnt++] = p;
+//             Piece pp = board.at(p);
 
-            if (pp != Piece::EMPTY) break; 
+//             if (pp == queen) buffer[cnt++] = p;
 
-            p.row += BISHOP_QUEEN_DR[i];
-            p.col += BISHOP_QUEEN_DC[i];
-        }
-    }
+//             if (pp != Piece::EMPTY) break;
 
-    for (int i = 0; i < 4; i++) {
-        Position p = {pos.row + ROOK_QUEEN_DR[i], pos.col + ROOK_QUEEN_DC[i]};
+//             p.row += MoveDirection::BISHOP_QUEEN_DR[i];
+//             p.col += MoveDirection::BISHOP_QUEEN_DC[i];
+//         }
+//     }
 
-        while (true) {
-            if (!isInBoard(p)) break;
+//     for (int i = 0; i < 4; i++) {
+//         Position p = {pos.row + MoveDirection::ROOK_QUEEN_DR[i], pos.col +
+//         MoveDirection::ROOK_QUEEN_DC[i]};
 
-            Piece pp = board.at(p);
+//         while (true) {
+//             if (!isInBoard(p)) break;
 
-            if (pp == queen) buffer[cnt++] = p;
+//             Piece pp = board.at(p);
 
-            if (pp != Piece::EMPTY) break; 
+//             if (pp == queen) buffer[cnt++] = p;
 
-            p.row += ROOK_QUEEN_DR[i];
-            p.col += ROOK_QUEEN_DC[i];
-        }
-    }
+//             if (pp != Piece::EMPTY) break;
 
-    return cnt;
-}
+//             p.row += MoveDirection::ROOK_QUEEN_DR[i];
+//             p.col += MoveDirection::ROOK_QUEEN_DC[i];
+//         }
+//     }
 
-// 計算此格子中有多少攻擊
-int countSquareAttacks(
-    const Board &board,
-    Position pos,
-    const Player player
-) {
+//     return cnt;
+// }
+
+// Calculate attacks in the designated square.
+int countSquareAttacks(const Board& board, Position pos, const Player player)
+{
     // 檢查位置合法性
-    if (!isInBoard(pos)) {
+    if (!isInBoard(pos))
+    {
         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
         ENGINE_ASSERT(isInBoard(pos));
     }
     // 檢查玩家合法性
-    if (!isPlayerValid(player)) {
+    if (!isPlayerValid(player))
+    {
         LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
         ENGINE_ASSERT(isPlayerValid(player));
     }
@@ -320,48 +300,46 @@ int countSquareAttacks(
 
 // 給 buffer 填充此格子的攻擊者位置
 // WARN 未寫 King 的 get attackers
-int getAttackers(
-    const Board &board,
-    Position pos,
-    Player player,
-    Position* buffer
-) {
+// int getAttackers(
+//     const Board &board,
+//     Position pos,
+//     Player player,
+//     Position* buffer
+// ) {
+//     // 檢查位置合法性
+//     if (!isInBoard(pos)) {
+//         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
+//         ENGINE_ASSERT(isInBoard(pos));
+//     }
+//     // 檢查玩家合法性
+//     if (!isPlayerValid(player)) {
+//         LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
+//         ENGINE_ASSERT(isPlayerValid(player));
+//     }
+
+//     int cnt = 0;
+//     cnt += PawnAttackers(board, pos, player, buffer + cnt);
+//     cnt += KnightAttackers(board, pos, player, buffer + cnt);
+//     cnt += BishopAttackers(board, pos, player, buffer + cnt);
+//     cnt += RookAttackers(board, pos, player, buffer + cnt);
+//     return cnt;
+// }
+
+// Check whether the designated square is attacked.
+bool isSquareAttacked(const Board& board, Position pos, const Player player)
+{
     // 檢查位置合法性
-    if (!isInBoard(pos)) {
+    if (!isInBoard(pos))
+    {
         LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
         ENGINE_ASSERT(isInBoard(pos));
     }
     // 檢查玩家合法性
-    if (!isPlayerValid(player)) {
-        LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
-        ENGINE_ASSERT(isPlayerValid(player));
-    }
-
-    int cnt = 0;
-    cnt += PawnAttackers(board, pos, player, buffer + cnt);
-    cnt += KnightAttackers(board, pos, player, buffer + cnt);
-    cnt += BishopAttackers(board, pos, player, buffer + cnt);
-    cnt += RookAttackers(board, pos, player, buffer + cnt);
-    return cnt;
-}
-
-// 判斷此格子是否被攻擊
-bool isSquareAttacked(
-    const Board &board,
-    Position pos, const
-    Player player
-) {
-    // 檢查位置合法性
-    if (!isInBoard(pos)) {
-        LOG_ERROR(DebugCategory::ATK, "position is invalid", pos);
-        ENGINE_ASSERT(isInBoard(pos));
-    }
-    // 檢查玩家合法性
-    if (!isPlayerValid(player)) {
+    if (!isPlayerValid(player))
+    {
         LOG_ERROR(DebugCategory::ATK, "player is invalid", player);
         ENGINE_ASSERT(isPlayerValid(player));
     }
 
     return (countSquareAttacks(board, pos, player) > 0 ? 1 : 0);
 }
-
