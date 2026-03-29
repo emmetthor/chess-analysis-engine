@@ -1,5 +1,5 @@
     cmake_minimum_required(VERSION 3.16)
-    project(chess-analysis-engine)
+    project(Hynobius)
 
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -58,9 +58,9 @@
     )
 
     # 正式引擎
-    add_executable(chess-analysis-engine engine/src/main.cpp)
-    target_link_libraries(chess-analysis-engine PUBLIC engine-core)
-    set_target_properties(chess-analysis-engine PROPERTIES WIN32_EXECUTABLE OFF)
+    add_executable(Hynobius engine/src/main.cpp)
+    target_link_libraries(Hynobius PUBLIC engine-core)
+    set_target_properties(Hynobius PROPERTIES WIN32_EXECUTABLE OFF)
 
     # test mate
 
@@ -73,10 +73,9 @@
 
     add_test(NAME BenchTest COMMAND test-bench)
 
-    # test correctness
+    # test board consistency
+    add_executable(test-board-consistency tests/Board_Consistency.cpp)
+    target_link_libraries(test-board-consistency PRIVATE engine-core)
+    set_target_properties(test-board-consistency PROPERTIES WIN32_EXECUTABLE OFF)
 
-    add_executable(test-correctness tests/Tests.cpp)
-    target_link_libraries(test-correctness PRIVATE engine-core)
-    set_target_properties(test-correctness PROPERTIES WIN32_EXECUTABLE OFF)
-
-    add_test(NAME CorrectnessTest COMMAND test-correctness)
+    add_test(NAME BoardConsistencyTest COMMAND test-board-consistency)
