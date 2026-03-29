@@ -1,6 +1,6 @@
+#include "../engine/include/search/Perft.h"
 #include "../engine/include/board/Board.h"
 #include "../engine/include/fen/FEN_Parser.h"
-#include "../engine/include/search/Perft.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -56,6 +56,6 @@ int main()
 
     std::cout << "success test cases: " << totalTestCases - failedTestCases - expected << '/'
               << totalTestCases << " [expected: " << expected << "]\n";
-    
+
     assert(failedTestCases == 0);
 }

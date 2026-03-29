@@ -50,8 +50,7 @@ int boardConsistency(Board& board, int depth)
 int main()
 {
     std::vector<std::pair<std::string, int>> fenList = {
-        {"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8902}
-    };
+        {"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8902}};
 
     for (int i = 0; i < (int)fenList.size(); i++)
     {
