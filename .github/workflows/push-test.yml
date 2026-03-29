@@ -8,9 +8,8 @@ on:
     branches:
       - main
 
-
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,3 +21,7 @@ jobs:
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build
+    
+  format:
+    needs: test
+    uses: ./.github/workflows/format-check.yml
