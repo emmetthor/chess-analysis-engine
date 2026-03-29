@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +23,5 @@ jobs:
       run: cmake --build ${{github.workspace}}/build
     
   format:
-    needs: test
+    needs: build
     uses: ./.github/workflows/format-check.yml
