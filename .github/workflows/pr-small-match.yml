@@ -1,6 +1,7 @@
 name: PR Small Match
 
 on:
+  push:
   pull_request:
     branches: [main]
     paths:
