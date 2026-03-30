@@ -1,19 +1,8 @@
 name: PR Small Match
 
 on:
-  push:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'engine/src/search/**'
-      - 'engine/include/search/**'
-      - 'engine/src/evaluate/**'
-      - 'engine/include/evaluate/**'
-      - 'engine/src/move/**'
-      - 'engine/include/move/**'
-      - 'bench/openings_small.pgn'
-      - '.github/workflows/pr-small-match.yml'
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -84,7 +73,7 @@ jobs:
           D:\Cute_Chess\cutechess-cli.exe `
             -engine name=baseline cmd="$env:BASELINE_EXE" `
             -engine name=candidate cmd="$env:CANDIDATE_EXE" `
-            -each proto=uci tc=60+0.1 depth=4 `
+            -each proto=uci tc=60+0.1 depth=5 `
             -openings file=D:\Cute_Chess\pgn\openings.pgn format=pgn order=random `
             -rounds 2 `
             -games 2 `
@@ -100,9 +89,9 @@ jobs:
         run: |
           Add-Content $env:GITHUB_STEP_SUMMARY "## PR Small Match"
           Add-Content $env:GITHUB_STEP_SUMMARY ""
-          Add-Content $env:GITHUB_STEP_SUMMARY "- Depth: 4"
-          Add-Content $env:GITHUB_STEP_SUMMARY "- Opening pairs: 10"
-          Add-Content $env:GITHUB_STEP_SUMMARY "- Total games: 20"
+          Add-Content $env:GITHUB_STEP_SUMMARY "- Depth: 5"
+          Add-Content $env:GITHUB_STEP_SUMMARY "- Opening pairs: 2"
+          Add-Content $env:GITHUB_STEP_SUMMARY "- Total games: 4"
           Add-Content $env:GITHUB_STEP_SUMMARY ""
           Add-Content $env:GITHUB_STEP_SUMMARY '```'
           Get-Content $env:RESULT_FILE | Select-Object -Last 40 | Add-Content $env:GITHUB_STEP_SUMMARY

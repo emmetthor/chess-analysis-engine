@@ -4,6 +4,15 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'engine/src/search/**'
+      - 'engine/include/search/**'
+      - 'engine/src/evaluate/**'
+      - 'engine/include/evaluate/**'
+      - 'engine/src/move/**'
+      - 'engine/include/move/**'
+      - 'bench/openings_small.pgn'
+      - '.github/workflows/pr-small-match.yml'
 
 jobs:
   test:
