@@ -1,5 +1,5 @@
     cmake_minimum_required(VERSION 3.16)
-    project(chess-analysis-engine)
+    project(Hynobius)
 
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -51,32 +51,39 @@
         engine/src/Engine.cpp
     )
 
-    add_library(bench-lib
-        bench/src/Progress_Bar.cpp
-        bench/src/Mate_In_One.cpp
-        bench/src/Mate_In_Two.cpp
-    )
-
     # 正式引擎
-    add_executable(chess-analysis-engine engine/src/main.cpp)
-    target_link_libraries(chess-analysis-engine PUBLIC engine-core)
-    set_target_properties(chess-analysis-engine PROPERTIES WIN32_EXECUTABLE OFF)
+    add_executable(Hynobius engine/src/main.cpp)
+    target_link_libraries(Hynobius PUBLIC engine-core)
+    set_target_properties(Hynobius PROPERTIES WIN32_EXECUTABLE OFF)
 
     # test mate
 
     enable_testing()
 
-    add_executable(test-bench bench/src/Bench.cpp)
-    target_link_libraries(bench-lib PUBLIC engine-core)
-    target_link_libraries(test-bench bench-lib)
-    set_target_properties(test-bench PROPERTIES WIN32_EXECUTABLE OFF)
+    # test board consistency
+    add_executable(test-board-consistency tests/Board_Consistency.cpp)
+    target_link_libraries(test-board-consistency PRIVATE engine-core)
+    set_target_properties(test-board-consistency PROPERTIES WIN32_EXECUTABLE OFF)
 
-    add_test(NAME BenchTest COMMAND test-bench)
+    add_test(NAME BoardConsistencyTest COMMAND test-board-consistency)
 
-    # test correctness
+    # test perft
+    add_executable(test-perft tests/Perft.cpp)
+    target_link_libraries(test-perft PRIVATE engine-core)
+    set_target_properties(test-perft PROPERTIES WIN32_EXECUTABLE OFF)
 
-    add_executable(test-correctness tests/Tests.cpp)
-    target_link_libraries(test-correctness PRIVATE engine-core)
-    set_target_properties(test-correctness PROPERTIES WIN32_EXECUTABLE OFF)
+    add_test(NAME PerftTest COMMAND test-perft)
 
-    add_test(NAME CorrectnessTest COMMAND test-correctness)
+    # test M1
+    add_executable(test-m1 tests/bench/src/Mate_In_One.cpp)
+    target_link_libraries(test-m1 PRIVATE engine-core)
+    set_target_properties(test-m1 PROPERTIES WIN32_EXECUTABLE OFF)
+
+    add_test(NAME M1Test COMMAND test-m1)
+
+    # test M2
+    add_executable(test-m2 tests/bench/src/Mate_In_One.cpp)
+    target_link_libraries(test-m2 PRIVATE engine-core)
+    set_target_properties(test-m2 PROPERTIES WIN32_EXECUTABLE OFF)
+
+    add_test(NAME M2Test COMMAND test-m2)

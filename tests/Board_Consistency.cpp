@@ -1,4 +1,8 @@
-#pragma once
+#include "fen/FEN_Parser.h"
+
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include "board/Board.h"
 #include "move/Generate_Move.h"
@@ -41,4 +45,18 @@ int boardConsistency(Board& board, int depth)
     }
 
     return node;
+}
+
+int main()
+{
+    std::vector<std::pair<std::string, int>> fenList = {
+        {"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 8902}};
+
+    for (int i = 0; i < (int)fenList.size(); i++)
+    {
+        auto [str, node] = fenList[i];
+        Board board = cinFenToBoard(str);
+        assert(boardConsistency(board, 3) == node);
+        std::cout << "test " << i + 1 << " completed with " << node << " nodes.\n";
+    }
 }

@@ -1,0 +1,55 @@
+name: PR Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'engine/src/search/**'
+      - 'engine/include/search/**'
+      - 'engine/src/evaluate/**'
+      - 'engine/include/evaluate/**'
+      - 'engine/src/move/**'
+      - 'engine/include/move/**'
+      - 'bench/openings_small.pgn'
+      - '.github/workflows/pr-small-match.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: |
+          cmake -B ${{github.workspace}}/build -S . \
+          -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer"
+
+      - name: Build
+        run:
+          cmake --build ${{github.workspace}}/build
+
+      - name: Board Consistency Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -R BoardConsistencyTest --verbose
+
+      - name: Perft Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -R PerftTest --verbose
+
+      - name: M1 Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -R M1Test --verbose
+
+      - name: M2 Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -R M2Test --verbose
+
+  sanitizers:
+    needs: test   # 先通過 test 才跑 sanitizer
+    uses: ./.github/workflows/sanitizers.yml
+
+  small-test:
+    needs: sanitizers
+    uses: ./.github/workflows/pr-small-match.yml
