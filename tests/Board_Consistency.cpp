@@ -1,3 +1,4 @@
+#include "debug.h"
 #include "fen/FEN_Parser.h"
 
 #include <iostream>
@@ -56,7 +57,12 @@ int main()
     {
         auto [str, node] = fenList[i];
         Board board = cinFenToBoard(str);
-        assert(boardConsistency(board, 3) == node);
+
+        int res = boardConsistency(board, 3);
+        if (res != node)
+        {
+            ENGINE_FATAL(DebugCategory::BOARD, "invalid node counts: ", res, ' ', node);
+        }
         std::cout << "test " << i + 1 << " completed with " << node << " nodes.\n";
     }
 }

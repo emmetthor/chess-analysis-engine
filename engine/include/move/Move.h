@@ -2,6 +2,7 @@
 
 #include "Type.h"
 #include "board/Board.h"
+#include "board/Piece.h"
 #include "debug.h"
 
 enum Castle
@@ -58,7 +59,7 @@ inline Piece getPromotePiece(const BitMove move)
 {
     int pieceIndex = static_cast<int>((move & PROMOTE_PIECE_MASK) >> 12);
 
-    if (!isValidPieceIndex(pieceIndex))
+    if (pieceIndex != 0 && !isValidPieceIndex(pieceIndex))
     {
         ENGINE_FATAL(DebugCategory::MOVE, "invalid piece index: ", pieceIndex);
     }
@@ -103,11 +104,11 @@ inline BitMove makeBitMove(const Square from,
     {
         ENGINE_FATAL(DebugCategory::MOVE, "invalid to square:", to);
     }
-    if (!(1 <= pieceToIndex(promotePiece) && pieceToIndex(promotePiece) <= 12))
+    if (promotePiece != Piece::EMPTY && !isValidPieceIndex(pieceToIndex(promotePiece)))
     {
         ENGINE_FATAL(DebugCategory::MOVE, "invalid promotion piece:", pieceToIndex(promotePiece));
     }
-    
+
     BitMove res = 0;
 
     res |= from;
@@ -169,3 +170,16 @@ bool isMoveLegal(const Board& board, const Move& move);
 bool isCastleLegal(const Board& board, const Move& move);
 
 CastleMove getCastleMove(Move& move);
+
+inline Move bitMovetoOriMove(const Board &board, const BitMove &move) {
+    Move res;
+    res.from = squareToPosition(getFromSquare(move));
+    res.to = squareToPosition(getToSquare(move));
+    res.capturePiece = board.at(res.to);
+    res.isEnPassant = getEnPassant(move);
+    res.isPromotion = getPromotion(move);
+    res.promotionPiece = getPromotePiece(move);
+    res.movePiece = board.at(res.from);
+    res.player = (isWhite(res.movePiece) ? Player::WHITE : Player::BLACK);
+    return res;
+}
