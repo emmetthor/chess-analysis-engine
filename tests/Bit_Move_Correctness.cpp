@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../engine/include/board/Piece.h"
 #include "../engine/include/move/Move.h"
 
