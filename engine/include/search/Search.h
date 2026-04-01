@@ -4,6 +4,7 @@
 #include "board/Board.h"
 #include "evaluate/Evaluate.h"
 #include "move/Move.h"
+#include "move/Make_BitMove.h"
 
 constexpr int MATE_SCORE = 1e6;
 
@@ -30,7 +31,7 @@ public:
     Search(Evaluate& _eval);
     SearchResult findBestMove(const Board& board, int depth);
 
-    int movestk[SearchVarialble::MAX_SEARCH_DEPTH];
+    UndoState movestk[SearchVarialble::MAX_SEARCH_DEPTH];
 
 private:
     Evaluate eval;
