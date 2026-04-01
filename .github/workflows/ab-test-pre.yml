@@ -136,7 +136,7 @@ jobs:
           $rounds = "${{ inputs.rounds }}"
           $tc = "${{ inputs.tc }}"
           $depth = "${{ inputs.depth }}"
-          $openingFile = "${{ inputs.opening_file }}"
+          $openingFile = "D:\Cute_Chess\pgn\openings.pgn"
 
           D:\Cute_Chess\cutechess-cli.exe `
             -engine name=baseline cmd="$env:BASELINE_EXE" `
