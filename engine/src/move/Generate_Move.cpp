@@ -36,15 +36,13 @@ int generatePieceMoves(const Board& board, Piece movePiece, BitMove* buffer)
             Piece capture = board.at(toPos);
             bool isCapture = (isValidPieceIndex(pieceToIndex(capture)) ? 1 : 0);
 
-            buffer[cnt++] = makeBitMove(
-                positionToSquare(fromPos),
-                positionToSquare(toPos),
-                Piece::EMPTY,
-                isCapture,
-                false,
-                false,
-                false
-            );
+            buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                        positionToSquare(toPos),
+                                        Piece::EMPTY,
+                                        isCapture,
+                                        false,
+                                        false,
+                                        false);
         }
     }
 
@@ -83,15 +81,13 @@ int generatePieceCapture(const Board& board, Piece movePiece, BitMove* buffer)
                 ENGINE_FATAL(DebugCategory::MOVE, "generated non-capture moves");
             }
 
-            buffer[cnt++] = makeBitMove(
-                positionToSquare(fromPos),
-                positionToSquare(toPos),
-                Piece::EMPTY,
-                isCapture,
-                false,
-                false,
-                false
-            );
+            buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                        positionToSquare(toPos),
+                                        Piece::EMPTY,
+                                        isCapture,
+                                        false,
+                                        false,
+                                        false);
         }
     }
 
@@ -122,46 +118,43 @@ int generatePawnQuietMoves(const Board& board, BitMove* buffer)
         Position pushOneStep = {r + dr, c};
         Position pushTwoStep = {r + 2 * dr, c};
 
-        if (isInBoard(pushOneStep) && board.at(pushOneStep) == Piece::EMPTY) {
+        if (isInBoard(pushOneStep) && board.at(pushOneStep) == Piece::EMPTY)
+        {
             if (pushOneStep.row == promoteRank)
             {
                 for (auto promo : {knight, bishop, rook, queen})
                 {
-                    buffer[cnt++] = makeBitMove(
-                        positionToSquare(fromPos),
-                        positionToSquare(pushOneStep),
-                        promo,
-                        false,
-                        false,
-                        false,
-                        true
-                    );
+                    buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                                positionToSquare(pushOneStep),
+                                                promo,
+                                                false,
+                                                false,
+                                                false,
+                                                true);
                 }
             }
             else
             {
-                buffer[cnt++] = makeBitMove(
-                    positionToSquare(fromPos),
-                    positionToSquare(pushOneStep),
-                    Piece::EMPTY,
-                    false,
-                    false,
-                    false,
-                    false
-                );
+                buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                            positionToSquare(pushOneStep),
+                                            Piece::EMPTY,
+                                            false,
+                                            false,
+                                            false,
+                                            false);
             }
         }
 
-        if (r == startRank && board.at(pushOneStep) == Piece::EMPTY && board.at(pushTwoStep) == Piece::EMPTY) {
-            buffer[cnt++] = makeBitMove(
-                positionToSquare(fromPos),
-                positionToSquare(pushTwoStep),
-                Piece::EMPTY,
-                false,
-                false,
-                false,
-                false
-            );
+        if (r == startRank && board.at(pushOneStep) == Piece::EMPTY &&
+            board.at(pushTwoStep) == Piece::EMPTY)
+        {
+            buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                        positionToSquare(pushTwoStep),
+                                        Piece::EMPTY,
+                                        false,
+                                        false,
+                                        false,
+                                        false);
         }
     }
 
@@ -190,7 +183,8 @@ int generatePawnCaptures(const Board& board, BitMove* buffer)
         auto [r, c] = posArray[i];
         Position fromPos = posArray[i];
 
-        for (auto dc : {-1, 1}) {
+        for (auto dc : {-1, 1})
+        {
             Position toPos = {r + dr, c + dc};
             if (!isInBoard(toPos))
                 continue;
@@ -203,28 +197,24 @@ int generatePawnCaptures(const Board& board, BitMove* buffer)
             {
                 for (auto promo : {knight, bishop, rook, queen})
                 {
-                    buffer[cnt++] = makeBitMove(
-                        positionToSquare(fromPos),
-                        positionToSquare(toPos),
-                        promo,
-                        false,
-                        false,
-                        false,
-                        true
-                    );
+                    buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                                positionToSquare(toPos),
+                                                promo,
+                                                false,
+                                                false,
+                                                false,
+                                                true);
                 }
             }
             else
             {
-                buffer[cnt++] = makeBitMove(
-                    positionToSquare(fromPos),
-                    positionToSquare(toPos),
-                    Piece::EMPTY,
-                    false,
-                    false,
-                    false,
-                    false
-                );
+                buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                            positionToSquare(toPos),
+                                            Piece::EMPTY,
+                                            false,
+                                            false,
+                                            false,
+                                            false);
             }
         }
     }
@@ -344,7 +334,8 @@ int generateAllLegalMoves(const Board& board, Move* buffer)
 
     // WARN temporary transformation
     Move oriMoves[2000];
-    for (int i = 0; i < nAll; i++) {
+    for (int i = 0; i < nAll; i++)
+    {
         oriMoves[i] = bitMovetoOriMove(board, allMoves[i]);
     }
 
@@ -362,7 +353,8 @@ int generateLegalCaptureMoves(const Board& board, Move* buffer)
 
     // WARN temporary transformation
     Move oriMoves[2000];
-    for (int i = 0; i < ncaptureMoves; i++) {
+    for (int i = 0; i < ncaptureMoves; i++)
+    {
         oriMoves[i] = bitMovetoOriMove(board, captureMoves[i]);
     }
 

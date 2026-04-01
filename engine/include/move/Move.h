@@ -94,7 +94,7 @@ inline BitMove makeBitMove(const Square from,
                            const bool isCastle,
                            const bool isEnPassant,
                            const bool isPromotion)
-{   
+{
     if (!isValidSquare(from))
     {
         ENGINE_FATAL(DebugCategory::MOVE, "invalid from square:", from);
@@ -171,7 +171,8 @@ bool isCastleLegal(const Board& board, const Move& move);
 
 CastleMove getCastleMove(Move& move);
 
-inline Move bitMovetoOriMove(const Board &board, const BitMove &move) {
+inline Move bitMovetoOriMove(const Board& board, const BitMove& move)
+{
     Move res;
     res.from = squareToPosition(getFromSquare(move));
     res.to = squareToPosition(getToSquare(move));

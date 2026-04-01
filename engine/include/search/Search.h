@@ -3,8 +3,8 @@
 #include "Search_Variables.h"
 #include "board/Board.h"
 #include "evaluate/Evaluate.h"
-#include "move/Move.h"
 #include "move/Make_BitMove.h"
+#include "move/Move.h"
 
 constexpr int MATE_SCORE = 1e6;
 
