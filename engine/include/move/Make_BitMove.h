@@ -1,5 +1,6 @@
 #pragma once
 #include "board/Board.h"
+#include "move/Move.h"
 #include <board/Piece.h>
 #include <cstdint>
 
@@ -23,7 +24,30 @@ struct MoveState
 
     Piece movePiece, capturedPiece, placedPiece;
 
-    Player player;
-
     bool isCastle, isPromotion;
+
+    MoveState(const Board &board, const BitMove move)
+    {
+        from = squareToPosition(getFromSquare(move));
+        to = squareToPosition(getToSquare(move));
+
+        movePiece = board.at(from);
+        capturedPiece = board.at(to);
+        
+        isCastle = getCastle(move);
+        isPromotion = getPromotion(move);
+
+        if (isPromotion)
+        {
+            placedPiece = getPromotePiece(move);
+        }
+        else
+        {
+            placedPiece = movePiece;
+        }
+    }
 };
+
+void doBitMove(Board &board, const BitMove move, UndoState &undo);
+
+void undoBitMove(Board &board, const BitMove move, const UndoState &undo);
