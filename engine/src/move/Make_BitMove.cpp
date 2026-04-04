@@ -3,6 +3,7 @@
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
 #include "search/Zobrist.h"
+#include "evaluate/PST.h"
 
 void doRegularMove(Board& board, const MoveState& state)
 {
@@ -98,10 +99,54 @@ void updateMaterialScoreDo(Board& board, const MoveState &state, int weight)
     {
         board.materialScore -= weight * pieceValue(state.capturedPiece);
     }
+
     if (state.isPromotion)
     {
         board.materialScore -= weight * pieceValue(state.movePiece);
         board.materialScore -= weight * pieceValue(state.placedPiece);
+    }
+}
+
+void updatePSTScoreDo(Board& board, const MoveState& state, int weight)
+{
+    // moving piece leaves from
+    board.PSTScore -= weight * evaluatePieceSquare(state.movePiece, state.from);
+
+    // placed piece arrives at to
+    board.PSTScore += weight * evaluatePieceSquare(state.placedPiece, state.to);
+
+    // captured piece disappears
+    if (state.isCapture)
+    {
+        Position capturedPos = state.to; // normal capture
+
+        board.PSTScore -= weight * evaluatePieceSquare(state.capturedPiece, capturedPos);
+    }
+
+    // castling
+    if (state.isCastle)
+    {
+        Position rookFrom, rookTo;
+
+        if (state.to.col == 6) // short castle
+        {
+            rookFrom = {state.from.row, 7};
+            rookTo = {state.from.row, 5};
+        }
+        else if (state.to.col == 2) // long castle
+        {
+            rookFrom = {state.from.row, 0};
+            rookTo = {state.from.row, 3};
+        }
+        else
+        {
+            ENGINE_FATAL(DebugCategory::MOVE, "invalid castling in PST update");
+        }
+
+        Piece rook = makePiece(state.player, 'R');
+
+        board.PSTScore -= weight * evaluatePieceSquare(rook, rookFrom);
+        board.PSTScore += weight * evaluatePieceSquare(rook, rookTo);
     }
 }
 
@@ -130,7 +175,7 @@ void doBitMove(Board& board, const BitMove move, UndoState& undo)
     updateMaterialScoreDo(board, state, weight);
 
     // update PST score.
-    board.PSTScore = computePST(board);
+    updatePSTScoreDo(board, state, weight);
 
     // update Zobrist.
     board.zobristKey = computeZobrist(board);
