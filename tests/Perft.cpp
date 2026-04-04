@@ -1,9 +1,7 @@
 #include "../engine/include/board/Board.h"
 #include "../engine/include/fen/FEN_Parser.h"
 #include "../engine/include/move/Generate_Move.h"
-#include "debug.h"
 #include "move/Make_BitMove.h"
-#include "search/Zobrist.h"
 #include <iostream>
 #include <string>
 #include <vector>
