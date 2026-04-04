@@ -230,12 +230,14 @@ int generateCastling(const Board& board, BitMove* buffer)
 
     int row = (player == Player::WHITE ? 7 : 0);
 
+    Position a = {row, 0};
     Position b = {row, 1};
     Position c = {row, 2};
     Position d = {row, 3};
     Position kingPos = {row, 4};
     Position f = {row, 5};
     Position g = {row, 6};
+    Position h = {row, 7};
 
     // safety: king must be on e-file.
     if (board.at(kingPos) != makePiece(player, 'K'))
@@ -249,7 +251,8 @@ int generateCastling(const Board& board, BitMove* buffer)
         // white king side.
         if (board.castleRights & 0b0100)
         {
-            if (board.at(f) == Piece::EMPTY && board.at(g) == Piece::EMPTY)
+            if (board.at(h) == makePiece(board.player, 'R') && board.at(f) == Piece::EMPTY &&
+                board.at(g) == Piece::EMPTY)
             {
                 if (!isSquareAttacked(board, kingPos, Player::BLACK) &&
                     !isSquareAttacked(board, f, Player::BLACK) &&
@@ -274,7 +277,8 @@ int generateCastling(const Board& board, BitMove* buffer)
             Position f = {row, 5};
             Position g = {row, 6};
 
-            if (board.at(f) == Piece::EMPTY && board.at(g) == Piece::EMPTY)
+            if (board.at(h) == makePiece(board.player, 'R') && board.at(f) == Piece::EMPTY &&
+                board.at(g) == Piece::EMPTY)
             {
                 if (!isSquareAttacked(board, kingPos, Player::WHITE) &&
                     !isSquareAttacked(board, f, Player::WHITE) &&
@@ -299,8 +303,8 @@ int generateCastling(const Board& board, BitMove* buffer)
         if (board.castleRights & 0b1000)
         {
 
-            if (board.at(d) == Piece::EMPTY && board.at(c) == Piece::EMPTY &&
-                board.at(b) == Piece::EMPTY)
+            if (board.at(a) == makePiece(board.player, 'R') && board.at(d) == Piece::EMPTY &&
+                board.at(c) == Piece::EMPTY && board.at(b) == Piece::EMPTY)
             {
                 if (!isSquareAttacked(board, kingPos, Player::BLACK) &&
                     !isSquareAttacked(board, d, Player::BLACK) &&
@@ -322,8 +326,8 @@ int generateCastling(const Board& board, BitMove* buffer)
         // black queen side.
         if (board.castleRights & 0b0010)
         {
-            if (board.at(d) == Piece::EMPTY && board.at(c) == Piece::EMPTY &&
-                board.at(b) == Piece::EMPTY)
+            if (board.at(a) == makePiece(board.player, 'R') && board.at(d) == Piece::EMPTY &&
+                board.at(c) == Piece::EMPTY && board.at(b) == Piece::EMPTY)
             {
                 if (!isSquareAttacked(board, kingPos, Player::WHITE) &&
                     !isSquareAttacked(board, d, Player::WHITE) &&

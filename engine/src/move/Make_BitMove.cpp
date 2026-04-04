@@ -1,4 +1,5 @@
 #include "move/Make_BitMove.h"
+#include "Structure_IO.h"
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "debug.h"
@@ -133,6 +134,7 @@ void undoCastling(Board& board, const UndoState& state)
 
     if (rook != makePiece(state.player, 'R'))
     {
+        std::cout << board << '\n';
         ENGINE_FATAL(DebugCategory::MOVE, "invalid undo castling: rook not at expected square");
     }
 
