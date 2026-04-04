@@ -77,7 +77,7 @@ void undoCastling(Board &board, const UndoState &state)
 
     Piece rook = board.at(rookFrom);
 
-    if (rook != makePiece(board.player, 'R'))
+    if (rook != makePiece(state.player, 'R'))
     {
         ENGINE_FATAL(DebugCategory::MOVE, "invalid undo castling: rook not at expected square");
     }
