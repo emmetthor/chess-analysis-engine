@@ -16,6 +16,8 @@ struct MoveState
 
     Player player;
 
+    int castleRights;
+
     MoveState(const Board& board, const BitMove move)
     {
         from = squareToPosition(getFromSquare(move));
@@ -38,6 +40,8 @@ struct MoveState
         }
 
         player = board.player;
+
+        castleRights = board.castleRights;
     }
 };
 
