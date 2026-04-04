@@ -8,7 +8,6 @@
 #include "board/Board.h"
 #include "move/Generate_Move.h"
 #include "move/Make_BitMove.h"
-#include "search/Zobrist.h"
 
 int boardConsistency(Board& board, int depth)
 {
