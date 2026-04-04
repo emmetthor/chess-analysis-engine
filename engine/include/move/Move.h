@@ -182,5 +182,15 @@ inline Move bitMovetoOriMove(const Board& board, const BitMove& move)
     res.promotionPiece = getPromotePiece(move);
     res.movePiece = board.at(res.from);
     res.player = (isWhite(res.movePiece) ? Player::WHITE : Player::BLACK);
+
+    res.castle = Castle::NOT;
+    if (getCastle(move))
+    {
+        if (res.to.col == 6)
+            res.castle = SHORT_CASTLE;
+        else if (res.to.col == 2)
+            res.castle = LONG_CASTLE;
+    }
+
     return res;
 }
