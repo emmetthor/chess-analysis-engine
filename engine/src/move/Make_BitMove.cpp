@@ -86,6 +86,25 @@ void undoCastling(Board& board, const UndoState& state)
     board.set(rookTo, rook);
 }
 
+void updateMaterialScoreDo(Board& board, const MoveState &state, int weight)
+{
+    if (state.isCastle)
+    {
+        // castling should not change material score.
+        return;
+    }
+    
+    if (state.isCapture)
+    {
+        board.materialScore -= weight * pieceValue(state.capturedPiece);
+    }
+    if (state.isPromotion)
+    {
+        board.materialScore -= weight * pieceValue(state.movePiece);
+        board.materialScore -= weight * pieceValue(state.placedPiece);
+    }
+}
+
 void doBitMove(Board& board, const BitMove move, UndoState& undo)
 {
     // make current move state.
@@ -104,8 +123,11 @@ void doBitMove(Board& board, const BitMove move, UndoState& undo)
         doRegularMove(board, state);
     }
 
+    // calculate weight
+    int weight = (state.player == Player::WHITE ? 1 : -1);
+
     // update material score.
-    board.materialScore = computePieceValue(board);
+    updateMaterialScoreDo(board, state, weight);
 
     // update PST score.
     board.PSTScore = computePST(board);

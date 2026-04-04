@@ -12,7 +12,9 @@ struct MoveState
 
     Piece movePiece, capturedPiece, placedPiece;
 
-    bool isCastle, isPromotion;
+    bool isCastle, isPromotion, isCapture;
+
+    Player player;
 
     MoveState(const Board& board, const BitMove move)
     {
@@ -24,6 +26,7 @@ struct MoveState
 
         isCastle = getCastle(move);
         isPromotion = getPromotion(move);
+        isCapture = getCapture(move);
 
         if (isPromotion)
         {
@@ -33,6 +36,8 @@ struct MoveState
         {
             placedPiece = movePiece;
         }
+
+        player = board.player;
     }
 };
 
