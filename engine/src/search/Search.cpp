@@ -1,4 +1,6 @@
 #include "search/Search.h"
+#include "board/Piece.h"
+#include "move/Make_BitMove.h"
 
 #pragma GCC optimize("O3,unroll-loops")
 
@@ -111,7 +113,7 @@ SearchResult Search::findBestMove(const Board& board, int depth)
         finalRes.info.nodes = negamaxNodes + qsNodes;
         finalRes.info.qsnodes = qsNodes;
         finalRes.info.timeMs =
-            std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+        std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
         finalRes.info.score = finalRes.bestScore;
     }
 
@@ -136,16 +138,26 @@ Search::searchRootCore(Board& board, int depth, int alpha, int beta, Move iterat
     for (int i = 0; i < nMoves; i++)
     {
         Move move = moves[i];
+        BitMove bitMove = makeBitMove(
+            positionToSquare(move.from),
+            positionToSquare(move.to),
+            move.promotionPiece,
+            (isValidPieceIndex(pieceToIndex(move.capturePiece)) ? true : false),
+            (move.castle == Castle::NOT ? false : true),
+            false,
+            move.isPromotion
+        );
 
         moveStk[backIterator++] = move;
 
+        UndoState undo;
+
         // recursive
-        makeMove(board, move);
+        doBitMove(board, bitMove, undo);
 
         int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
 
-        undoMove(board, move);
-
+        undoBitMove(board, bitMove, undo);
         backIterator--;
 
         // LOG_DEBUG(DebugCategory::SEARCH, "move: ", move, " | move score: ", score);
@@ -211,33 +223,25 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     {
         int searchDepth = depth - 1;
         Move move = moves[i];
+        BitMove bitMove = makeBitMove(
+            positionToSquare(move.from),
+            positionToSquare(move.to),
+            move.promotionPiece,
+            (isValidPieceIndex(pieceToIndex(move.capturePiece)) ? true : false),
+            (move.castle == Castle::NOT ? false : true),
+            false,
+            move.isPromotion
+        );
+
+
+        UndoState undo;
 
         moveStk[backIterator++] = move;
 
-        // WARN LMR abandoned
-        // if (!move.isPromotion && move.capturePiece == Piece::EMPTY && depth >= 3 &&
-        // !isInCheck(board, player)) {
-        //     if (i >= 4) {
-        //         searchDepth--;
-        //     }
-
-        //     if (i >= 7) {
-        //         searchDepth--;
-        //     }
-        // }
-
         int score = 0;
 
-        makeMove(board, move);
-
-        // score = -negamax(
-        //     board,
-        //     depth - 1,
-        //     -beta,
-        //     -alpha,
-        //     opponent(player),
-        //     ply + 1
-        // );
+        // recursive
+        doBitMove(board, bitMove, undo);
 
         if (i == 0)
         {
@@ -254,7 +258,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
             }
         }
 
-        undoMove(board, move);
+        undoBitMove(board, bitMove, undo);
 
         backIterator--;
 
@@ -316,6 +320,15 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
     for (int i = 0; i < nCaptureMoves; i++)
     {
         Move move = captureMoves[i];
+        BitMove bitMove = makeBitMove(
+            positionToSquare(move.from),
+            positionToSquare(move.to),
+            move.promotionPiece,
+            (isValidPieceIndex(pieceToIndex(move.capturePiece)) ? true : false),
+            (move.castle == Castle::NOT ? false : true),
+            false,
+            move.isPromotion
+        );
 
         // delta pruning
         Piece captured = move.capturePiece;
@@ -323,13 +336,16 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
         if (!move.isPromotion && pieceValue(move.movePiece) >= pieceValue(captured) + 200)
             continue;
 
-        makeMove(board, move);
+        UndoState undo;
+
+        // recursive
+        doBitMove(board, bitMove, undo);
 
         int score = 0;
         ENGINE_ASSERT(!isInCheck(board, player));
         score = -quietscence(board, -beta, -alpha, ply + 1);
 
-        undoMove(board, move);
+        undoBitMove(board, bitMove, undo);
 
         if (score >= beta)
             return score;
