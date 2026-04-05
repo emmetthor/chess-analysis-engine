@@ -1,18 +1,35 @@
 name: Format Check
 
 on:
-  workflow_call:
+  pull_request:
+  push:
+    branches: [main]
 
 jobs:
-  format:
-    runs-on: ubuntu-latest
+  clang-format:
+    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Install clang-format
-        run: sudo apt-get install -y clang-format
-
-      - name: Run format check
+      - name: Download clang-format 22
         run: |
-          clang-format --dry-run --Werror $(git ls-files '*.cpp' '*.h')
+          set -euo pipefail
+          VERSION=22.1.2
+          FILE=LLVM-${VERSION}-Linux-X64.tar.xz
+
+          wget -q https://github.com/llvm/llvm-project/releases/download/llvmorg-${VERSION}/${FILE}
+          tar -xf ${FILE}
+
+          BIN_DIR=$(find . -maxdepth 1 -type d -name "LLVM-${VERSION}-Linux-X64" | head -n 1)
+          chmod +x "${BIN_DIR}/bin/clang-format"
+
+          "${BIN_DIR}/bin/clang-format" --version
+
+      - name: Check formatting
+        run: |
+          set -euo pipefail
+          BIN_DIR=$(find . -maxdepth 1 -type d -name "LLVM-22.1.2-Linux-X64" | head -n 1)
+          git ls-files -z '*.cpp' '*.cc' '*.cxx' '*.h' '*.hh' '*.hpp' \
+            | xargs -0 "${BIN_DIR}/bin/clang-format" --dry-run --Werror
