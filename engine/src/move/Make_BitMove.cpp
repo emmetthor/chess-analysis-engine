@@ -5,6 +5,7 @@
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
 #include "search/Zobrist.h"
+#include "debug/validation.h"
 
 void doRegularMove(Board& board, const MoveState& state)
 {
@@ -315,9 +316,7 @@ void doBitMove(Board& board, const BitMove move, UndoState& undo)
     // update Zobrist.
     updateZobristDo(board, state, oldCastleRights, newCastelRights);
 
-    ENGINE_ASSERT(board.materialScore == computePieceValue(board));
-    ENGINE_ASSERT(board.PSTScore == computePST(board));
-    ENGINE_ASSERT(board.zobristKey == computeZobrist(board));
+    checkBoardState(board);
 }
 
 void undoBitMove(Board& board, const BitMove move, const UndoState& undo)
@@ -341,7 +340,5 @@ void undoBitMove(Board& board, const BitMove move, const UndoState& undo)
 
     computePiecePos(board);
 
-    ENGINE_ASSERT(board.materialScore == computePieceValue(board));
-    ENGINE_ASSERT(board.PSTScore == computePST(board));
-    ENGINE_ASSERT(board.zobristKey == computeZobrist(board));
+    checkBoardState(board);
 }
