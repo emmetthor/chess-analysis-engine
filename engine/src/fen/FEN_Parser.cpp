@@ -1,5 +1,5 @@
 #include "fen/FEN_Parser.h"
-#include "debug.h"
+#include "Structure_IO.h"
 #include "evaluate/Material_Point.h"
 #include "evaluate/PST.h"
 #include "search/Zobrist.h"
@@ -14,7 +14,7 @@ Board cinFenToBoard(const std::string& fen)
     std::string boardStr, player, castling, enpass, halfmove, fullmove;
     if (!(iss >> boardStr >> player >> castling >> enpass >> halfmove >> fullmove))
     {
-        ENGINE_FATAL(DebugCategory::BOARD, "FEN is incomplete.");
+        ENGINE_FATAL("fen parser", "FEN is incomplete.");
     }
 
     int row = 0, col = 0;
@@ -42,7 +42,7 @@ Board cinFenToBoard(const std::string& fen)
     }
     ENGINE_ASSERT(row == 7 && col == 8);
 
-    LOG_DEBUG(DebugCategory::BOARD, "board: \n", board);
+    DOUT("fen parser") << "current board:\n" << board << '\n';
 
     ENGINE_ASSERT(player == "w" || player == "b");
 
@@ -68,7 +68,7 @@ Board cinFenToBoard(const std::string& fen)
             case '-':
                 break;
             default:
-                ENGINE_FATAL(DebugCategory::BOARD, "FEN castling is incomplete.", c);
+                ENGINE_FATAL("fen parser", "FEN castling is incomplete.", c);
                 break;
         }
     }

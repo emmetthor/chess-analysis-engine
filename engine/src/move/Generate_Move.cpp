@@ -5,7 +5,6 @@
 #include "board/Board.h"
 #include "board/Check.h"
 #include "board/Piece.h"
-#include "debug.h"
 #include "move/Generate_Position.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
@@ -77,9 +76,11 @@ int generatePieceCapture(const Board& board, Piece movePiece, BitMove* buffer)
             Piece capture = board.at(toPos);
             bool isCapture = (isValidPieceIndex(pieceToIndex(capture)) ? 1 : 0);
 
-            if (isCapture == 0)
+            if (isCapture == false)
             {
-                ENGINE_FATAL(DebugCategory::MOVE, "generated non-capture moves");
+                ENGINE_FATAL(
+                    "generate move",
+                    "generated non-capture move in a function that can only generate captures.");
             }
 
             buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
@@ -396,8 +397,6 @@ int generateCaptureMoves(const Board& board, BitMove* buffer)
 
 int filterLegalMoves(const Board& board, BitMove* allMoves, int nAllMoves, BitMove* buffer)
 {
-    ENGINE_ASSERT(isPlayerValid(player));
-
     int cnt = 0;
     Board copyBoard = board;
 
@@ -451,8 +450,6 @@ int generateAllLegalMoves(const Board& board, BitMove* buffer)
 
 int generateLegalCaptureMoves(const Board& board, Move* buffer)
 {
-    ENGINE_ASSERT(isPlayerValid(player));
-
     BitMove captureMoves[2000];
     int ncaptureMoves = generateCaptureMoves(board, captureMoves);
 
@@ -467,8 +464,6 @@ int generateLegalCaptureMoves(const Board& board, Move* buffer)
 
 int generateLegalCaptureMoves(const Board& board, BitMove* buffer)
 {
-    ENGINE_ASSERT(isPlayerValid(player));
-
     BitMove captureMoves[2000];
     int ncaptureMoves = generateCaptureMoves(board, captureMoves);
 

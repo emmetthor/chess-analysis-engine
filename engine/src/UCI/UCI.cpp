@@ -1,7 +1,6 @@
 #include "UCI/UCI.h"
 #include "Structure_IO.h"
 #include "UCI/UCI_Move_Parcer.h"
-#include "debug.h"
 #include "move/Move.h"
 #include "pgn/Pgn_Transformer.h"
 
@@ -45,8 +44,7 @@ std::string UCIMoveToString(const Move& move)
                 promotionChar = 'b';
                 break;
             default:
-                ENGINE_FATAL(
-                    DebugCategory::BOARD, "promotion piece is not valid: ", move.promotionPiece);
+                ENGINE_FATAL("uci", "promotion piece is not valid: ", move.promotionPiece);
         }
         res += promotionChar;
     }
@@ -94,7 +92,7 @@ void handlePosition(std::istringstream& iss, Engine& engine)
     }
     else
     {
-        ENGINE_FATAL(DebugCategory::BOARD, "Invalid UCI position command.");
+        ENGINE_FATAL("uci", "Invalid UCI position command.");
     }
 
     // no moves command
