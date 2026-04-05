@@ -1,19 +1,48 @@
 #include "../engine/include/board/Board.h"
 #include "../engine/include/fen/FEN_Parser.h"
 #include "../engine/include/move/Generate_Move.h"
+#include "../engine/include/board/Check.h"
+#include "board/Check.h"
+#include "debug/validation.h"
 #include "move/Make_BitMove.h"
+#include "move/Move.h"
 #include <iostream>
 #include <string>
 #include <vector>
 
-int perft(Board& board, int depth)
+struct PerftStats
 {
-    if (depth <= 0)
-        return 1;
-    int nodes = 0;
+    uint64_t nodes = 0;
+    uint64_t captures = 0;
+    uint64_t enPassants = 0;
+    uint64_t castles = 0;
+    uint64_t promotions = 0;
+    uint64_t checks = 0;
+};
 
+inline PerftStats& operator+=(PerftStats& a, const PerftStats& b)
+{
+    a.nodes += b.nodes;
+    a.captures += b.captures;
+    a.enPassants += b.enPassants;
+    a.castles += b.castles;
+    a.promotions += b.promotions;
+    a.checks += b.checks;
+    return a;
+}
+
+inline PerftStats operator+(PerftStats a, const PerftStats& b)
+{
+    a += b;
+    return a;
+}
+
+PerftStats perft(Board& board, int depth)
+{
     BitMove moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
+
+    PerftStats stat;
 
     for (int i = 0; i < nMoves; i++)
     {
@@ -23,12 +52,27 @@ int perft(Board& board, int depth)
 
         doBitMove(board, move, undo);
 
-        nodes += perft(board, depth - 1);
+        if (depth == 1)
+        {
+            stat.nodes++;
+            stat.captures += (getCapture(move) == true ? 1 : 0);
+            stat.enPassants = 0; // WARN en passants are not implemented yet.
+            stat.castles += (getCastle(move) == true ? 1 : 0);
+            stat.promotions += (getPromotion(move) == true ? 1 : 0);
+            // player now is the enemy because we've functioned doBitMove
+            stat.checks += (isInCheck(board, board.player) ? 1 : 0);
+        }
+        else
+        {
+            stat += perft(board, depth - 1);
+        }
 
         undoBitMove(board, move, undo);
+
+        checkBoardState(board);
     }
 
-    return nodes;
+    return stat;
 }
 
 std::vector<int> testPerft(std::string fen, int depth)
@@ -38,8 +82,12 @@ std::vector<int> testPerft(std::string fen, int depth)
 
     for (int d = 1; d <= depth; d++)
     {
-        int nodes = perft(board, d);
+        PerftStats stat = perft(board, d);
+        int nodes = stat.nodes;
         res[d] = nodes;
+
+        DOUT("perft") << "depth=" << d << " | nodes=" << stat.nodes << " | captures=" << stat.captures << " | enPassants="
+        << stat.enPassants << " | castles=" << stat.castles << " | promotes=" << stat.promotions << " | checks=" << stat.checks << '\n';
     }
     return res;
 }
