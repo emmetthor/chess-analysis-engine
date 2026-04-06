@@ -3,7 +3,7 @@
 #include "Engine.h"
 #include <string>
 
-void cliLoop(Engine &engine);
+void cliLoop(Engine& engine);
 
 enum class RunMode
 {

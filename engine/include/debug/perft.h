@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdint>
 #include "board/Board.h"
+#include <cstdint>
 
 struct PerftStats
 {

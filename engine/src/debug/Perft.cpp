@@ -1,8 +1,8 @@
 #include "debug/perft.h"
-#include "move/Generate_Move.h"
 #include "board/Check.h"
-#include "move/Make_BitMove.h"
 #include "debug/validation.h"
+#include "move/Generate_Move.h"
+#include "move/Make_BitMove.h"
 
 PerftStats perftWithStat(Board& board, int depth)
 {
@@ -36,7 +36,7 @@ PerftStats perftWithStat(Board& board, int depth)
 
         undoBitMove(board, move, undo);
 
-        //checkBoardState(board);
+        // checkBoardState(board);
     }
 
     return stat;

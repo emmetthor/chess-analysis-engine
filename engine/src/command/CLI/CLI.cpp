@@ -1,14 +1,14 @@
 #include "command/CLI/CLI.h"
+#include "board/Board.h"
 #include "debug/perft.h"
 #include "fen/FEN_Parser.h"
-#include "board/Board.h"
 
-#define RESET   "\033[0m"
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
-#define END     RESET << '\n' << std::flush
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define END RESET << '\n' << std::flush
 
 #include <stdexcept>
 #include <string>
@@ -67,34 +67,34 @@ int runCommand(const Config& cfg)
 {
     switch (cfg.mode)
     {
-    case RunMode::PERFT:
-    {
-        Board board = cinFenToBoard(cfg.fen);
-        std::cout << "nodes=" << perft(board, cfg.depth) << END;
+        case RunMode::PERFT:
+        {
+            Board board = cinFenToBoard(cfg.fen);
+            std::cout << "nodes=" << perft(board, cfg.depth) << END;
 
-        return 0;
-    }
-    case RunMode::PERFT_STATS:
-    {
-        Board board = cinFenToBoard(cfg.fen);
-        PerftStats stats = perftWithStat(board, cfg.depth);
+            return 0;
+        }
+        case RunMode::PERFT_STATS:
+        {
+            Board board = cinFenToBoard(cfg.fen);
+            PerftStats stats = perftWithStat(board, cfg.depth);
 
-        std::cout << "nodes=" << stats.nodes << END;
-        std::cout << "captures=" << stats.captures << END;
-        std::cout << "enPassants=" << stats.enPassants << END;
-        std::cout << "castles=" << stats.castles << END;
-        std::cout << "promotions=" << stats.promotions << END;
-        std::cout << "checks=" << stats.checks << END;
+            std::cout << "nodes=" << stats.nodes << END;
+            std::cout << "captures=" << stats.captures << END;
+            std::cout << "enPassants=" << stats.enPassants << END;
+            std::cout << "castles=" << stats.castles << END;
+            std::cout << "promotions=" << stats.promotions << END;
+            std::cout << "checks=" << stats.checks << END;
 
-        return 0;
-    }
-    case RunMode::PERFT_DIVIDE:
-    {
-        std::cout << "test perft divide" << END;
-        return 0;
-    }
-    default:
-        throw std::runtime_error("unknown command");
+            return 0;
+        }
+        case RunMode::PERFT_DIVIDE:
+        {
+            std::cout << "test perft divide" << END;
+            return 0;
+        }
+        default:
+            throw std::runtime_error("unknown command");
     }
 
     return 0;
