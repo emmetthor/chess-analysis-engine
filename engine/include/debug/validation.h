@@ -2,12 +2,12 @@
 
 #include "board/Board.h"
 #include "board/Piece.h"
-#include "evaluate/Material_Point.h"
 #include "debug/log.h"
+#include "evaluate/Material_Point.h"
 
 inline void checkBoardState(const Board& board)
 {
-    #ifdef ENGINE_DEBUG
+#ifdef ENGINE_DEBUG
     // king must exist
     int whiteKing = 0;
     int blackKing = 0;
@@ -42,7 +42,7 @@ inline void checkBoardState(const Board& board)
         for (int j = 0; j < board.pieceCount[i]; j++)
         {
             auto [r, c] = board.piecePos[i][j];
-            
+
             if (board.board[r][c] != static_cast<Piece>(i))
             {
                 throw std::runtime_error("piece pos is incorrect");
@@ -73,5 +73,5 @@ inline void checkBoardState(const Board& board)
                      " recomputed=",
                      recomputedMaterial);
     }
-    #endif
+#endif
 }

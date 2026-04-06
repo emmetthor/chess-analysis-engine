@@ -17,7 +17,8 @@ int boardConsistency(Board& board, int depth)
     BitMove moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
 
-    if (depth == 1) {
+    if (depth == 1)
+    {
         return nMoves;
     }
 

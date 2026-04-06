@@ -1,11 +1,11 @@
 #include "../../engine/include/Engine.h"
 #include "Progress_Bar.h"
 
+#include "assert.h"
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "assert.h"
 
 std::vector<std::string> readMateInTwoFile(const std::string& filename)
 {
