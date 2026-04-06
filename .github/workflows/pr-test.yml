@@ -21,6 +21,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
       - name: Configure CMake
         run: |
           cmake -B ${{github.workspace}}/build -S . \
@@ -34,10 +38,6 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: ctest -R BoardConsistencyTest --verbose
 
-      - name: Perft Test
-        working-directory: ${{github.workspace}}/build
-        run: ctest -R PerftTest --verbose
-
       - name: M1 Test
         working-directory: ${{github.workspace}}/build
         run: ctest -R M1Test --verbose
@@ -49,6 +49,13 @@ jobs:
       - name: BitMove Test
         working-directory: ${{github.workspace}}/build
         run: ctest -R BitMoveTest --verbose
+
+      - name: Perft regression
+        run: |
+          python tests/perft/Perft_Test.py \
+            --engine build/Hynobius.exe \
+            --file tests/perft/Perft_Tests.txt\
+            -- max-depth 5
         
 
   sanitizers:
