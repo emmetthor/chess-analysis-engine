@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include "UCI/UCI.h"
+#include "command/UCI.h"
 
 int main()
 {

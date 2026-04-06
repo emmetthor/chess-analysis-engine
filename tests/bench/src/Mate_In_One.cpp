@@ -1,6 +1,6 @@
 
 #include "../../engine/include/Engine.h"
-#include "../../engine/include/UCI/UCI.h"
+#include "../../engine/include/command/UCI.h"
 #include "Progress_Bar.h"
 #include <array>
 #include <fstream>
