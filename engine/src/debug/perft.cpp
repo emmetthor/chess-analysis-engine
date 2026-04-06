@@ -26,7 +26,7 @@ PerftStats perftWithStat(Board& board, int depth)
             stat.enPassants = 0; // WARN en passants are not implemented yet.
             stat.castles += (getCastle(move) == true ? 1 : 0);
             stat.promotions += (getPromotion(move) == true ? 1 : 0);
-            // player now is the enemy because we've functioned doBitMove
+            // player now is the enemy because we've functioned doBitMove.
             stat.checks += (isInCheck(board, board.player) ? 1 : 0);
         }
         else
