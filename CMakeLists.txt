@@ -64,28 +64,21 @@
     enable_testing()
 
     # test board consistency
-    add_executable(test-board-consistency tests/Board_Consistency.cpp)
+    add_executable(test-board-consistency tests/board_consistency/Board_Consistency.cpp)
     target_link_libraries(test-board-consistency PRIVATE engine-core)
     set_target_properties(test-board-consistency PROPERTIES WIN32_EXECUTABLE OFF)
 
     add_test(NAME BoardConsistencyTest COMMAND test-board-consistency)
 
-    # test perft
-    # add_executable(test-perft tests/perft/Perft.cpp)
-    # target_link_libraries(test-perft PRIVATE engine-core)
-    # set_target_properties(test-perft PROPERTIES WIN32_EXECUTABLE OFF)
-
-    add_test(NAME PerftTest COMMAND test-perft)
-
     # test M1
-    add_executable(test-m1 tests/bench/src/Mate_In_One.cpp)
+    add_executable(test-m1 tests/checkmate/Mate_In_One.cpp)
     target_link_libraries(test-m1 PRIVATE engine-core)
     set_target_properties(test-m1 PROPERTIES WIN32_EXECUTABLE OFF)
 
     add_test(NAME M1Test COMMAND test-m1)
 
     # test M2
-    add_executable(test-m2 tests/bench/src/Mate_In_One.cpp)
+    add_executable(test-m2 tests/checkmate/Mate_In_One.cpp)
     target_link_libraries(test-m2 PRIVATE engine-core)
     set_target_properties(test-m2 PROPERTIES WIN32_EXECUTABLE OFF)
 

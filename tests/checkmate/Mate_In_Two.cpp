@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "assert.h"
 
 std::vector<std::string> readMateInTwoFile(const std::string& filename)
 {
@@ -28,7 +29,7 @@ std::vector<std::string> readMateInTwoFile(const std::string& filename)
 
 int main()
 {
-    auto testData = readMateInTwoFile("../tests/bench/Mate_In_Two.txt");
+    auto testData = readMateInTwoFile("../tests/checkmate/Mate_In_Two.txt");
 
     int testCnt = 10;
 

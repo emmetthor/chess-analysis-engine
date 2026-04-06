@@ -39,7 +39,7 @@ std::vector<TestData> readMateInOneFile(const std::string& filename)
 
 int main()
 {
-    auto testData = readMateInOneFile("../tests/bench/Mate_In_One.txt");
+    auto testData = readMateInOneFile("../tests/checkmate/Mate_In_One.txt");
 
     int testCnt = 100;
 
