@@ -1,6 +1,7 @@
 #include "../../engine/include/Engine.h"
 #include "Progress_Bar.h"
 
+#include "assert.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -28,7 +29,7 @@ std::vector<std::string> readMateInTwoFile(const std::string& filename)
 
 int main()
 {
-    auto testData = readMateInTwoFile("../tests/bench/Mate_In_Two.txt");
+    auto testData = readMateInTwoFile("../tests/checkmate/Mate_In_Two.txt");
 
     int testCnt = 10;
 

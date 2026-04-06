@@ -1,4 +1,4 @@
-#include "UCI/UCI_Move_Parcer.h"
+#include "command/UCI_Move_Parcer.h"
 
 Move parseCastle(Move& move, const Board& board)
 {

@@ -1,6 +1,6 @@
-#include "UCI/UCI.h"
+#include "command/UCI.h"
 #include "Structure_IO.h"
-#include "UCI/UCI_Move_Parcer.h"
+#include "command/UCI_Move_Parcer.h"
 #include "move/Move.h"
 #include "pgn/Pgn_Transformer.h"
 
@@ -121,6 +121,9 @@ void handleBench(std::istringstream& iss, Engine& engine)
 
 void uciLoop(Engine& engine)
 {
+    std::cout << "id name engine1\nid author EmmetThor\n";
+    std::cout << "uciok\n" << std::flush;
+
     std::string line;
     while (std::getline(std::cin, line))
     {

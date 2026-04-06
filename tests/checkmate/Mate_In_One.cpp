@@ -1,6 +1,6 @@
 
 #include "../../engine/include/Engine.h"
-#include "../../engine/include/UCI/UCI.h"
+#include "../../engine/include/command/UCI.h"
 #include "Progress_Bar.h"
 #include <array>
 #include <fstream>
@@ -39,7 +39,7 @@ std::vector<TestData> readMateInOneFile(const std::string& filename)
 
 int main()
 {
-    auto testData = readMateInOneFile("../tests/bench/Mate_In_One.txt");
+    auto testData = readMateInOneFile("../tests/checkmate/Mate_In_One.txt");
 
     int testCnt = 100;
 
