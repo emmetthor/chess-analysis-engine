@@ -224,6 +224,58 @@ int generatePawnCaptures(const Board& board, BitMove* buffer)
     return cnt;
 }
 
+int generateEnPassants(const Board& board, BitMove* buffer)
+{
+    // if it is not possible to en passant
+    if (board.enPassantPos == POS_NONE)
+        return 0;
+
+    Player player = board.player;
+    ENGINE_ASSERT(isPlayerValid(player));
+    ENGINE_ASSERT(validatePiecePos(board));
+
+    int cnt = 0;
+    Piece pawn = makePiece(player, 'P'), knight = makePiece(player, 'N'),
+          bishop = makePiece(player, 'B'), rook = makePiece(player, 'R'),
+          queen = makePiece(player, 'Q'), king = makePiece(player, 'K');
+
+    int dr = (player == Player::WHITE ? -1 : 1);
+    int startRank = (player == Player::WHITE ? 6 : 1);
+    int promoteRank = (player == Player::WHITE ? 0 : 7);
+    int pawnCount = board.getPieceCount(pawn);
+    const auto* posArray = board.getPiecePos(pawn);
+
+    for (int i = 0; i < pawnCount; i++)
+    {
+        auto [r, c] = posArray[i];
+        Position fromPos = posArray[i];
+
+        for (auto dc : {-1, 1})
+        {
+            Position toPos = {r + dr, c + dc};
+            if (!isInBoard(toPos))
+                continue;
+
+            if (toPos != board.enPassantPos)
+                continue;
+
+            Position capturePos = {fromPos.row, toPos.col};
+            if (board.at(capturePos) != makePiece(opponent(player), 'P'))
+                continue;
+
+            buffer[cnt++] = makeBitMove(positionToSquare(fromPos),
+                                        positionToSquare(toPos),
+                                        Piece::EMPTY,
+                                        true,
+                                        false,
+                                        true,
+                                        false);
+        }
+    }
+
+    return cnt;
+}
+
 int generateCastling(const Board& board, BitMove* buffer)
 {
     int cnt = 0;
@@ -369,6 +421,7 @@ int generateAllMoves(const Board& board, BitMove* buffer)
     cnt += generatePawnCaptures(board, buffer + cnt);
 
     cnt += generateCastling(board, buffer + cnt);
+    cnt += generateEnPassants(board, buffer + cnt);
 
     return cnt;
 }
@@ -391,6 +444,7 @@ int generateCaptureMoves(const Board& board, BitMove* buffer)
     cnt += generatePieceCapture(board, king, buffer + cnt);
 
     cnt += generatePawnCaptures(board, buffer + cnt);
+    cnt += generateEnPassants(board, buffer + cnt);
 
     return cnt;
 }

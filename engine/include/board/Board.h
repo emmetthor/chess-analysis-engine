@@ -17,6 +17,10 @@ struct Position
     {
         return row == other.row && col == other.col;
     }
+    bool operator!=(const Position& other) const
+    {
+        return !(*this == other);
+    }
 };
 
 // invalid position.
