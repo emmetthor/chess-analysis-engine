@@ -73,6 +73,15 @@ Board cinFenToBoard(const std::string& fen)
         }
     }
 
+    if (enpass != "-")
+    {
+        board.enPassantPos = {8 - (enpass[1] - '0'), (enpass[0] - 'a')};
+    }
+    else
+    {
+        board.enPassantPos = POS_NONE;
+    }
+
     // initialize variables.
     board.materialScore = computePieceValue(board);
     board.PSTScore = computePST(board);

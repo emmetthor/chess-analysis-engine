@@ -19,6 +19,9 @@ struct Position
     }
 };
 
+// invalid position.
+constexpr Position POS_NONE = {-1, -1};
+
 // WARN temporary transfrom fuction
 inline Position squareToPosition(Square square)
 {
@@ -123,14 +126,16 @@ struct Board
 
     /*
     Store castling rights using bits.
-    - 0001 black queen side
-    - 0010 black king  side
-    - 0100 white queen side
-    - 1000 white king  side
+    - 0001 black king  side
+    - 0010 black queen side
+    - 0100 white king  side
+    - 1000 white queen side
     */
     int castleRights;
 
     uint64_t zobristKey;
+
+    Position enPassantPos;
 
     // Delete the piece in `target` in `piecePos[Piece]`.
     inline void piecePosDelete(Position* posArray, int& count, const Position& target)
