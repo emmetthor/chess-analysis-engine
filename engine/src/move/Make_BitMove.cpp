@@ -176,7 +176,7 @@ void undoCastling(Board& board, const UndoState& state)
     board.set(rookTo, rook);
 }
 
-void doEnPassant(Board &board, MoveState& state)
+void doEnPassant(Board& board, MoveState& state)
 {
     board.set(state.from, Piece::EMPTY);
     board.set(state.to, state.movePiece);
@@ -190,7 +190,7 @@ void doEnPassant(Board &board, MoveState& state)
     board.set(capturePos, Piece::EMPTY);
 }
 
-void undoEnPassant(Board &board, const UndoState& state)
+void undoEnPassant(Board& board, const UndoState& state)
 {
     board.set(state.from, state.movePiece);
     board.set(state.to, Piece::EMPTY);
@@ -231,7 +231,7 @@ void updatePSTScoreDo(Board& board, const MoveState& state, int weight)
     if (state.isEnPassant)
     {
         Position capturedPos = {state.from.row, state.to.col};
-        board.PSTScore += weight * evaluatePieceSquare(state.capturedPiece,  capturedPos);
+        board.PSTScore += weight * evaluatePieceSquare(state.capturedPiece, capturedPos);
         return;
     }
 
@@ -286,7 +286,8 @@ void updateZobristDo(Board& board, const MoveState& state, int oldCastleRights, 
     if (state.isEnPassant)
     {
         Position capturedPos = {state.from.row, state.to.col};
-        board.zobristKey ^= zobPiece[pieceToIndex(state.capturedPiece)][zobBoardPosition(capturedPos)];
+        board.zobristKey ^=
+            zobPiece[pieceToIndex(state.capturedPiece)][zobBoardPosition(capturedPos)];
     }
 
     // captured piece disappears

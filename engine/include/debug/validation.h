@@ -1,10 +1,10 @@
 #pragma once
 
+#include "Structure_IO.h"
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "debug/log.h"
 #include "evaluate/Material_Point.h"
-#include "Structure_IO.h"
 
 inline void checkBoardState(const Board& board)
 {
