@@ -17,7 +17,14 @@ struct Position
     {
         return row == other.row && col == other.col;
     }
+    bool operator!=(const Position& other) const
+    {
+        return !(*this == other);
+    }
 };
+
+// invalid position.
+constexpr Position POS_NONE = {-1, -1};
 
 // WARN temporary transfrom fuction
 inline Position squareToPosition(Square square)
@@ -112,7 +119,7 @@ struct Board
     Piece board[8][8];
 
     // Store piece positions by their piece type.
-    Position piecePos[13][10];
+    Position piecePos[13][20];
 
     // Store the number of every pieces.
     int pieceCount[13] = {};
@@ -123,14 +130,16 @@ struct Board
 
     /*
     Store castling rights using bits.
-    - 0001 black queen side
-    - 0010 black king  side
-    - 0100 white queen side
-    - 1000 white king  side
+    - 0001 black king  side
+    - 0010 black queen side
+    - 0100 white king  side
+    - 1000 white queen side
     */
     int castleRights;
 
     uint64_t zobristKey;
+
+    Position enPassantPos;
 
     // Delete the piece in `target` in `piecePos[Piece]`.
     inline void piecePosDelete(Position* posArray, int& count, const Position& target)

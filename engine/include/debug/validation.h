@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Structure_IO.h"
 #include "board/Board.h"
 #include "board/Piece.h"
 #include "debug/log.h"
@@ -60,12 +61,14 @@ inline void checkBoardState(const Board& board)
     // king invariant
     if (whiteKing != 1 || blackKing != 1)
     {
+        DOUT("EVAL") << '\n' << board << '\n';
         ENGINE_FATAL("BOARD", "invalid king count ", "white=", whiteKing, " black=", blackKing);
     }
 
     // material invariant
     if (recomputedMaterial != board.materialScore)
     {
+        DOUT("EVAL") << '\n' << board << '\n';
         ENGINE_FATAL("EVAL",
                      "material mismatch ",
                      "cached=",
