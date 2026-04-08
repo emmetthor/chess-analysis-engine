@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Time_Management.h"
 #include "board/Board.h"
 #include "evaluate/Evaluate.h"
 #include "move/Move.h"
 #include "search/Search.h"
+#include "Time_Management.h"
 
 class Engine
 {
@@ -17,6 +19,7 @@ public:
     void checkReady();
 
     Move goDepth(int depth, bool isPrintInfo = 1);
+    Move goClock(const TimeManage& tm);
     SearchResult fullInfoSearch(int depth);
     Board getBoard();
     void move(Move move);
