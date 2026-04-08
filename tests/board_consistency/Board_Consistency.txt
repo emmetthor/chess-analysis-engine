@@ -51,7 +51,7 @@ K4Rbk/7b/6RR/8/8/8/pppppppp/RRRRRRRR b - - 0 1
 2rrr3/8/3N4/r1NKN2r/3N4/8/8/k1rrr3 w - - 0 1
 1b3b2/1b3b2/2R1R3/3K4/2R1R3/1b3b2/1b3b2/k7 w - - 0 1
 2RRR3/8/3p4/R1pkp2R/3p4/3P4/8/6K1 b - - 0 1
-2RRR3/8/3b4/R1bkb2R/3b4/8/8/2RRR1K1 b - - 0 1
+2RRR3/8/3b4/R1bkb2R/3b4/8/8/2RRR2K b - - 0 1
 2RRR3/8/3n4/R1nkn2R/3n4/8/8/2RRR1K1 b - - 0 1
 1B3B2/1B3B2/2r1r3/3k4/2r1r3/1B3B2/1B3B2/6K1 b - - 0 1
 k7/8/8/8/8/1p6/1p5r/1K6 w - - 0 1

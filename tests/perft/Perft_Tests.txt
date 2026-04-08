@@ -289,7 +289,7 @@ promotions: 0       0
 checks:     0       0
 
 # black pinned bishop
-fen: 2RRR3/8/3b4/R1bkb2R/3b4/8/8/2RRR1K1 b - - 0 1
+fen: 2RRR3/8/3b4/R1bkb2R/3b4/8/8/2RRR2K b - - 0 1
 testDepth:  1
 nodes:      1       0
 captures:   0       0
