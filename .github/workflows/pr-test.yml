@@ -13,6 +13,8 @@ on:
       - 'engine/include/move/**'
       - 'bench/openings_small.pgn'
       - '.github/workflows/pr-small-match.yml'
+      - '.github/workflows/pr-test.yml'
+      - '.github/workflows/sanitizers.yml'
 
 jobs:
   test:
@@ -25,41 +27,53 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Configure CMake
+      # Debug / sanitizer build for correctness tests
+      - name: Configure Debug Build
         run: |
-          cmake -B ${{github.workspace}}/build -S . \
-          -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -DENGINE_DEBUG"
+          cmake -B ${{ github.workspace }}/build-debug -S . \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -DENGINE_DEBUG" \
+            -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address,undefined"
 
-      - name: Build
-        run:
-          cmake --build ${{github.workspace}}/build
+      - name: Build Debug
+        run: |
+          cmake --build ${{ github.workspace }}/build-debug --config Debug
 
       - name: Board Consistency Test
-        working-directory: ${{github.workspace}}/build
+        working-directory: ${{ github.workspace }}/build-debug
         run: ctest -R BoardConsistencyTest --verbose
 
       - name: M1 Test
-        working-directory: ${{github.workspace}}/build
+        working-directory: ${{ github.workspace }}/build-debug
         run: ctest -R M1Test --verbose
 
       - name: M2 Test
-        working-directory: ${{github.workspace}}/build
+        working-directory: ${{ github.workspace }}/build-debug
         run: ctest -R M2Test --verbose
-      
+
       - name: BitMove Test
-        working-directory: ${{github.workspace}}/build
+        working-directory: ${{ github.workspace }}/build-debug
         run: ctest -R BitMoveTest --verbose
+
+      # Release build for perft
+      - name: Configure Release Build
+        run: |
+          cmake -B ${{ github.workspace }}/build-release -S . \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Release
+        run: |
+          cmake --build ${{ github.workspace }}/build-release --config Release
 
       - name: Perft regression
         run: |
           python tests/perft/Perft_Test.py \
-            --engine build/Hynobius \
-            --file tests/perft/Perft_Tests.txt\
+            --engine build-release/Hynobius \
+            --file tests/perft/Perft_Tests.txt \
             --max-depth 5
-        
 
   sanitizers:
-    needs: test   # 先通過 test 才跑 sanitizer
+    needs: test
     uses: ./.github/workflows/sanitizers.yml
 
   small-test:
