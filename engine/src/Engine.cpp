@@ -54,27 +54,17 @@ void Engine::setPlayer(Player player)
 
 Move Engine::goDepth(int depth, bool isPrintInfo)
 {
-    Search search(eval);
-    search.setSearchLimits({depth, MAX_THINK_TIME});
+    Search search(eval, {depth, MAX_THINK_TIME});
     auto res = search.findBestMove(board);
-
-    if (isPrintInfo)
-    {
-        printInfo(res.info);
-    }
 
     return res.bestMove;
 }
 
 Move Engine::goClock(const TimeManage& tm)
 {
-    Search search(eval);
-    search.setSearchLimits(timeManager(tm, board.player));
+    Search search(eval, timeManager(tm, board.player));
 
     auto res = search.findBestMove(board);
-
-    std::cout << "searched\n";
-    printInfo(res.info);
 
     return res.bestMove;
 }
