@@ -24,7 +24,7 @@ struct SearchLimits
 
 struct SearchInfo
 {
-    int depth, score, nodes, qsnodes, timeMs, nps;
+    uint64_t depth, score, nodes, qsnodes, timeMs, nps;
 };
 
 class Search
