@@ -1,11 +1,11 @@
 #include "search/Search.h"
-#include "move/Make_BitMove.h"
-#include "search/Search_Variables.h"
 #include "board/Board.h"
 #include "board/Check.h"
 #include "evaluate/Evaluate.h"
 #include "move/Generate_Move.h"
+#include "move/Make_BitMove.h"
 #include "move/Move.h"
+#include "search/Search_Variables.h"
 #include <chrono>
 
 void printInfo(const SearchInfo& info)
@@ -17,10 +17,7 @@ void printInfo(const SearchInfo& info)
     else
         std::cout << " score " << info.score;
 
-    std::cout << " nodes " << info.nodes
-              << " nps " << info.nps
-              << " time " << info.timeMs
-              << '\n';
+    std::cout << " nodes " << info.nodes << " nps " << info.nps << " time " << info.timeMs << '\n';
 }
 
 bool Search::shouldStop()
@@ -93,7 +90,7 @@ SearchResult Search::findBestMove(const Board& board)
             std::chrono::duration_cast<std::chrono::milliseconds>(now - state.startTime).count();
         info.nps = (info.timeMs > 0 ? info.nodes * 1000 / info.timeMs : 0);
 
-    printInfo(info);
+        printInfo(info);
     }
 
     return result;
