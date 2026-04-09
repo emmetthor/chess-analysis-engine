@@ -7,6 +7,7 @@
 #include "move/Move.h"
 #include "search/Search_Variables.h"
 #include <chrono>
+#include "Structure_IO.h"
 
 void printInfo(const SearchInfo& info)
 {
@@ -118,7 +119,7 @@ SearchResult Search::chooseMove(Board& board, int depth, int alpha, int beta, in
     {
         // time check.
         if (shouldStop())
-            break;
+            return {false, inValidMove, -MAX_SCORE};
 
         BitMove move = moves[i];
 
@@ -129,6 +130,9 @@ SearchResult Search::chooseMove(Board& board, int depth, int alpha, int beta, in
         int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
 
         undoBitMove(board, move, undo);
+
+        Move oriMove = bitMovetoOriMove(board, move);
+        std::cout << oriMove << " | " << score << '\n';
 
         if (score == -TIMEOUT_SCORE)
             return {false, inValidMove, -MAX_SCORE};
