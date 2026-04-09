@@ -69,4 +69,12 @@ Move Engine::goClock(const TimeManage& tm)
     return res.bestMove;
 }
 
+SearchResult Engine::fullInfoSearch(int depth)
+{
+    Search search(eval, {depth, MAX_THINK_TIME});
+    auto res = search.findBestMove(board);
+
+    return res;
+}
+
 void Engine::quit() {}

@@ -8,6 +8,21 @@
 #include "move/Move.h"
 #include <chrono>
 
+void printInfo(const SearchInfo& info)
+{
+    std::cout << "info depth " << info.depth;
+
+    if (info.score > MATE_SCORE - 100)
+        std::cout << " score mate " << abs(info.score - MATE_SCORE) / 2 + 1;
+    else
+        std::cout << " score " << info.score;
+
+    std::cout << " nodes " << info.nodes
+              << " nps " << info.nps
+              << " time " << info.timeMs
+              << '\n';
+}
+
 bool Search::shouldStop()
 {
     if (state.stopped)
@@ -65,6 +80,20 @@ SearchResult Search::findBestMove(const Board& board)
         {
             result = currentResult;
         }
+
+        // print info
+        SearchInfo info;
+        info.depth = depth;
+        info.score = result.bestScore;
+        info.nodes = state.negamaxNodes + state.qsNodes;
+        info.qsnodes = state.qsNodes;
+
+        auto now = std::chrono::steady_clock::now();
+        info.timeMs =
+            std::chrono::duration_cast<std::chrono::milliseconds>(now - state.startTime).count();
+        info.nps = (info.timeMs > 0 ? info.nodes * 1000 / info.timeMs : 0);
+
+    printInfo(info);
     }
 
     return result;

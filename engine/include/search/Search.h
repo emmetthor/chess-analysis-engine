@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Search_Variables.h"
 #include "board/Board.h"
 #include "evaluate/Evaluate.h"
-#include "move/Make_BitMove.h"
 #include "move/Move.h"
 #include <chrono>
 
@@ -22,6 +20,11 @@ struct SearchLimits
 {
     int maxDepth = -1;
     int64_t maxTimeMs = -1;
+};
+
+struct SearchInfo
+{
+    int depth, score, nodes, qsnodes, timeMs, nps;
 };
 
 class Search
