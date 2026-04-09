@@ -6,7 +6,7 @@
 #include <chrono>
 
 constexpr int MATE_SCORE = 1e6;
-constexpr int TIMEOUT_SCORE = 12345678;
+constexpr int TIMEOUT_SCORE = 123456789;
 constexpr int MAX_SCORE = 1e9;
 
 struct SearchResult
@@ -24,7 +24,7 @@ struct SearchLimits
 
 struct SearchInfo
 {
-    uint64_t depth, score, nodes, qsnodes, timeMs, nps;
+    int64_t depth, score, nodes, qsnodes, timeMs, nps;
 };
 
 class Search

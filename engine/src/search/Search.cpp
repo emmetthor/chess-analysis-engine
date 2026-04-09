@@ -12,10 +12,20 @@ void printInfo(const SearchInfo& info)
 {
     std::cout << "info depth " << info.depth;
 
-    if (info.score > MATE_SCORE - 100)
-        std::cout << " score mate " << abs(info.score - MATE_SCORE) / 2 + 1;
+    if (info.score >= MATE_SCORE - SearchVarialble::MAX_SEARCH_DEPTH)
+    {
+        int mate = (MATE_SCORE - info.score + 1) / 2;
+        std::cout << " score mate " << mate;
+    }
+    else if (info.score <= -MATE_SCORE + SearchVarialble::MAX_SEARCH_DEPTH)
+    {
+        int mate = (MATE_SCORE + info.score + 1) / 2;
+        std::cout << " score mate -" << mate;
+    }
     else
-        std::cout << " score " << info.score;
+    {
+        std::cout << " score cp " << info.score;
+    }
 
     std::cout << " nodes " << info.nodes << " nps " << info.nps << " time " << info.timeMs << '\n';
 }
@@ -121,7 +131,7 @@ SearchResult Search::chooseMove(Board& board, int depth, int alpha, int beta, in
         undoBitMove(board, move, undo);
 
         if (score == -TIMEOUT_SCORE)
-            break;
+            return {false, inValidMove, -MAX_SCORE};
 
         if (score > result.bestScore)
         {
