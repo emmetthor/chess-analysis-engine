@@ -79,7 +79,7 @@
     add_test(NAME M1Test COMMAND test-m1)
 
     # test M2
-    add_executable(test-m2 tests/checkmate/Mate_In_One.cpp)
+    add_executable(test-m2 tests/checkmate/Mate_In_Two.cpp)
     target_link_libraries(test-m2 PRIVATE engine-core)
     set_target_properties(test-m2 PROPERTIES WIN32_EXECUTABLE OFF)
 

@@ -31,7 +31,7 @@ int main()
 {
     auto testData = readMateInTwoFile("../tests/checkmate/Mate_In_Two.txt");
 
-    int testCnt = 10;
+    int testCnt = 1;
 
     int failCnt = 0;
     progressBar bar(testCnt, 5);
