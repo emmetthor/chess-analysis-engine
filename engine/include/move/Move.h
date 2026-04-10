@@ -31,6 +31,8 @@ constexpr BitMove CASTLE_MASK = 1u << 17;
 constexpr BitMove EN_PASSENT_MASK = 1u << 18;
 constexpr BitMove PROMOTION_MASK = 1u << 19;
 
+constexpr BitMove INVALID_BITMOVE = UINT32_MAX;
+
 inline Square getFromSquare(const BitMove move)
 {
     Square res = static_cast<Square>(move & FROM_MASK);
