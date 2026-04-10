@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Type.h"
-#include "move/Move.h"
 #include <cstdint>
 
 constexpr int TT_SIZE = 1 << 23;

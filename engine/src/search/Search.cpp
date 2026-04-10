@@ -6,6 +6,7 @@
 #include "move/Generate_Move.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
+#include "move/Move_Order.h"
 #include "search/Search_Variables.h"
 #include "search/TT.h"
 #include <chrono>
@@ -116,6 +117,9 @@ SearchResult Search::chooseMove(Board& board, int depth, int alpha, int beta, in
     BitMove moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
 
+    // sort moves
+    sortMove(board, moves, nMoves, {INVALID_BITMOVE});
+
     for (int i = 0; i < nMoves; i++)
     {
         // time check.
@@ -192,6 +196,9 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     // generate all moves
     BitMove moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
+
+    // Sort moves.
+    sortMove(board, moves, nMoves, {ttMove});
 
     // check checkmate / stalemate
     if (nMoves == 0)
@@ -276,6 +283,9 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
 
     BitMove captureMoves[256];
     int nCaptureMoves = generateLegalCaptureMoves(board, captureMoves);
+
+    // Sort moves.
+    sortMove(board, captureMoves, nCaptureMoves, {INVALID_BITMOVE});
 
     if (nCaptureMoves == 0)
     {
