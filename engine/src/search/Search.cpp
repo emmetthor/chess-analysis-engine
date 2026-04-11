@@ -6,7 +6,9 @@
 #include "move/Generate_Move.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
+#include "move/Move_Order.h"
 #include "search/Search_Variables.h"
+#include "search/TT.h"
 #include <chrono>
 
 void printInfo(const SearchInfo& info)
@@ -125,6 +127,9 @@ SearchResult Search::chooseMove(Board& board, int depth, int alpha, int beta, in
     BitMove moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
 
+    // sort moves
+    sortMove(board, moves, nMoves, {INVALID_BITMOVE});
+
     for (int i = 0; i < nMoves; i++)
     {
         // time check.
@@ -164,7 +169,21 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 {
     state.negamaxNodes++;
 
+    // Probe TT table.
+    TTEntry ttOut;
+    int ttScore = -MAX_SCORE;
+    BitMove ttMove;
+    if (probeTT(board.zobristKey, depth, alpha, beta, ply, ttOut, ttScore, ttMove) == true)
+    {
+        return ttScore;
+    }
+
+    // Record original alpha for TT store.
+    int oriAlpha = alpha;
+
     int bestScore = -MAX_SCORE;
+    BitMove bestMove = INVALID_BITMOVE;
+    bool hasMove = false;
 
     // time check.
     if ((state.negamaxNodes + state.qsNodes) & 2047)
@@ -188,6 +207,9 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     BitMove moves[256];
     int nMoves = generateAllLegalMoves(board, moves);
 
+    // Sort moves.
+    sortMove(board, moves, nMoves, {ttMove});
+
     // check checkmate / stalemate
     if (nMoves == 0)
     {
@@ -201,7 +223,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     {
         // time check.
         if (shouldStop())
-            break;
+            return TIMEOUT_SCORE;
 
         BitMove move = moves[i];
 
@@ -218,13 +240,29 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
             return TIMEOUT_SCORE;
 
         if (score > bestScore)
+        {
             bestScore = score;
+            bestMove = move;
+            hasMove = true;
+        }
         if (score > alpha)
             alpha = score;
 
         if (alpha >= beta)
             break;
     }
+
+    // define TT flag to store.
+    TTFlag flag;
+    if (bestScore <= oriAlpha)
+        flag = UPPER;
+    else if (bestScore >= beta)
+        flag = LOWER;
+    else
+        flag = EXACT;
+
+    storeTT(board.zobristKey, depth, ply, bestScore, flag, bestMove);
+    // store to TT table.
 
     return bestScore;
 }
@@ -255,6 +293,9 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
 
     BitMove captureMoves[256];
     int nCaptureMoves = generateLegalCaptureMoves(board, captureMoves);
+
+    // Sort moves.
+    sortMove(board, captureMoves, nCaptureMoves, {INVALID_BITMOVE});
 
     if (nCaptureMoves == 0)
     {

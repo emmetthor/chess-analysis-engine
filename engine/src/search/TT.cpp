@@ -1,4 +1,5 @@
 #include "search/TT.h"
+#include "Type.h"
 #include "search/Search.h"
 
 #include <assert.h>
@@ -13,7 +14,7 @@ bool probeTT(uint64_t key,
              int ply,
              TTEntry& TTOut,
              int& scoreOut,
-             Move& moveOut)
+             BitMove& moveOut)
 {
     TTEntry& tt = TT[TTIndex(key)];
 
@@ -56,9 +57,10 @@ bool probeTT(uint64_t key,
     return false;
 }
 
-void storeTT(uint64_t key, int depth, int ply, int score, TTFlag flag, Move bestMove)
+void storeTT(uint64_t key, int depth, int ply, int score, TTFlag flag, BitMove bestMove)
 {
     TTEntry& tt = TT[TTIndex(key)];
+
     // depth check
     if (tt.key == key && depth < tt.depth)
         return;

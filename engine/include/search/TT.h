@@ -1,7 +1,6 @@
 #pragma once
 
-#include "move/Move.h"
-
+#include "Type.h"
 #include <cstdint>
 
 constexpr int TT_SIZE = 1 << 23;
@@ -20,7 +19,7 @@ struct TTEntry
     int depth;
     int score;
     TTFlag flag;
-    Move bestMove;
+    BitMove bestMove;
 };
 
 extern TTEntry TT[TT_SIZE];
@@ -37,6 +36,6 @@ bool probeTT(uint64_t key,
              int ply,
              TTEntry& TTOut,
              int& scoreOut,
-             Move& moveOut);
+             BitMove& moveOut);
 
-void storeTT(uint64_t key, int depth, int ply, int score, TTFlag flag, Move bestMove);
+void storeTT(uint64_t key, int depth, int ply, int score, TTFlag flag, BitMove bestMove);
