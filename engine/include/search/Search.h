@@ -14,6 +14,7 @@ struct SearchResult
     bool isValid = 0;
     Move bestMove;
     int bestScore;
+    BitMove bestBitMove = INVALID_BITMOVE;
 };
 
 struct SearchLimits
@@ -36,7 +37,7 @@ public:
 private:
     Evaluate eval;
 
-    SearchResult chooseMove(Board& board, int depth, int alpha, int beta, int ply);
+    SearchResult chooseMove(Board& board, int depth, int alpha, int beta, int ply, const BitMove PVMove);
 
     int negamax(Board& board, int depth, int alpha, int beta, int ply);
 
