@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PV_Table.h"
 #include "board/Board.h"
 #include "evaluate/Evaluate.h"
 #include "move/Move.h"
@@ -26,6 +27,7 @@ struct SearchLimits
 struct SearchInfo
 {
     int64_t depth, score, nodes, qsnodes, timeMs, nps;
+    PVTable pv;
 };
 
 class Search
@@ -54,6 +56,8 @@ private:
         uint64_t qsNodes = 0;
 
         std::chrono::steady_clock::time_point startTime;
+
+        PVTable pv, prevPv;
     } state;
 
     bool shouldStop();

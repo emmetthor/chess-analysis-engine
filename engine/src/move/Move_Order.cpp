@@ -8,8 +8,8 @@
 
 #include <algorithm>
 
-const int PVMOVE_SCORE = 600000;
-const int TT_SCORE = 500000;
+const int TT_SCORE = 600000;
+const int PVMOVE_SCORE = 500000;
 const int PROMOTION_SCORE = 400000;
 const int CAPTURE_SCORE = 300000;
 const int KILLER_1_SCORE = 200000;
