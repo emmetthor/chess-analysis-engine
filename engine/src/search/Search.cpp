@@ -96,7 +96,6 @@ SearchResult Search::findBestMove(const Board& board)
     // set max depth.
     int maxDepth = limits.maxDepth == -1 ? SearchVarialble::MAX_SEARCH_DEPTH : limits.maxDepth;
 
-
     BitMove lastBestMove = INVALID_BITMOVE;
     // iterative deepening
     for (int depth = 1; depth <= maxDepth; depth++)
@@ -105,7 +104,8 @@ SearchResult Search::findBestMove(const Board& board)
         if (shouldStop())
             break;
 
-        SearchResult currentResult = chooseMove(copyBoard, depth, -MAX_SCORE, MAX_SCORE, 0, lastBestMove);
+        SearchResult currentResult =
+            chooseMove(copyBoard, depth, -MAX_SCORE, MAX_SCORE, 0, lastBestMove);
 
         if (currentResult.isValid)
         {
@@ -133,7 +133,8 @@ SearchResult Search::findBestMove(const Board& board)
     return result;
 }
 
-SearchResult Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const BitMove PVMove)
+SearchResult
+Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const BitMove PVMove)
 {
     SearchResult result = {false, inValidMove, -MAX_SCORE};
 

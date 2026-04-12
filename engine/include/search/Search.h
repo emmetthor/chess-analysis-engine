@@ -39,7 +39,8 @@ public:
 private:
     Evaluate eval;
 
-    SearchResult chooseMove(Board& board, int depth, int alpha, int beta, int ply, const BitMove PVMove);
+    SearchResult
+    chooseMove(Board& board, int depth, int alpha, int beta, int ply, const BitMove PVMove);
 
     int negamax(Board& board, int depth, int alpha, int beta, int ply);
 
