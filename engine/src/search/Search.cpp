@@ -269,7 +269,38 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         doBitMove(board, move, undo);
 
-        int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        bool doLMR = false;
+
+        if (i >= 4 &&           // after the fifth move -> reduce search depth.
+            depth >= 3 &&       // LMR is only for deep nodes.
+            !undo.isCapture &&  // don't reduce capture moves.
+            !undo.isPromotion   // don't reduce promotions.
+        ) {
+            // after doBitMove, the player stored in board is already the enemy.
+            if (!isInCheck(board, board.player))
+            {
+                doLMR = true;
+            }
+        }
+
+        int score = -MAX_SCORE;
+
+        if (doLMR)
+        {
+            int searchDepth = depth - 2;
+
+            // Using null-window to limit score window -> faster.
+            score = -negamax(board, searchDepth, -alpha - 1, -alpha, ply + 1);
+            if (score > alpha)
+            {
+                // fail high -> research with full depth.
+                score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+            }
+        }
+        else
+        {
+            score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        }
 
         undoBitMove(board, move, undo);
 
