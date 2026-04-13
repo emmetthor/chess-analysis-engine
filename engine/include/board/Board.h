@@ -215,7 +215,8 @@ void computePiecePos(Board& board);
 inline bool isRepetition(const Board& board)
 {
     int count = 0;
-    for (int i = board.repetitionHistoryLength - 1; i > 0; i--) {
+    for (int i = board.repetitionHistoryLength - 1; i > 0; i--)
+    {
         if (board.zobristKey == board.keyHistory[i])
         {
             count++;

@@ -288,11 +288,12 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         bool doLMR = false;
 
-        if (i >= 4 &&           // after the fifth move -> reduce search depth.
-            depth >= 3 &&       // LMR is only for deep nodes.
-            !undo.isCapture &&  // don't reduce capture moves.
-            !undo.isPromotion   // don't reduce promotions.
-        ) {
+        if (i >= 4 &&          // after the fifth move -> reduce search depth.
+            depth >= 3 &&      // LMR is only for deep nodes.
+            !undo.isCapture && // don't reduce capture moves.
+            !undo.isPromotion  // don't reduce promotions.
+        )
+        {
             // after doBitMove, the player stored in board is already the enemy.
             if (!isInCheck(board, board.player))
             {
