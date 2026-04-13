@@ -71,6 +71,9 @@ void Board::init()
     zobristKey = computeZobrist(*this);
 
     enPassantPos = POS_NONE;
+
+    clearRepetitionKey();
+    pushRepetitionKey();
 }
 
 // 回傳位於 pos 的 Piece

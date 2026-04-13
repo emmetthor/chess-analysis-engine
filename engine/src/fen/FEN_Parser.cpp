@@ -88,5 +88,8 @@ Board cinFenToBoard(const std::string& fen)
     board.zobristKey = computeZobrist(board);
     computePiecePos(board);
 
+    board.clearRepetitionKey();
+    board.pushRepetitionKey();
+
     return board;
 }

@@ -80,6 +80,9 @@ SearchResult Search::findBestMove(const Board& board)
     // make copyBoard non-const.
     Board copyBoard = board;
 
+    // Init repetition history
+    copyBoard.pushRepetitionKey();
+
     // current result is invalid
     SearchResult result = {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
 
@@ -130,6 +133,8 @@ SearchResult Search::findBestMove(const Board& board)
         printInfo(info);
     }
 
+    copyBoard.popRepetitionKey();
+
     return result;
 }
 
@@ -159,24 +164,31 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
     {
         // time check.
         if (shouldStop())
+        {
+            board.popRepetitionKey();
             return {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
+        }
 
         BitMove move = moves[i];
 
         UndoState undo;
 
         doBitMove(board, move, undo);
+        board.pushRepetitionKey();
 
         int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
 
+        board.popRepetitionKey();
         undoBitMove(board, move, undo);
 
         Move oriMove = bitMovetoOriMove(board, move);
         // std::cout << oriMove << " | " << score << '\n';
 
         if (score == -TIMEOUT_SCORE)
+        {
+            board.popRepetitionKey();
             return {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
-
+        }
         if (score > result.bestScore)
         {
             result.isValid = true;
@@ -200,6 +212,10 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
     // Clear current PV line
     state.pv.clearLine(ply);
+
+    // Check repetition
+    if (isRepetition(board))
+        return 0;
 
     // Probe TT table.
     TTEntry ttOut;
@@ -268,9 +284,43 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
         UndoState undo;
 
         doBitMove(board, move, undo);
+        board.pushRepetitionKey();
 
-        int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        bool doLMR = false;
 
+        if (i >= 4 &&          // after the fifth move -> reduce search depth.
+            depth >= 3 &&      // LMR is only for deep nodes.
+            !undo.isCapture && // don't reduce capture moves.
+            !undo.isPromotion  // don't reduce promotions.
+        )
+        {
+            // after doBitMove, the player stored in board is already the enemy.
+            if (!isInCheck(board, board.player))
+            {
+                doLMR = true;
+            }
+        }
+
+        int score = -MAX_SCORE;
+
+        if (doLMR)
+        {
+            int searchDepth = depth - 2;
+
+            // Using null-window to limit score window -> faster.
+            score = -negamax(board, searchDepth, -alpha - 1, -alpha, ply + 1);
+            if (score > alpha)
+            {
+                // fail high -> research with full depth.
+                score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+            }
+        }
+        else
+        {
+            score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        }
+
+        board.popRepetitionKey();
         undoBitMove(board, move, undo);
 
         // time check
