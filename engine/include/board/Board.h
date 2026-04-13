@@ -145,7 +145,7 @@ struct Board
 
     inline void pushRepetitionKey()
     {
-        ENGINE_ASSERT(repetitionHistoryLength < SearchVarialble::MAX_GMAE_PLY);
+        ENGINE_ASSERT(repetitionHistoryLength < SearchVarialble::MAX_GAME_PLY);
         keyHistory[repetitionHistoryLength++] = zobristKey;
     }
 
