@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Type.h"
+#include "move/Move.h"
 #include "debug/log.h"
 #include "search/Search_Variables.h"
 
@@ -25,5 +26,15 @@ struct PVTable
         }
 
         length[ply] = length[ply + 1] + 1;
+    }
+
+    inline std::string getRootPVLine()
+    {
+        std::string res = "";
+        for(int i = 0; i < length[0]; i++)
+        {
+            res += bitMoveToUCIMove(table[0][i]) + ' ';
+        }
+        return res;
     }
 };

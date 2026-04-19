@@ -11,24 +11,25 @@ constexpr int MATE_SCORE = 1e6;
 constexpr int TIMEOUT_SCORE = 123456789;
 constexpr int MAX_SCORE = 1e9;
 
+struct SearchInfo
+{
+    int64_t depth, score, nodes, qsnodes, timeMs, nps;
+    PVTable pv;
+};
+
 struct SearchResult
 {
     bool isValid = 0;
     Move bestMove;
     int bestScore;
     BitMove bestBitMove = INVALID_BITMOVE;
+    SearchInfo info;
 };
 
 struct SearchLimits
 {
     int maxDepth = -1;
     int64_t maxTimeMs = -1;
-};
-
-struct SearchInfo
-{
-    int64_t depth, score, nodes, qsnodes, timeMs, nps;
-    PVTable pv;
 };
 
 class Search

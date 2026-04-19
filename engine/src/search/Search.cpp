@@ -143,19 +143,18 @@ SearchResult Search::findBestMove(const Board& board)
         }
 
         // print info
-        SearchInfo info;
-        info.depth = depth;
-        info.score = result.bestScore;
-        info.nodes = state.negamaxNodes + state.qsNodes;
-        info.qsnodes = state.qsNodes;
+        result.info.depth = depth;
+        result.info.score = result.bestScore;
+        result.info.nodes = state.negamaxNodes + state.qsNodes;
+        result.info.qsnodes = state.qsNodes;
 
         auto now = std::chrono::steady_clock::now();
-        info.timeMs =
+        result.info.timeMs =
             std::chrono::duration_cast<std::chrono::milliseconds>(now - state.startTime).count();
-        info.nps = (info.timeMs > 0 ? info.nodes * 1000 / info.timeMs : 0);
-        info.pv = state.pv;
+        result.info.nps = (result.info.timeMs > 0 ? result.info.nodes * 1000 / result.info.timeMs : 0);
+        result.info.pv = state.pv;
 
-        printInfo(info);
+        printInfo(result.info);
     }
 
     copyBoard.popRepetitionKey();

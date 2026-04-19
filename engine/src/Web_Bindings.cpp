@@ -52,7 +52,7 @@ const char* web_analyze_depth(int depth)
 
         std::string bestMove = moveToUCIMove(res.bestMove);
 
-        std::string pv = bestMove;
+        std::string pv = res.info.pv.getRootPVLine();
 
         std::ostringstream oss;
         oss << "{"
@@ -61,10 +61,7 @@ const char* web_analyze_depth(int depth)
             << "\"bestMove\":\"" << escapeJson(bestMove) << "\","
             << "\"pv\":\"" << escapeJson(pv) << "\"";
 
-        // 如果你的 SearchResult 有 score/nodes/time，就一起塞
         oss << ",\"scoreCp\":" << res.bestScore;
-        // oss << ",\"nodes\":" << res.nodes;
-        // oss << ",\"timeMs\":" << res.timeMs;
 
         oss << "}";
 
