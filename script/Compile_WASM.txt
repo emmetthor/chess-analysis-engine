@@ -15,7 +15,7 @@ em++ `
   @srcs `
   -Iinclude `
   -Iengine/include `
-  -O0 -g `
+  -O3 -flto `
   -sASSERTIONS=1 `
   -sWASM=1 `
   -sEXPORTED_FUNCTIONS='["_web_set_fen","_web_analyze_depth","_web_set_startpos"]' `
