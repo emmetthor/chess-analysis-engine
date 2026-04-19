@@ -49,7 +49,7 @@ void Engine::setPlayer(Player player)
 
 Move Engine::goDepth(int depth)
 {
-    Search search(eval, {depth, MAX_THINK_TIME});
+    search.newSearch(eval, {depth, MAX_THINK_TIME});
     auto res = search.findBestMove(board);
 
     return res.bestMove;
@@ -57,7 +57,7 @@ Move Engine::goDepth(int depth)
 
 Move Engine::goClock(const TimeManage& tm)
 {
-    Search search(eval, timeManager(tm, board.player));
+    search.newSearch(eval, timeManager(tm, board.player));
 
     auto res = search.findBestMove(board);
 
@@ -66,7 +66,7 @@ Move Engine::goClock(const TimeManage& tm)
 
 SearchResult Engine::fullInfoSearch(int depth)
 {
-    Search search(eval, {depth, MAX_THINK_TIME});
+    search.newSearch(eval, {depth, MAX_THINK_TIME});
     auto res = search.findBestMove(board);
 
     return res;

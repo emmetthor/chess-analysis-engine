@@ -34,8 +34,24 @@ struct SearchInfo
 class Search
 {
 public:
-    Search(const Evaluate& _eval, const SearchLimits _limits);
     SearchResult findBestMove(const Board& board);
+
+    inline void setEval(const Evaluate &_eval)
+    {
+        eval = _eval;
+    }
+
+    inline void setLimits(const SearchLimits &_limits)
+    {
+        limits = _limits;
+    }
+
+    inline void newSearch(const Evaluate &_eval, const SearchLimits &_limits)
+    {
+        setEval(_eval);
+        setLimits(_limits);
+        state.reset();
+    }
 
 private:
     Evaluate eval;
@@ -64,6 +80,15 @@ private:
         killerMove kill;
 
         int prevScore = 0;
+
+        inline void reset()
+        {
+            stopped = false;
+            timeout = false;
+
+            negamaxNodes = 0;
+            qsNodes = 0;
+        }
     } state;
 
     bool shouldStop();

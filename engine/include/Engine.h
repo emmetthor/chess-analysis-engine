@@ -6,12 +6,12 @@
 #include "move/Move.h"
 #include "search/Search.h"
 
-class Engine
+struct Engine
 {
-public:
     Engine();
 
     Evaluate eval;
+    Search search;
     Board board;
 
     void setStartPosition();

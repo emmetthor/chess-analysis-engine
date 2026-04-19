@@ -64,13 +64,6 @@ bool Search::shouldStop()
     return false;
 }
 
-// init function
-Search::Search(const Evaluate& _eval, const SearchLimits _limits)
-{
-    eval = _eval;
-    limits = _limits;
-}
-
 // public function to search for moves.
 SearchResult Search::findBestMove(const Board& board)
 {

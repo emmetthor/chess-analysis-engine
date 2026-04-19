@@ -52,7 +52,6 @@ const char* web_analyze_depth(int depth)
 
         std::string bestMove = moveToUCIMove(res.bestMove);
 
-        // 如果你還沒有 PV，就先用 bestMove 代替
         std::string pv = bestMove;
 
         std::ostringstream oss;
