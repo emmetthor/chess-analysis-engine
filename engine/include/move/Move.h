@@ -217,3 +217,46 @@ inline std::string bitMoveToUCIMove(const BitMove& move)
 
     return res;
 }
+
+inline std::string moveToUCIMove(const Move& move)
+{
+    std::string res;
+    if (move.castle == SHORT_CASTLE || move.castle == LONG_CASTLE)
+    {
+        std::string castleMap[2][3] = {{"invalid", "e1g1", "e1c1"}, {"invalid", "e8g8", "e8c8"}};
+        res += castleMap[playerToIndex(move.player)][static_cast<int>(move.castle)];
+    }
+    else
+    {
+        res += positionToPgn(move.from) + positionToPgn(move.to);
+    }
+
+    if (move.isPromotion)
+    {
+        char promotionChar = '.';
+        switch (pieceToChar(move.promotionPiece))
+        {
+            case 'Q':
+            case 'q':
+                promotionChar = 'q';
+                break;
+            case 'R':
+            case 'r':
+                promotionChar = 'r';
+                break;
+            case 'N':
+            case 'n':
+                promotionChar = 'n';
+                break;
+            case 'B':
+            case 'b':
+                promotionChar = 'b';
+                break;
+            default:
+                ENGINE_FATAL("uci", "promotion piece is not valid");
+        }
+        res += promotionChar;
+    }
+
+    return res;
+}

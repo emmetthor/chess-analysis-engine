@@ -54,8 +54,8 @@ int main()
         Engine engine;
         engine.setPositionWithFen(fen);
 
-        Move move = engine.goDepth(2, 0);
-        std::string retMove = UCIMoveToString(move);
+        Move move = engine.goDepth(2);
+        std::string retMove = moveToUCIMove(move);
         // 引擎應在兩半步內確認一步將殺
 
         if (retMove != bestMove)

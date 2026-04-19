@@ -1,0 +1,24 @@
+cd F:\emsdk
+.\emsdk_env.ps1
+
+cd F:\chess-analysis-engine\chess-analysis-engine
+em++ -v
+
+$srcs = Get-ChildItem -Recurse -Filter *.cpp engine\src | Where-Object { 
+    $_.FullName -notmatch 'UciMain\.cpp$' -and
+    $_.FullName -notmatch 'main\.cpp$' -and
+    $_.FullName -notmatch 'Search_Old\.cpp'
+  } |                                   
+  ForEach-Object { $_.FullName }
+
+em++ `
+  @srcs `
+  -Iinclude `
+  -Iengine/include `
+  -O0 -g `
+  -sASSERTIONS=1 `
+  -sWASM=1 `
+  -sEXPORTED_FUNCTIONS='["_web_set_fen","_web_analyze_depth","_web_set_startpos"]' `
+  -sEXPORTED_RUNTIME_METHODS='["ccall","cwrap"]' `
+  -sSTACK_SIZE=4194304 `
+  -o ../Hynobius-analysis/engine.js
