@@ -80,6 +80,13 @@ void handleGo(std::istringstream& iss, Engine& engine)
         {
             iss >> tm.binc;
         }
+        if (token == "movetime")
+        {
+            uint64_t time;
+            iss >> time;
+            tm.wtime = time;
+            tm.btime = time;
+        }
     }
 
     Move move;
