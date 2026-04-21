@@ -208,7 +208,22 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
         doBitMove(board, move, undo);
         board.pushRepetitionKey();
 
-        int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        int score = 0;
+        
+        // PVS
+        if (i == 0)
+        {
+            score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        }
+        else
+        {
+            score = -negamax(board, depth - 1, -alpha - 1, -alpha, ply + 1);
+
+            if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
+            {
+                score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+            }
+        }
 
         board.popRepetitionKey();
         undoBitMove(board, move, undo);
@@ -341,7 +356,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
             // Using null-window to limit score window -> faster.
             score = -negamax(board, searchDepth, -alpha - 1, -alpha, ply + 1);
-            if (score > alpha)
+            if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
             {
                 // fail high -> research with full depth.
                 score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
