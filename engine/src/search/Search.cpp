@@ -224,26 +224,26 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
         doBitMove(board, move, undo);
         board.pushRepetitionKey();
 
-        int score = 0;
+        int score = score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
         
-        // PVS
-        if (i == 0)
-        {
-            state.info.pvsRootFullSearch++;
-            score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
-        }
-        else
-        {
-            state.info.pvsRootNullSearch++;
-            score = -negamax(board, depth - 1, -alpha - 1, -alpha, ply + 1);
+        // // PVS
+        // if (i == 0)
+        // {
+        //     state.info.pvsRootFullSearch++;
+        //     score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        // }
+        // else
+        // {
+        //     state.info.pvsRootNullSearch++;
+        //     score = -negamax(board, depth - 1, -alpha - 1, -alpha, ply + 1);
 
-            if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
-            {
-                state.info.pvsRootFullSearch++;
-                state.info.pvsRootResearch++;
-                score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
-            }
-        }
+        //     if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
+        //     {
+        //         state.info.pvsRootFullSearch++;
+        //         state.info.pvsRootResearch++;
+        //         score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+        //     }
+        // }
 
         board.popRepetitionKey();
         undoBitMove(board, move, undo);
