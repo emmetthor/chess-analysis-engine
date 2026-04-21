@@ -223,10 +223,10 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
 
         doBitMove(board, move, undo);
         board.pushRepetitionKey();
-
-        int score = score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
         
-        // // PVS
+        int score = -MAX_SCORE;
+
+        // PVS
         if (i == 0)
         {
             state.info.pvsRootFullSearch++;
