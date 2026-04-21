@@ -40,6 +40,23 @@ void printInfo(const SearchInfo& info)
     }
 
     std::cout << '\n';
+
+    // Other outputs.
+    std::cout << "Hynobius Defined Outputs:\n";
+    std::cout << "pvs root full     :" << info.pvsRootFullSearch << '\n';
+    std::cout << "pvs root null     :" << info.pvsRootNullSearch << '\n';
+    std::cout << "pvs root research :" << info.pvsRootResearch << '\n';
+    std::cout << "research rate     :" << (info.pvsRootNullSearch > 0 ? (double)info.pvsRootResearch / info.pvsRootNullSearch * 100: -1) << '%' << '\n';
+    std::cout << "-----\n";
+    std::cout << "pvs full          :" << info.pvsFullSearch << '\n';
+    std::cout << "pvs null          :" << info.pvsNullSearch << '\n';
+    std::cout << "pvs research      :" << info.pvsResearch << '\n';
+    std::cout << "research rate     :" << (info.pvsNullSearch > 0 ? (double)info.pvsResearch / info.pvsNullSearch * 100 : -1) << '%' << '\n';
+    std::cout << "-----\n";
+    std::cout << "tt cuts           :" << info.ttCuts << '\n';
+    std::cout << "beta cuts         :" << info.betaCuts << '\n';
+    std::cout << "tt cut rate       :" << (double)info.ttCuts / info.nodes * 100 << '%' << '\n';
+    std::cout << "beta cut rate     :" << (double)info.betaCuts / info.nodes * 100 << '%' << '\n';
 }
 
 bool Search::shouldStop()
@@ -150,19 +167,18 @@ SearchResult Search::findBestMove(const Board& board)
         }
 
         // print info
-        SearchInfo info;
-        info.depth = depth;
-        info.score = result.bestScore;
-        info.nodes = state.negamaxNodes + state.qsNodes;
-        info.qsnodes = state.qsNodes;
+        state.info.depth = depth;
+        state.info.score = result.bestScore;
+        state.info.nodes = state.negamaxNodes + state.qsNodes;
+        state.info.qsnodes = state.qsNodes;
 
         auto now = std::chrono::steady_clock::now();
-        info.timeMs =
+        state.info.timeMs =
             std::chrono::duration_cast<std::chrono::milliseconds>(now - state.startTime).count();
-        info.nps = (info.timeMs > 0 ? info.nodes * 1000 / info.timeMs : 0);
-        info.pv = state.pv;
+        state.info.nps = (state.info.timeMs > 0 ? state.info.nodes * 1000 / state.info.timeMs : 0);
+        state.info.pv = state.pv;
 
-        printInfo(info);
+        printInfo(state.info);
     }
 
     copyBoard.popRepetitionKey();
@@ -213,14 +229,18 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
         // PVS
         if (i == 0)
         {
+            state.info.pvsRootFullSearch++;
             score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
         }
         else
         {
+            state.info.pvsRootNullSearch++;
             score = -negamax(board, depth - 1, -alpha - 1, -alpha, ply + 1);
 
             if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
             {
+                state.info.pvsRootFullSearch++;
+                state.info.pvsRootResearch++;
                 score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
             }
         }
@@ -270,6 +290,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     BitMove ttMove = INVALID_BITMOVE;
     if (probeTT(board.zobristKey, depth, alpha, beta, ply, ttOut, ttScore, ttMove) == true)
     {
+        state.info.ttCuts++;
         return ttScore;
     }
 
@@ -333,38 +354,59 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
         doBitMove(board, move, undo);
         board.pushRepetitionKey();
 
-        bool doLMR = false;
-
-        if (i >= 4 &&          // after the fifth move -> reduce search depth.
-            depth >= 3 &&      // LMR is only for deep nodes.
-            !undo.isCapture && // don't reduce capture moves.
-            !undo.isPromotion  // don't reduce promotions.
-        )
-        {
-            // after doBitMove, the player stored in board is already the enemy.
-            if (!isInCheck(board, board.player))
-            {
-                doLMR = true;
-            }
-        }
-
         int score = -MAX_SCORE;
 
-        if (doLMR)
+        if (i == 0)
         {
-            int searchDepth = depth - 2;
-
-            // Using null-window to limit score window -> faster.
-            score = -negamax(board, searchDepth, -alpha - 1, -alpha, ply + 1);
-            if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
-            {
-                // fail high -> research with full depth.
-                score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
-            }
+            // Full search.
+            state.info.pvsFullSearch++;
+            score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
         }
         else
         {
-            score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+            bool doLMR = false;
+            if (i >= 4 &&          // after the fifth move -> reduce search depth.
+                depth >= 3 &&      // LMR is only for deep nodes.
+                !undo.isCapture && // don't reduce capture moves.
+                !undo.isPromotion  // don't reduce promotions.
+            )
+            {
+                // after doBitMove, the player stored in board is already the enemy.
+                if (!isInCheck(board, board.player))
+                {
+                    doLMR = true;
+                }
+            }
+
+            if (doLMR)
+            {
+                int searchDepth = depth - 2;
+
+                // Using null-window to limit score window -> faster.
+                state.info.pvsNullSearch++;
+                score = -negamax(board, searchDepth, -alpha - 1, -alpha, ply + 1);
+                
+                if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
+                {
+                    // fail high -> research with full depth.
+                    state.info.pvsFullSearch++;
+                    state.info.pvsResearch++;
+                    score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+                }
+            }
+            else
+            {
+                state.info.pvsNullSearch++;
+                score = -negamax(board, depth - 1, -alpha - 1, -alpha, ply + 1);
+
+                if (score != -TIMEOUT_SCORE && score > alpha && score < beta)
+                {
+                    // fail high -> research with full depth.
+                    state.info.pvsFullSearch++;
+                    state.info.pvsResearch++;
+                    score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
+                }
+            }
         }
 
         board.popRepetitionKey();
@@ -390,6 +432,8 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         if (alpha >= beta)
         {
+            state.info.betaCuts++;
+
             if (!undo.isCapture && !undo.isPromotion)
             {
                 state.kill.addKillerMove(move, ply);

@@ -27,7 +27,9 @@ struct SearchLimits
 
 struct SearchInfo
 {
-    int64_t depth, score, nodes, qsnodes, timeMs, nps;
+    int64_t depth = 0, score = 0, nodes = 0, qsnodes = 0, timeMs = 0, nps = 0;
+    int64_t pvsFullSearch = 0, pvsNullSearch = 0, pvsResearch = 0, pvsRootFullSearch = 0, pvsRootNullSearch = 0, pvsRootResearch = 0;
+    int64_t ttCuts = 0, betaCuts = 0;
     PVTable pv;
 };
 
@@ -64,6 +66,8 @@ private:
         killerMove kill;
 
         int prevScore = 0;
+
+        SearchInfo info;
     } state;
 
     bool shouldStop();
