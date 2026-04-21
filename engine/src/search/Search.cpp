@@ -417,7 +417,8 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
 
     if (ply > SearchVarialble::MAX_PLY)
     {
-        return (board.player == Player::WHITE ? 1 : -1)  * eval.evaluateBoard(board, EVALUATE_MODE::FULL);
+        return (board.player == Player::WHITE ? 1 : -1) *
+               eval.evaluateBoard(board, EVALUATE_MODE::FULL);
     }
 
     BitMove moves[256];
@@ -434,8 +435,8 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
     }
     else
     {
-        int standerdPoint =
-            (board.player == Player::WHITE ? 1 : -1) * eval.evaluateBoard(board, EVALUATE_MODE::FULL);
+        int standerdPoint = (board.player == Player::WHITE ? 1 : -1) *
+                            eval.evaluateBoard(board, EVALUATE_MODE::FULL);
         if (standerdPoint >= beta)
             return standerdPoint;
         if (standerdPoint > alpha)
