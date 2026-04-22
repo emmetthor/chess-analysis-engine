@@ -105,7 +105,7 @@ int runCommand(const Config& cfg)
         {
             Engine engine;
             engine.setPositionWithFen(cfg.fen);
-            
+
             SearchResult result = engine.fullInfoSearch(cfg.depth);
 
             std::cout << "bestmove=" << bitMoveToUCIMove(result.bestBitMove) << END;
