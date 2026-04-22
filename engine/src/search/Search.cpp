@@ -415,15 +415,40 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
             return TIMEOUT_SCORE;
     }
 
-    int standerdPoint =
-        (board.player == Player::WHITE ? 1 : -1) * eval.evaluateBoard(board, EVALUATE_MODE::FULL);
-    if (standerdPoint >= beta)
-        return standerdPoint;
-    if (standerdPoint > alpha)
-        alpha = standerdPoint;
+    if (ply > SearchVarialble::MAX_PLY)
+    {
+        return (board.player == Player::WHITE ? 1 : -1) *
+               eval.evaluateBoard(board, EVALUATE_MODE::FULL);
+    }
 
-    BitMove captureMoves[256];
-    int nCaptureMoves = generateLegalCaptureMoves(board, captureMoves);
+    BitMove moves[256];
+    int nMoves = -1;
+
+    if (isInCheck(board, board.player))
+    {
+        nMoves = generateAllLegalMoves(board, moves);
+
+        if (nMoves == 0)
+        {
+            return -MATE_SCORE + ply;
+        }
+    }
+    else
+    {
+        int standerdPoint = (board.player == Player::WHITE ? 1 : -1) *
+                            eval.evaluateBoard(board, EVALUATE_MODE::FULL);
+        if (standerdPoint >= beta)
+            return standerdPoint;
+        if (standerdPoint > alpha)
+            alpha = standerdPoint;
+
+        nMoves = generateLegalCaptureMoves(board, moves);
+
+        if (nMoves == 0)
+        {
+            return alpha;
+        }
+    }
 
     // Sort moves.
     advanceMoves adv = {
@@ -432,16 +457,11 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
         INVALID_BITMOVE,
         INVALID_BITMOVE,
     };
-    sortMove(board, captureMoves, nCaptureMoves, adv);
+    sortMove(board, moves, nMoves, adv);
 
-    if (nCaptureMoves == 0)
+    for (int i = 0; i < nMoves; i++)
     {
-        return alpha;
-    }
-
-    for (int i = 0; i < nCaptureMoves; i++)
-    {
-        BitMove move = captureMoves[i];
+        BitMove move = moves[i];
 
         UndoState undo;
 
