@@ -8,7 +8,7 @@ ENGINE_PATH = r"./build/Hynobius.exe"
 REGRESSION_FILE = BASE_DIR / "regressions.txt"
 SEARCH_DEPTH = 8
 
-def parse_regression_file(path: str):
+def parse_regression_file(path: str | Path):
     text = Path(path).read_text(encoding="utf-8")
     lines = text.splitlines()
 

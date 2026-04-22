@@ -13,3 +13,7 @@ bestmove: b6c8 f6h4
 # pass pawn weight
 fen: 8/3p2p1/4p3/4Pk1p/2p4P/P1b5/P5P1/1R5K w - - 0 49
 bestmove: b1c1
+
+# depth problem
+fen: r3k3/2p2pp1/p1pbp1p1/1q1p2P1/3P1Pr1/4Q3/PPP1NP1P/1R2R2K b q - 8 19
+bestmove: g4h4
