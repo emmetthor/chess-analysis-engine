@@ -2,6 +2,7 @@
 #include "board/Board.h"
 #include "debug/perft.h"
 #include "fen/FEN_Parser.h"
+#include "move/Move.h"
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -48,6 +49,13 @@ Config parseArgs(int argc, char* argv[])
             cfg.depth = std::stoi(argv[++i]);
             cfg.mode = RunMode::PERFT_STATS;
         }
+        else if (arg == "--search-with-info")
+        {
+            if (i + 1 >= argc)
+                throw std::runtime_error("--search-with-info requires a depth");
+            cfg.depth = std::stoi(argv[++i]);
+            cfg.mode = RunMode::SEARCH_WITH_INFO;
+        }
         else
         {
             throw std::runtime_error("unknown argument: " + arg);
@@ -91,6 +99,18 @@ int runCommand(const Config& cfg)
         case RunMode::PERFT_DIVIDE:
         {
             std::cout << "test perft divide" << END;
+            return 0;
+        }
+        case RunMode::SEARCH_WITH_INFO:
+        {
+            Engine engine;
+            engine.setPositionWithFen(cfg.fen);
+
+            SearchResult result = engine.fullInfoSearch(cfg.depth);
+
+            std::cout << "bestmove=" << bitMoveToUCIMove(result.bestBitMove) << END;
+            std::cout << "score=" << result.bestScore << END;
+
             return 0;
         }
         default:
