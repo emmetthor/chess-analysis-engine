@@ -25,4 +25,4 @@ jobs:
 
       - name: Perft regression
         run: |
-          python tests/regression_test.py
+          python tests/regression/regression_test.py
