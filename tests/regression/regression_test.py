@@ -2,9 +2,10 @@ import subprocess
 import sys
 import re
 from pathlib import Path
+import argparse
 
 BASE_DIR = Path(__file__).parent
-ENGINE_PATH = r"./build/Hynobius.exe"
+DEFAULT_ENGINE_PATH = r"./build/Hynobius.exe"
 REGRESSION_FILE = BASE_DIR / "regressions.txt"
 SEARCH_DEPTH = 8
 
@@ -85,12 +86,47 @@ def parse_bestmove(stdout: str):
 
     return None
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Chess Engine Regression Test")
+
+    parser.add_argument(
+        "--engine",
+        type=str,
+        default=DEFAULT_ENGINE_PATH,
+        help="Path to engine executable"
+    )
+
+    parser.add_argument(
+        "--depth",
+        type=int,
+        default=SEARCH_DEPTH,
+        help="Search depth"
+    )
+
+    parser.add_argument(
+        "--file",
+        type=str,
+        default=str(REGRESSION_FILE),
+        help="Regression file path"
+    )
+
+    return parser.parse_args()
 
 def main():
-    cases = parse_regression_file(REGRESSION_FILE)
+    args = parse_args()
+
+    engine_path = args.engine
+    depth = args.depth
+    regression_file = args.file
+
+    cases = parse_regression_file(regression_file)
 
     if not cases:
         print("No regression cases found.")
+        return 1
+    
+    if not Path(engine_path).exists():
+        print(f"Engine not found: {engine_path}")
         return 1
 
     print(f"Loaded {len(cases)} regression cases from {REGRESSION_FILE}")
@@ -103,7 +139,7 @@ def main():
         fen = case["fen"]
         expected_moves = case["bestmoves"]
 
-        code, stdout, stderr = run_engine(ENGINE_PATH, fen, SEARCH_DEPTH)
+        code, stdout, stderr = run_engine(engine_path, fen, depth)
         actual_move = parse_bestmove(stdout)
 
         ok = (code == 0) and (actual_move in expected_moves)
