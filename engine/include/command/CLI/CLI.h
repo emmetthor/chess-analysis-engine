@@ -10,7 +10,8 @@ enum class RunMode
     NONE,
     PERFT,
     PERFT_DIVIDE,
-    PERFT_STATS
+    PERFT_STATS,
+    SEARCH_WITH_INFO
 };
 
 struct Config
