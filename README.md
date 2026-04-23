@@ -2,21 +2,16 @@
     <img src="docs/img/icon-128.png">
     <br>
     <h3>Hynobius</h3>
-    A chess engine with tutorals and documents.
-    <br>
-    A chess engine with scientific testing.
-    <br>
-    A chess game analyser using Hynobius chess engine.
+    A chess engine with tutorials, documents, scientific testing and web analysis interface.
 </div>
 
 # Hynobius
 
-A C++ chess engine with **tutorials**, **documents**, **scientifuc testing** and **web analysis interface**.
+A C++ chess engine with **tutorials**, **documents**, **scientifc testing** and **web analysis interface**.
 
-- Non-bitboard implementation.
-- Alpha-beta search with optimizations.
-- Experimentations and Elo improvements.
-- Web analysis with `WASM`.
+- Search optimizations.
+- Experimentations and scientific testing pipeline.
+- Web-based analysis.
 
 ---
 
@@ -28,28 +23,81 @@ A C++ chess engine with **tutorials**, **documents**, **scientifuc testing** and
 
 It is a chess engine focus on:
 
-- Effective search. (alpha-beta, move ordering, TT, iterative deepening, aspiration window).
-- Evaluation experiment.
+- Effective search. (alpha-beta, move ordering, TT, iterative deepening, aspiration window, LMR).
+- Basic evaluations. (material score, PST)
 
 ### Hynobius Testing
 
-It is a tesing system using github actions, CuteChess, and self-hosted runner.
+It is a testing system using github actions, **[Cute Chess](https://github.com/cutechess/cutechess)**, and self-hosted runner.
 
-### Hynobius Web Analysis
+### Hynobius Analysis
 
-It is a website held by githib pages, and use `WASM` to compile engine.
+It is a website held by githib pages, and use `WASM` to compile the engine.
+
+Try **[Hynobius Analysis](https://hynobius-chess.github.io/Hynobius-analysis/)** right now!
 
 ---
 
 ## Features
 
----
+### Search
 
-## Examples
+- Alpha-beta prunting with iterative deepeing.
+- Move ordering (PV move, TT move, killer moves).
+- Transportation table (TT).
+- Aspiration window.
+- Late move reduction (LMR).
+- Quietscene search with check evasions.
+
+### Evaluation
+
+- Material scores.
+- Basic Piece-square tables (PST).
+
+### Scientific Testing
+
+- Automatic AB testing with **[Cute Chess](https://github.com/cutechess/cutechess)** and GitHub actions.
+- Elo tracking.
+- Self-hosted runner.
+
+### Web Analysis
+
+- WASM-compiled engine running is browser.
+- Interface board and PGN analysis.
 
 ---
 
 ## Usage
+
+### CLI & UCI
+
+Build:
+
+```bash
+cmake -B build
+cmake --build build
+```
+
+Run:
+
+```bash
+./Hynobius.exe
+```
+
+Use UCI commands:
+
+```bash
+isready
+position startpos moves e2e4
+go depth 6
+```
+
+Use CLI commands
+
+```bash
+./Hynobius.exe --search-with-info
+./Hynobius.exe --perft
+```
 
 ---
 
