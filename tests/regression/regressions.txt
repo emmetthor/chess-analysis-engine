@@ -21,3 +21,7 @@ bestmove: e5e4
 # depth problem
 fen: r3k3/2p2pp1/p1pbp1p1/1q1p2P1/3P1Pr1/4Q3/PPP1NP1P/1R2R2K b q - 8 19
 bestmove: g4h4
+
+# don't waste tempo
+fen: 3r2k1/1bp1qp2/prn4p/1pQpP3/3P4/2PB1PP1/P2NK3/1R5R b - - 0 25
+bestmove: b7c8 
