@@ -22,19 +22,49 @@ Hynobius is an engine for people to understand how an engine actually works. Thu
 
 ## Features
 
-### Hynobius Engine
+### Search
 
-### Hynobius Web Analysis
+- Alpha-beta prunting with iterative deepeing.
+- Move ordering (PV move, TT move, killer moves).
+- Transportation table (TT).
+- Aspiration window.
+- Late move reduction (LMR).
+- Quietscene search with check evasions.
 
-### Hynobius Testing
+### Evaluation
+
+- Material scores.
+- Basic Piece-square tables (PST).
+
+### Scientific Testing
+
+- Automatic AB testing with **[Cute Chess](https://github.com/cutechess/cutechess)** and GitHub actions.
+- Elo tracking.
+- Self-hosted runner.
+
+### Web Analysis
+
+- WASM-compiled engine running is browser.
+- Interface board and PGN analysis.
 
 ## System Architecture
 
 ## Data Flow
 
+### UCI
+
+(todo)
+
+### CLI
+
+(todo)
+
 ## Performance
 
-- **Go see HynobiusChess BOT right [HERE](https://lichess.org/@/HynobiusChess)**.
+- **[Go see and play with HynobiusChess BOT right here](https://lichess.org/@/HynobiusChess)**.
 - **~1700 elo** on bliz (based on Lichess elo).
 
 ## Roadmap
+
+- Improve time management.
+- Improve move ordering and search speed.
