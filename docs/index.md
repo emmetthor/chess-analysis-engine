@@ -4,4 +4,4 @@ Hynobius is a C++ chess engine chess engine with **tutorials**, **documents**, *
 
 ## Sections
 
-- [Project Overview](docs/project-overview.md)
+- [Project Overview](project-overview.md)
