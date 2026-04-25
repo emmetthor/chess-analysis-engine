@@ -5,7 +5,7 @@
 
 constexpr int64_t MAX_THINK_TIME = INT64_MAX;
 constexpr int64_t MIN_THINK_TIME = 10;
-constexpr int64_t MOVE_OVERHEAD = 50;
+constexpr int64_t MOVE_OVERHEAD = 200;
 
 struct TimeManage
 {

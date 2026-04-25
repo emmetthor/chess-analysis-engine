@@ -6,15 +6,15 @@ int64_t timeManageCore(int64_t timeLeft, int64_t increment)
     int64_t safeTime = std::max<int64_t>(0, timeLeft - MOVE_OVERHEAD);
 
     // 0.2 seconds
-    if (safeTime <= 200)
+    if (safeTime <= std::max<int64_t>(2 * increment, 1000))
     {
-        return std::max<int64_t>(MIN_THINK_TIME, increment / 2);
+        return std::max<int64_t>(MIN_THINK_TIME, increment / 4);
     }
 
-    // 1 seconds
-    else if (safeTime <= 1000)
+    // 10 seconds
+    else if (safeTime <= std::max<int64_t>(8 * increment, 5000))
     {
-        return std::max<int64_t>(safeTime / 8, increment);
+        return std::max<int64_t>(safeTime / 15, increment / 2);
     }
 
     // normal

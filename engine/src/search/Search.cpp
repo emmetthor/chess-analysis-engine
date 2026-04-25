@@ -47,6 +47,20 @@ bool Search::shouldStop()
     if (state.stopped)
         return true;
 
+    int interval = 2;
+    if (limits.maxTimeMs <= 50)
+        interval = 16;
+    else if (limits.maxTimeMs <= 100)
+        interval = 32;
+    else if (limits.maxTimeMs <= 500)
+        interval = 64;
+    else if (limits.maxTimeMs <= 2500)
+        interval = 128;
+    else
+        interval = 1024;
+
+    if (((state.negamaxNodes + state.qsNodes) & (interval - 1)) != 0) return false;
+
     if (limits.maxTimeMs != -1)
     {
         auto now = std::chrono::steady_clock::now();
@@ -123,8 +137,10 @@ SearchResult Search::findBestMove(const Board& board)
 
                 currentResult = chooseMove(copyBoard, depth, alpha, beta, 0, lastBestMove);
 
-                if (!currentResult.isValid)
+                if (!currentResult.isValid) {
+                    copyBoard.popRepetitionKey();
                     return result;
+                }
 
                 if (currentResult.bestScore <= alpha)
                 {
@@ -197,7 +213,6 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
         // time check.
         if (shouldStop())
         {
-            board.popRepetitionKey();
             return {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
         }
 
@@ -218,7 +233,6 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
 
         if (score == -TIMEOUT_SCORE)
         {
-            board.popRepetitionKey();
             return {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
         }
         if (score > result.bestScore)
@@ -265,17 +279,8 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     BitMove bestMove = INVALID_BITMOVE;
     bool hasMove = false;
 
-    // time check.
-    if ((state.negamaxNodes + state.qsNodes) & 2047)
-    {
-        // continue searching
-    }
-    else
-    {
-        // check time
-        if (shouldStop())
-            return TIMEOUT_SCORE;
-    }
+    if (shouldStop())
+        return TIMEOUT_SCORE;
 
     // depth = 0 -> qs search
     if (depth == 0)
@@ -341,7 +346,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
             // Using null-window to limit score window -> faster.
             score = -negamax(board, searchDepth, -alpha - 1, -alpha, ply + 1);
-            if (score > alpha)
+            if (score != -TIMEOUT_SCORE && score > alpha)
             {
                 // fail high -> research with full depth.
                 score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
@@ -403,17 +408,8 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
 {
     state.qsNodes++;
 
-    // time check.
-    if ((state.negamaxNodes + state.qsNodes) & 2047)
-    {
-        // continue searching
-    }
-    else
-    {
-        // check
-        if (shouldStop())
-            return TIMEOUT_SCORE;
-    }
+    if (shouldStop())
+        return TIMEOUT_SCORE;
 
     if (ply > SearchVarialble::MAX_PLY)
     {
@@ -461,6 +457,10 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
 
     for (int i = 0; i < nMoves; i++)
     {
+        // time check.
+        if (shouldStop())
+            return TIMEOUT_SCORE;
+            
         BitMove move = moves[i];
 
         UndoState undo;
