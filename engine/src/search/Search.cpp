@@ -1,3 +1,5 @@
+#pragma GCC optimize("O3,unroll-loops")
+
 #include "search/Search.h"
 #include "Structure_IO.h"
 #include "board/Board.h"
