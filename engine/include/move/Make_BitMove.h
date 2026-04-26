@@ -4,6 +4,39 @@
 #include <board/Piece.h>
 #include <cstdint>
 
+inline Piece getCapturePiece(const Board& board, const BitMove move)
+{
+    if (!getCapture(move))
+        return Piece::EMPTY;
+
+    Position from = squareToPosition(getFromSquare(move));
+    Position to = squareToPosition(getToSquare(move));
+    Piece res;
+    if (getEnPassant(move))
+    {
+        Position capturePos = {from.row, to.col};
+        res = board.at(capturePos);
+
+        ENGINE_ASSERT(res == makePiece(opponent(board.player), 'P'));
+    }
+    else
+    {
+        res = board.at(to);
+    }
+
+    return res;
+}
+
+inline Piece getMovePiece(const Board& board, const BitMove move)
+{
+    Position from = squareToPosition(getFromSquare(move));
+    Piece movePiece = board.at(from);
+
+    ENGINE_ASSERT(isValidPieceIndex(pieceToIndex(movePiece)));
+
+    return movePiece;
+}
+
 // intergret move infos
 // placedPiece: The piece that actually placed at Position to
 struct MoveState
@@ -24,17 +57,7 @@ struct MoveState
         to = squareToPosition(getToSquare(move));
 
         movePiece = board.at(from);
-        if (getEnPassant(move))
-        {
-            Position capturePos = {from.row, to.col};
-            capturedPiece = board.at(capturePos);
-
-            ENGINE_ASSERT(capturedPiece == makePiece(opponent(board.player), 'P'));
-        }
-        else
-        {
-            capturedPiece = board.at(to);
-        }
+        capturedPiece = getCapturePiece(board, move);
 
         isCastle = getCastle(move);
         isPromotion = getPromotion(move);
