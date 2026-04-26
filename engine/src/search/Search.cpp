@@ -323,8 +323,8 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         bool doLMR = false;
 
-        if (i >= 4 &&          // after the fifth move -> reduce search depth.
-            depth >= 3 &&      // LMR is only for deep nodes.
+        if (i >= 4 &&                    // after the fifth move -> reduce search depth.
+            depth >= 3 &&                // LMR is only for deep nodes.
             !undoState[ply].isCapture && // don't reduce capture moves.
             !undoState[ply].isPromotion  // don't reduce promotions.
         )
