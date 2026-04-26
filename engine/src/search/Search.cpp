@@ -260,7 +260,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
     state.pv.clearLine(ply);
 
     // Check repetition
-    if (isRepetition(board))
+    if (board.isRepetition())
         return 0;
 
     // Probe TT table.
