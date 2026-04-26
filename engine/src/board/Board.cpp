@@ -76,27 +76,6 @@ void Board::init()
     pushRepetitionKey();
 }
 
-// 回傳位於 pos 的 Piece
-Piece Board::at(Position pos) const
-{
-    if (pos.row < 0 || pos.row >= 8)
-    {
-        ENGINE_FATAL("board", "invalid row: ", pos);
-    }
-    if (pos.col < 0 || pos.col >= 8)
-    {
-        ENGINE_FATAL("board", "invalid col: ", pos);
-    }
-
-    return board[pos.row][pos.col];
-}
-
-// 設定 Piece 在 pos 裡
-void Board::set(Position pos, Piece p)
-{
-    board[pos.row][pos.col] = p;
-}
-
 void computePiecePos(Board& board)
 {
     for (int i = 1; i <= 12; i++)

@@ -110,10 +110,17 @@ struct Board
 
     Obsoleting.
     */
-    Piece at(Position pos) const;
+    inline Piece at(Position pos) const
+    {
+        ENGINE_ASSERT(isInBoard(pos));
+        return board[pos.row][pos.col];
+    }
 
     // Set the `pos` in the board to piece `p`.
-    void set(Position pos, Piece p);
+    inline void set(Position pos, Piece p)
+    {
+        board[pos.row][pos.col] = p;
+    }
 
     // Store pieces on the board.
     Piece board[8][8];
