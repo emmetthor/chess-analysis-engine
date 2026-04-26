@@ -1,11 +1,9 @@
-#include "move/Make_BitMove.h"
-#include "move/Move.h"
 #pragma GCC optimize("O3,unroll-loops")
 
+#include "move/Move_Order.h"
 #include "evaluate/Material_Point.h"
 #include "move/Make_BitMove.h"
-#include "move/Move_Order.h"
-
+#include "move/Move.h"
 #include <algorithm>
 
 const int TT_SCORE = 600000;
@@ -17,15 +15,13 @@ const int KILLER_2_SCORE = 100000;
 
 int evaluateMoveScore(const Board& board, const BitMove move, const advanceMoves& adv)
 {
-    MoveState state(board, move);
-
     int score = 0;
 
     if (adv.PVMove == move)
-        score += PVMOVE_SCORE;
+        return PVMOVE_SCORE;
 
     if (adv.TTMove == move)
-        score += TT_SCORE;
+        return TT_SCORE;
 
     if (adv.killerMove1 == move)
         score += KILLER_1_SCORE;
@@ -33,17 +29,22 @@ int evaluateMoveScore(const Board& board, const BitMove move, const advanceMoves
     if (adv.killerMove2 == move)
         score += KILLER_2_SCORE;
 
-    if (state.isPromotion)
+    if (getPromotion(move))
     {
         // 最先看
         score += PROMOTION_SCORE;
         score += pieceValue(getPromotePiece(move));
     }
 
-    if (state.capturedPiece != Piece::EMPTY)
+    if (getCapture(move))
     {
-        score += CAPTURE_SCORE;
-        score += pieceValue(state.capturedPiece) * 100 - pieceValue(state.capturedPiece);
+        Piece capturePiece = getCapturePiece(board, move);
+        Piece movePiece = getMovePiece(board, move);
+        if (capturePiece != Piece::EMPTY)
+        {
+            score += CAPTURE_SCORE;
+            score += pieceValue(capturePiece) * 100 - pieceValue(movePiece);
+        }
     }
 
     return score;
