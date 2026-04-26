@@ -90,3 +90,8 @@
     set_target_properties(test-bitmove PROPERTIES WIN32_EXECUTABLE OFF)
 
     add_test(NAME BitMoveTest COMMAND test-bitmove)
+
+    # link must-have dlls
+    if (MINGW)
+        target_link_options(Hynobius PRIVATE -static -static-libgcc -static-libstdc++)
+    endif()
