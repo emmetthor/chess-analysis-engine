@@ -59,7 +59,8 @@ bool Search::shouldStop()
     else
         interval = 1024;
 
-    if (((state.negamaxNodes + state.qsNodes) & (interval - 1)) != 0) return false;
+    if (((state.negamaxNodes + state.qsNodes) & (interval - 1)) != 0)
+        return false;
 
     if (limits.maxTimeMs != -1)
     {
@@ -137,7 +138,8 @@ SearchResult Search::findBestMove(const Board& board)
 
                 currentResult = chooseMove(copyBoard, depth, alpha, beta, 0, lastBestMove);
 
-                if (!currentResult.isValid) {
+                if (!currentResult.isValid)
+                {
                     copyBoard.popRepetitionKey();
                     return result;
                 }
@@ -460,7 +462,7 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
         // time check.
         if (shouldStop())
             return TIMEOUT_SCORE;
-            
+
         BitMove move = moves[i];
 
         UndoState undo;

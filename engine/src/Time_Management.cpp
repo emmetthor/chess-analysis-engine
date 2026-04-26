@@ -18,7 +18,8 @@ int64_t timeManageCore(int64_t timeLeft, int64_t increment)
     }
 
     // normal
-    else {
+    else
+    {
         return safeTime / 30 + increment * 3 / 4;
     }
 }
