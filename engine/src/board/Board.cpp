@@ -1,7 +1,5 @@
 #include "board/Board.h"
-#include "Structure_IO.h"
 #include "board/Piece.h"
-#include "debug/log.h"
 #include "search/Zobrist.h"
 
 Board::Board()
