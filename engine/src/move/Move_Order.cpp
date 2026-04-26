@@ -1,11 +1,9 @@
-#include "move/Make_BitMove.h"
-#include "move/Move.h"
 #pragma GCC optimize("O3,unroll-loops")
 
+#include "move/Move_Order.h"
 #include "evaluate/Material_Point.h"
 #include "move/Make_BitMove.h"
-#include "move/Move_Order.h"
-
+#include "move/Move.h"
 #include <algorithm>
 
 const int TT_SCORE = 600000;
