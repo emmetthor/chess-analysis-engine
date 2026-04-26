@@ -2,8 +2,10 @@
 
 #include "Killer_Move.h"
 #include "PV_Table.h"
+#include "Search_Variables.h"
 #include "board/Board.h"
 #include "evaluate/Evaluate.h"
+#include "move/Make_BitMove.h"
 #include "move/Move.h"
 #include <chrono>
 
@@ -48,6 +50,8 @@ private:
     int quietscence(Board& board, int alpha, int beta, int ply);
 
     SearchLimits limits;
+
+    UndoState undoState[SearchVarialble::MAX_PLY + 5];
 
     struct SearchState
     {

@@ -1,5 +1,3 @@
-#pragma GCC optimize("O3,unroll-loops")
-
 #include "search/Search.h"
 #include "Structure_IO.h"
 #include "board/Board.h"
@@ -222,15 +220,13 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
 
         BitMove move = moves[i];
 
-        UndoState undo;
-
-        doBitMove(board, move, undo);
+        doBitMove(board, move, undoState[ply]);
         board.pushRepetitionKey();
 
         int score = -negamax(board, depth - 1, -beta, -alpha, ply + 1);
 
         board.popRepetitionKey();
-        undoBitMove(board, move, undo);
+        undoBitMove(board, move, undoState[ply]);
 
         Move oriMove = bitMovetoOriMove(board, move);
         // std::cout << oriMove << " | " << score << '\n';
@@ -242,7 +238,7 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
         if (score > result.bestScore)
         {
             result.isValid = true;
-            result.bestMove = bitMovetoOriMove(board, move);
+            result.bestMove = oriMove;
             result.bestScore = score;
             result.bestBitMove = move;
         }
@@ -322,17 +318,15 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         BitMove move = moves[i];
 
-        UndoState undo;
-
-        doBitMove(board, move, undo);
+        doBitMove(board, move, undoState[ply]);
         board.pushRepetitionKey();
 
         bool doLMR = false;
 
         if (i >= 4 &&          // after the fifth move -> reduce search depth.
             depth >= 3 &&      // LMR is only for deep nodes.
-            !undo.isCapture && // don't reduce capture moves.
-            !undo.isPromotion  // don't reduce promotions.
+            !undoState[ply].isCapture && // don't reduce capture moves.
+            !undoState[ply].isPromotion  // don't reduce promotions.
         )
         {
             // after doBitMove, the player stored in board is already the enemy.
@@ -362,7 +356,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
         }
 
         board.popRepetitionKey();
-        undoBitMove(board, move, undo);
+        undoBitMove(board, move, undoState[ply]);
 
         // time check
         if (score == -TIMEOUT_SCORE)
@@ -384,7 +378,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
         if (alpha >= beta)
         {
-            if (!undo.isCapture && !undo.isPromotion)
+            if (!undoState[ply].isCapture && !undoState[ply].isPromotion)
             {
                 state.kill.addKillerMove(move, ply);
             }
@@ -415,7 +409,7 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
     if (shouldStop())
         return TIMEOUT_SCORE;
 
-    if (ply > SearchVarialble::MAX_PLY)
+    if (ply >= SearchVarialble::MAX_PLY)
     {
         return (board.player == Player::WHITE ? 1 : -1) *
                eval.evaluateBoard(board, EVALUATE_MODE::FULL);
@@ -424,6 +418,7 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
     BitMove moves[256];
     int nMoves = -1;
 
+    // check evasion
     if (isInCheck(board, board.player))
     {
         nMoves = generateAllLegalMoves(board, moves);
@@ -467,14 +462,12 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
 
         BitMove move = moves[i];
 
-        UndoState undo;
-
         // recursive
-        doBitMove(board, move, undo);
+        doBitMove(board, move, undoState[ply]);
 
         int score = -quietscence(board, -beta, -alpha, ply + 1);
 
-        undoBitMove(board, move, undo);
+        undoBitMove(board, move, undoState[ply]);
 
         // time check.
         if (score == -TIMEOUT_SCORE)
