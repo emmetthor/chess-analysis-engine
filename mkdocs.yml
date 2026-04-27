@@ -1,4 +1,4 @@
-site_name: Emmetthor's Competitive Programming Skills
+site_name: Hynobius Documentations
 
 theme:
   name: material
@@ -15,7 +15,22 @@ theme:
     - toc.integrate
 
 nav:
-  - 首頁: index.md
+  - Menu: 
+    - Index Page: index.md
+    - Overview: project-overview.md
+  - Architectures:
+    - 總架構(待拆分): \architecture\architecture.md
+  - User Guilds:
+    - Testing:
+      - Mate in One Test: user-guide\testing\mate-in-one-test.md
+      - Opening Book: user-guide\testing\Opening.md
+      - Perft Test: user-guide\testing\Perft.md
+  - Tutorials:
+    - GitHub Usage: tutorials\gitbub_usage\index.md
+  - Engine Development Docs:
+    - Code reviews: engine\code-reviews\index.md
+    - Optimizations:
+      - Early Optimization Recode: engine\optimization\engine-improvement.md
 
 plugins:
   - search
