@@ -19,7 +19,7 @@ nav:
     - Index Page: index.md
     - Overview: project-overview.md
   - Architectures:
-    - 總架構(待拆分): \architecture\architecture.md
+    - 總架構(待拆分): architecture\architecture.md
   - User Guilds:
     - Testing:
       - Mate in One Test: user-guide\testing\mate-in-one-test.md

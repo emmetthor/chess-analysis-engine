@@ -14,8 +14,8 @@ enum Castle
 };
 
 /*
-bit  0  1  2 | 3  4  5 | Position from
-bit  6  7  8 | 9 10 11 | Position to
+bit  0  1  2 | 3  4  5 | Square from
+bit  6  7  8 | 9 10 11 | Square to
 bit 12 13 14 15          Promote Piece
 bit 16                   is capture
 bit 17                   is castle
