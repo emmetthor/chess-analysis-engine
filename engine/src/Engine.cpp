@@ -20,7 +20,7 @@ void Engine::setPositionWithFen(const std::string& fen)
     board = cinFenToBoard(fen);
 }
 
-void Engine::checkReady() {}
+void Engine::checkReady() const {}
 
 void Engine::move(Move move)
 {
@@ -72,4 +72,4 @@ SearchResult Engine::fullInfoSearch(int depth)
     return res;
 }
 
-void Engine::quit() {}
+void Engine::quit() const {}

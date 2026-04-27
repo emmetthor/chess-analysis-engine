@@ -43,11 +43,11 @@ private:
     Evaluate eval;
 
     SearchResult
-    chooseMove(Board& board, int depth, int alpha, int beta, int ply, const BitMove PVMove);
+    chooseMove(Board& board, const int depth, const int alpha, const int beta, const int ply, const BitMove PVMove);
 
-    int negamax(Board& board, int depth, int alpha, int beta, int ply);
+    int negamax(Board& board, const int depth, const int alpha, const int beta, const int ply);
 
-    int quietscence(Board& board, int alpha, int beta, int ply);
+    int quietscence(Board& board, const int alpha, const int beta, const int ply);
 
     SearchLimits limits;
 
