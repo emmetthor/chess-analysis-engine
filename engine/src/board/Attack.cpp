@@ -23,7 +23,7 @@ int countPawnAttacks(const Board& board, Position pos, const Player player)
 
 bool isPawnAttacking(const Board& board, Position pos, const Player player)
 {
-    const int pawnRow = pos.row + (player == Player::WHITE ? -1 : 1);
+    const int pawnRow = pos.row + (player == Player::WHITE ? 1 : -1);
     const Piece pawn = makePiece(player, 'P');
 
     const int pawnLeft = pos.col - 1;
