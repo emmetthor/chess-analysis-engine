@@ -48,6 +48,10 @@ inline bool isInBoard(const Position pos)
 {
     return 0 <= pos.row && pos.row < 8 && 0 <= pos.col && pos.col < 8;
 }
+inline bool isInBoard(const int row, const int col)
+{
+    return 0 <= row && row < 8 && 0 <= col && col < 8;
+}
 
 // Check whether a player is `Player::WHITE` or `Player::BLACK`.
 // WARN useless
