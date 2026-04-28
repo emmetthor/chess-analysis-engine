@@ -9,26 +9,28 @@
       
       
       
-        <link rel="prev" href="../../code-reviews/">
+        <link rel="prev" href="../architecture/">
       
+      
+        <link rel="next" href="../BitMove/">
       
       
         
       
       
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Early Optimization Recode - Hynobius Documentations</title>
+        <title>Attack - Hynobius Documentations</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,9 +49,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../web_codes/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../web_codes/stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#engine-improvement" class="md-skip">
+        <a href="#architecture-attack" class="md-skip">
           Skip to content
         </a>
       
@@ -88,7 +90,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="Hynobius Documentations" class="md-header__button md-logo" aria-label="Hynobius Documentations" data-md-component="logo">
+    <a href="../.." title="Hynobius Documentations" class="md-header__button md-logo" aria-label="Hynobius Documentations" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Early Optimization Recode
+              Attack
             
           </span>
         </div>
@@ -197,7 +199,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../.." class="md-tabs__link">
+        <a href="../.." class="md-tabs__link">
           
   
   
@@ -213,11 +215,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../../architecture/architecture/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../architecture/" class="md-tabs__link">
           
   
   
@@ -244,7 +248,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../user-guide/testing/mate-in-one-test/" class="md-tabs__link">
+        <a href="../../user-guide/testing/mate-in-one-test/" class="md-tabs__link">
           
   
   
@@ -267,7 +271,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../tutorials/gitbub_usage/" class="md-tabs__link">
+        <a href="../../tutorials/gitbub_usage/" class="md-tabs__link">
           
   
   
@@ -283,13 +287,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../code-reviews/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../engine/code-reviews/" class="md-tabs__link">
           
   
   
@@ -325,7 +327,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="Hynobius Documentations" class="md-nav__button md-logo" aria-label="Hynobius Documentations" data-md-component="logo">
+    <a href="../.." title="Hynobius Documentations" class="md-nav__button md-logo" aria-label="Hynobius Documentations" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -393,7 +395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -421,7 +423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../project-overview/" class="md-nav__link">
+      <a href="../../project-overview/" class="md-nav__link">
         
   
   
@@ -453,24 +455,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -488,7 +495,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -506,7 +513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -531,10 +538,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../architecture/Attack/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attack
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -550,6 +584,137 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Purpose
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-architechture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Architechture?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scope">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Includes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#excludes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Excludes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issquareattacked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        isSquareAttacked()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#countsquareattacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        countSquareAttacks()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -562,7 +727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../architecture/BitMove/" class="md-nav__link">
+      <a href="../BitMove/" class="md-nav__link">
         
   
   
@@ -697,7 +862,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/testing/mate-in-one-test/" class="md-nav__link">
+      <a href="../../user-guide/testing/mate-in-one-test/" class="md-nav__link">
         
   
   
@@ -725,7 +890,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/testing/Opening/" class="md-nav__link">
+      <a href="../../user-guide/testing/Opening/" class="md-nav__link">
         
   
   
@@ -753,7 +918,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../user-guide/testing/Perft/" class="md-nav__link">
+      <a href="../../user-guide/testing/Perft/" class="md-nav__link">
         
   
   
@@ -846,7 +1011,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorials/gitbub_usage/" class="md-nav__link">
+      <a href="../../tutorials/gitbub_usage/" class="md-nav__link">
         
   
   
@@ -878,29 +1043,24 @@
       
   
   
-    
   
   
-  
     
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -918,7 +1078,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -936,7 +1096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../code-reviews/" class="md-nav__link">
+      <a href="../../engine/code-reviews/" class="md-nav__link">
         
   
   
@@ -961,8 +1121,6 @@
                 
   
   
-    
-  
   
   
     
@@ -973,11 +1131,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
         
           
           <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
@@ -998,7 +1156,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1013,19 +1171,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../engine/optimization/engine-improvement/" class="md-nav__link">
         
   
   
@@ -1041,7 +1190,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -1079,101 +1227,62 @@
 
 
 
-<h1 id="engine-improvement">engine improvement<a class="headerlink" href="#engine-improvement" title="Permanent link">&para;</a></h1>
-<table>
-<thead>
-<tr>
-<th>日期</th>
-<th>初始局面深度 6 所需時間</th>
-<th>精度</th>
-<th>Negamax 節點數</th>
-<th>QuietScence 節點數</th>
-<th>功能改動</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2026/2/3 之前</td>
-<td><span class="arithmatex">\(\approx 2 s\)</span></td>
-<td><span class="arithmatex">\(50 /100\)</span></td>
-<td><span class="arithmatex">\(\approx 70000\)</span></td>
-<td><span class="arithmatex">\(\approx 50000\)</span></td>
-<td><span class="arithmatex">\(\alpha \beta\ Search\)</span>+QuietScence</td>
-</tr>
-<tr>
-<td>2026/2/3</td>
-<td><span class="arithmatex">\(\approx 5 s\)</span></td>
-<td><span class="arithmatex">\(70/100\)</span></td>
-<td><span class="arithmatex">\(125636\)</span></td>
-<td><span class="arithmatex">\(108325\)</span></td>
-<td>加入 Mobility</td>
-</tr>
-<tr>
-<td>2026/2/5</td>
-<td>初始局面 <span class="arithmatex">\(1560ms\)</span></td>
-<td>未測量</td>
-<td><span class="arithmatex">\(39917\)</span></td>
-<td><span class="arithmatex">\(31046\)</span></td>
-<td>加入 <code>TT</code></td>
-</tr>
-<tr>
-<td>2026/2/10</td>
-<td>初始局面 <span class="arithmatex">\(3350ms\)</span>，中盤 <span class="arithmatex">\(10s\)</span></td>
-<td>未測量</td>
-<td><span class="arithmatex">\(428791\)</span></td>
-<td><span class="arithmatex">\(417649\)</span></td>
-<td>還原成正確版 <span class="arithmatex">\(\text{Negamax}\)</span></td>
-</tr>
-<tr>
-<td>2026/2/10</td>
-<td>初始局面 <span class="arithmatex">\(3350ms\)</span>，中盤 <span class="arithmatex">\(10s\)</span></td>
-<td>未測量</td>
-<td><span class="arithmatex">\(471392\)</span></td>
-<td><span class="arithmatex">\(414627\)</span></td>
-<td>加入 <span class="arithmatex">\(\text{Delta Pruning}\)</span></td>
-</tr>
-<tr>
-<td>2026/2/10</td>
-<td>初始局面 <span class="arithmatex">\(527ms\)</span>，中盤 <span class="arithmatex">\(2s\)</span></td>
-<td>未測量</td>
-<td><span class="arithmatex">\(51745\)</span></td>
-<td><span class="arithmatex">\(41488\)</span></td>
-<td>加入 <span class="arithmatex">\(\text{LMR}\)</span></td>
-</tr>
-<tr>
-<td>2026/2/15</td>
-<td>初始局面 <span class="arithmatex">\(851ms\)</span>，中盤 <span class="arithmatex">\(5s\)</span></td>
-<td>未測量</td>
-<td><span class="arithmatex">\(70665\)</span></td>
-<td><span class="arithmatex">\(55754\)</span></td>
-<td>加入 <span class="arithmatex">\(\text{aspiration window}\)</span>，並在 QS 內使用完整分析</td>
-</tr>
-</tbody>
-</table>
-<p>從 2026/2/18 開始，統一以 <code>position startpos moves d2d4 g8f6 c1f4 d7d6 e2e3 c8g4 g1f3 b8c6 b1d2</code> 此位置為準，與 <code>go depth 6</code> 來測量以下數據。</p>
-<table>
-<thead>
-<tr>
-<th>日期</th>
-<th>總節點數</th>
-<th>QS節點數</th>
-<th>耗時</th>
-<th>每秒節點數</th>
-<th>備註</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2026/2/18</td>
-<td><span class="arithmatex">\(191563\)</span></td>
-<td><span class="arithmatex">\(101219\)</span></td>
-<td><span class="arithmatex">\(1244ms\)</span></td>
-<td><span class="arithmatex">\(153989\)</span></td>
-<td>加入 <span class="arithmatex">\(\text{Killer move}\)</span> 紀錄，並以相同中盤為基準測量。</td>
-</tr>
-</tbody>
-</table>
-<p>From 4/11, engine improvement is measured using A/B test. Please see [TODO] to check engine strength.</p>
+<h1 id="architecture-attack">Architecture: Attack<a class="headerlink" href="#architecture-attack" title="Permanent link">&para;</a></h1>
+<h2 id="implementation-at">Implementation at<a class="headerlink" href="#implementation-at" title="Permanent link">&para;</a></h2>
+<p><code>Attack.h</code> and <code>Attack.cpp</code>.</p>
+<hr />
+<h2 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">&para;</a></h2>
+<p>Check whether a square is attacked.</p>
+<p>Count how much time a square is attacked.</p>
+<hr />
+<h2 id="why-this-architechture">Why This Architechture?<a class="headerlink" href="#why-this-architechture" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Due to two-dimensional board design, one must enumerate every square that a square can be attacked from.</li>
+<li>By separating counting and checking system, it will be faster to use <code>isSquareAttacked()</code> than <code>countSquareAttacks()</code>.</li>
+</ul>
+<hr />
+<h2 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h2>
+<h3 id="includes">Includes<a class="headerlink" href="#includes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Count how many pieces are attacking the square.</li>
+<li>Check whether the  square is attacked.</li>
+</ul>
+<h3 id="excludes">Excludes<a class="headerlink" href="#excludes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Get which piece is attacking the square.</li>
+</ul>
+<hr />
+<h2 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="Permanent link">&para;</a></h2>
+<h3 id="issquareattacked">isSquareAttacked()<a class="headerlink" href="#issquareattacked" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>isSquareAttacked(board, pos, player)
+
+=== ↓ ===
+
+isPawnAttacking(board, pos, player)
+isKnightAttacking(board, pos, player)
+isDiagonalAttacking(board, pos, player)
+isStraightAttacking(board, pos, player)
+isKingAttacking(board, pos, player)
+
+=== ↓ ===
+
+return bool
+</code></pre></div>
+<h3 id="countsquareattacks">countSquareAttacks()<a class="headerlink" href="#countsquareattacks" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>isSquareAttacked(board, pos, player)
+
+=== ↓ ===
+
+countPawnAttacks(board, pos, player)
+countKnightAttacks(board, pos, player)
+countDiagonalAttacks(board, pos, player)
+countStraightAttacks(board, pos, player)
+countKingAttacks(board, pos, player)
+
+=== ↓ ===
+
+return counts
+</code></pre></div>
 
 
 
@@ -1229,16 +1338,16 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "search.highlight", "search.suggest", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.top", "search.highlight", "search.suggest", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
       
-        <script src="../../../web_codes/javascripts/mermaid_init.js"></script>
+        <script src="../../web_codes/javascripts/mermaid_init.js"></script>
       
     
   </body>
