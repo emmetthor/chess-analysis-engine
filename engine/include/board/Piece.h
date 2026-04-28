@@ -70,10 +70,7 @@ inline bool isValidPieceIndex(const int index)
 // Turn `Piece` to `char`.
 inline char pieceToChar(const Piece p)
 {
-    if (!isValidPieceIndex(pieceToIndex(p)))
-    {
-        ENGINE_FATAL("piece", "invalid piece index: ", pieceToIndex(p));
-    }
+    ENGINE_ASSERT(p == Piece::EMPTY || isValidPieceIndex(pieceToIndex(p)));
 
     return PIECE_TO_CHAR[pieceToIndex(p)];
 }

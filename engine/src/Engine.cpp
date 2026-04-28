@@ -7,8 +7,11 @@
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
 #include "search/Search.h"
+#include "search/Zobrist.h"
 
-Engine::Engine() {}
+Engine::Engine() {
+    initZobrist();
+}
 
 void Engine::setStartPosition()
 {
