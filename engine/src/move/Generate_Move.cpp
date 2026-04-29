@@ -44,23 +44,20 @@ void generatePieceMoves(const Board& board, const Piece movePiece, Emit&& emit)
     {
         const Square fromSquare = positionToSquare(posArray[i]);
 
-        int n = generatePiecePosFromPos(board, posArray[i], movePiece, posBuffer);
-
-        // for all moves in posArray.
-        for (int j = 0; j < n; j++)
+        generatePiecePosFromPos(board, posArray[i], movePiece, [&](const Position toPos)
         {
             const BitMove move =  makeBitMove(
                 fromSquare,
-                positionToSquare(posBuffer[j]),
+                positionToSquare(toPos),
                 Piece::EMPTY,
-                board.at(posBuffer[j]) != Piece::EMPTY,
+                board.at(toPos) != Piece::EMPTY,
                 false,
                 false,
                 false
             );
 
             emit(move);
-        }
+        });
     }
 }
 
@@ -82,17 +79,14 @@ void generatePieceCapture(const Board& board, const Piece movePiece, Emit&& emit
     {
         const Square fromSquare = positionToSquare(posArray[i]);
 
-        int n = generatePiecePosFromPos(board, posArray[i], movePiece, posBuffer);
-
-        // for all moves in posArray.
-        for (int j = 0; j < n; j++)
+        generatePiecePosFromPos(board, posArray[i], movePiece, [&](const Position toPos)
         {
-            const bool isCapture = board.at(posBuffer[j]) != Piece::EMPTY;
-            if (!isCapture) continue;
+            const bool isCapture = board.at(toPos) != Piece::EMPTY;
+            if (!isCapture) return;
 
             const BitMove move = makeBitMove(
                 fromSquare,
-                positionToSquare(posBuffer[j]),
+                positionToSquare(toPos),
                 Piece::EMPTY,
                 isCapture,
                 false,
@@ -101,7 +95,7 @@ void generatePieceCapture(const Board& board, const Piece movePiece, Emit&& emit
             );
 
             emit(move);
-        }
+        });
     }
 }
 
