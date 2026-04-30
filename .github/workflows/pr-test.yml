@@ -3,7 +3,8 @@ name: PR Test
 on:
   pull_request:
     branches:
-      - main
+      - 'main'
+      - 'dev'
     paths:
       - 'engine/src/search/**'
       - 'engine/include/search/**'
