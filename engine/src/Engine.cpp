@@ -7,8 +7,12 @@
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
 #include "search/Search.h"
+#include "search/Zobrist.h"
 
-Engine::Engine() {}
+Engine::Engine()
+{
+    initZobrist();
+}
 
 void Engine::setStartPosition()
 {
@@ -20,7 +24,7 @@ void Engine::setPositionWithFen(const std::string& fen)
     board = cinFenToBoard(fen);
 }
 
-void Engine::checkReady() {}
+void Engine::checkReady() const {}
 
 void Engine::move(Move move)
 {
@@ -72,4 +76,4 @@ SearchResult Engine::fullInfoSearch(int depth)
     return res;
 }
 
-void Engine::quit() {}
+void Engine::quit() const {}

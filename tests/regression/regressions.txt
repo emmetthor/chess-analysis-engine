@@ -29,3 +29,7 @@ bestmove: b7c8
 # pass pawn weight / end game
 fen: 8/1Br2k2/4p1p1/4P1Pp/pprP1n1P/8/1P1R1P2/3R2K1 w - - 2 35
 bestmove: b7e4 b7f3
+
+# king safety
+fen: 1r3r2/pp2q1kp/2nb4/5R2/6P1/P3PQ1P/2PB4/5RK1 b - - 2 30
+bestmove: f8f5

@@ -1,0 +1,59 @@
+site_name: Hynobius Documentations
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.integrate
+
+nav:
+  - Menu: 
+    - Index Page: index.md
+    - Overview: project-overview.md
+  - Architectures:
+    - 總架構(待拆分): architecture\architecture.md
+    - Attack: architecture\Attack.md
+    - Bit move: architecture\BitMove.md
+  - User Guilds:
+    - Testing:
+      - Mate in One Test: user-guide\testing\mate-in-one-test.md
+      - Opening Book: user-guide\testing\Opening.md
+      - Perft Test: user-guide\testing\Perft.md
+  - Tutorials:
+    - GitHub Usage: tutorials\gitbub_usage\index.md
+  - Engine Development Docs:
+    - Code reviews: engine\code-reviews\index.md
+    - Optimizations:
+      - Early Optimization Recode: engine\optimization\engine-improvement.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
+      toc_depth: 4
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - web_codes/javascripts/mermaid_init.js
+  
+extra_css:
+  - web_codes/stylesheets/extra.css

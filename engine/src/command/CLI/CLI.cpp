@@ -1,4 +1,5 @@
 #include "command/CLI/CLI.h"
+#include "Engine.h"
 #include "board/Board.h"
 #include "debug/perft.h"
 #include "fen/FEN_Parser.h"
