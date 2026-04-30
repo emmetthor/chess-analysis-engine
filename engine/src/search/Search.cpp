@@ -112,7 +112,8 @@ SearchResult Search::findBestMove(const Board& board)
     }
 
     // set max depth.
-    const int maxDepth = limits.maxDepth == -1 ? SearchVarialble::MAX_SEARCH_DEPTH : limits.maxDepth;
+    const int maxDepth =
+        limits.maxDepth == -1 ? SearchVarialble::MAX_SEARCH_DEPTH : limits.maxDepth;
 
     BitMove lastBestMove = INVALID_BITMOVE;
     // iterative deepening

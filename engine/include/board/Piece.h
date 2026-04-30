@@ -83,7 +83,8 @@ inline bool isWhite(const Piece p)
         ENGINE_FATAL("piece", "empty piece does not have a color");
     }
 
-    if (pieceToIndex(Piece::WPAWN) <= pieceToIndex(p) && pieceToIndex(p) <= pieceToIndex(Piece::WKING))
+    if (pieceToIndex(Piece::WPAWN) <= pieceToIndex(p) &&
+        pieceToIndex(p) <= pieceToIndex(Piece::WKING))
         return true;
     else
         return false;
@@ -97,7 +98,8 @@ inline bool isBlack(const Piece p)
         ENGINE_FATAL("piece", "empty piece does not have a color");
     }
 
-    if (pieceToIndex(Piece::BPAWN) <= pieceToIndex(p) && pieceToIndex(p) <= pieceToIndex(Piece::BKING))
+    if (pieceToIndex(Piece::BPAWN) <= pieceToIndex(p) &&
+        pieceToIndex(p) <= pieceToIndex(Piece::BKING))
         return true;
     else
         return false;

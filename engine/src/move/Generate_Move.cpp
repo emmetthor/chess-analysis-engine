@@ -1,14 +1,14 @@
-#include "debug/log.h"
-#include "debug/validation.h"
 #include "Type.h"
 #include "board/Attack.h"
 #include "board/Board.h"
 #include "board/Check.h"
 #include "board/Piece.h"
+#include "debug/log.h"
+#include "debug/validation.h"
 #include "move/Generate_Position.h"
+#include "move/Generate_Variables.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
-#include "move/Generate_Variables.h"
 #pragma GCC optimize("O3,unroll-loops")
 
 // WARN must be sure that doBitMove and undoBitMove won't break board states.
@@ -26,7 +26,7 @@ bool isPseudoLegalMoveLegal(Board& board, const BitMove move)
     return legal;
 }
 
-template<typename Emit>
+template <typename Emit>
 void generatePieceMoves(const Board& board, const Piece movePiece, Emit&& emit)
 {
     // check inputs.
@@ -44,24 +44,26 @@ void generatePieceMoves(const Board& board, const Piece movePiece, Emit&& emit)
     {
         const Square fromSquare = positionToSquare(posArray[i]);
 
-        generatePiecePosFromPos(board, posArray[i], movePiece, [&](const Position toPos)
-        {
-            const BitMove move =  makeBitMove(
-                fromSquare,
-                positionToSquare(toPos),
-                Piece::EMPTY,
-                board.at(toPos) != Piece::EMPTY,
-                false,
-                false,
-                false
-            );
+        generatePiecePosFromPos(board,
+                                posArray[i],
+                                movePiece,
+                                [&](const Position toPos)
+                                {
+                                    const BitMove move =
+                                        makeBitMove(fromSquare,
+                                                    positionToSquare(toPos),
+                                                    Piece::EMPTY,
+                                                    board.at(toPos) != Piece::EMPTY,
+                                                    false,
+                                                    false,
+                                                    false);
 
-            emit(move);
-        });
+                                    emit(move);
+                                });
     }
 }
 
-template<typename Emit>
+template <typename Emit>
 void generatePieceCapture(const Board& board, const Piece movePiece, Emit&& emit)
 {
     // check inputs.
@@ -79,28 +81,29 @@ void generatePieceCapture(const Board& board, const Piece movePiece, Emit&& emit
     {
         const Square fromSquare = positionToSquare(posArray[i]);
 
-        generatePiecePosFromPos(board, posArray[i], movePiece, [&](const Position toPos)
-        {
-            const bool isCapture = board.at(toPos) != Piece::EMPTY;
-            if (!isCapture) return;
+        generatePiecePosFromPos(board,
+                                posArray[i],
+                                movePiece,
+                                [&](const Position toPos)
+                                {
+                                    const bool isCapture = board.at(toPos) != Piece::EMPTY;
+                                    if (!isCapture)
+                                        return;
 
-            const BitMove move = makeBitMove(
-                fromSquare,
-                positionToSquare(toPos),
-                Piece::EMPTY,
-                isCapture,
-                false,
-                false,
-                false
-            );
+                                    const BitMove move = makeBitMove(fromSquare,
+                                                                     positionToSquare(toPos),
+                                                                     Piece::EMPTY,
+                                                                     isCapture,
+                                                                     false,
+                                                                     false,
+                                                                     false);
 
-            emit(move);
-        });
+                                    emit(move);
+                                });
     }
 }
 
-template<typename Emit>
-int generatePawnQuietMoves(const Board& board, Emit&& emit)
+template <typename Emit> int generatePawnQuietMoves(const Board& board, Emit&& emit)
 {
     const Player player = board.player;
 
@@ -135,14 +138,7 @@ int generatePawnQuietMoves(const Board& board, Emit&& emit)
                 for (auto promo : {knight, bishop, rook, queen})
                 {
                     const BitMove move = makeBitMove(
-                        fromSquare,
-                        pushOneStepSquare,
-                        promo,
-                        false,
-                        false,
-                        false,
-                        true
-                    );
+                        fromSquare, pushOneStepSquare, promo, false, false, false, true);
 
                     emit(move);
                 }
@@ -150,14 +146,7 @@ int generatePawnQuietMoves(const Board& board, Emit&& emit)
             else
             {
                 const BitMove move = makeBitMove(
-                    fromSquare,
-                    pushOneStepSquare,
-                    Piece::EMPTY,
-                    false,
-                    false,
-                    false,
-                    false
-                );
+                    fromSquare, pushOneStepSquare, Piece::EMPTY, false, false, false, false);
 
                 emit(move);
             }
@@ -167,14 +156,7 @@ int generatePawnQuietMoves(const Board& board, Emit&& emit)
             board.at(pushTwoStep) == Piece::EMPTY)
         {
             const BitMove move = makeBitMove(
-                fromSquare,
-                pushTwoStepSquare,
-                Piece::EMPTY,
-                false,
-                false,
-                false,
-                false
-            );
+                fromSquare, pushTwoStepSquare, Piece::EMPTY, false, false, false, false);
 
             emit(move);
         }
@@ -183,8 +165,7 @@ int generatePawnQuietMoves(const Board& board, Emit&& emit)
     return cnt;
 }
 
-template<typename Emit>
-int generatePawnCaptures(const Board& board, Emit&& emit)
+template <typename Emit> int generatePawnCaptures(const Board& board, Emit&& emit)
 {
     int cnt = 0;
     const Player player = board.player;
@@ -223,30 +204,16 @@ int generatePawnCaptures(const Board& board, Emit&& emit)
 
                 for (auto promo : {knight, bishop, rook, queen})
                 {
-                    const BitMove move = makeBitMove(
-                        fromSquare,
-                        toSquare,
-                        promo,
-                        true,
-                        false,
-                        false,
-                        true
-                    );
+                    const BitMove move =
+                        makeBitMove(fromSquare, toSquare, promo, true, false, false, true);
 
                     emit(move);
                 }
             }
             else
             {
-                const BitMove move = makeBitMove(
-                    fromSquare,
-                    toSquare,
-                    Piece::EMPTY,
-                    true,
-                    false,
-                    false,
-                    false
-                );
+                const BitMove move =
+                    makeBitMove(fromSquare, toSquare, Piece::EMPTY, true, false, false, false);
 
                 emit(move);
             }
@@ -256,8 +223,7 @@ int generatePawnCaptures(const Board& board, Emit&& emit)
     return cnt;
 }
 
-template<typename Emit>
-int generateEnPassants(const Board& board, Emit&& emit)
+template <typename Emit> int generateEnPassants(const Board& board, Emit&& emit)
 {
     // if it is not possible to en passant
     if (board.enPassantPos == POS_NONE)
@@ -294,15 +260,8 @@ int generateEnPassants(const Board& board, Emit&& emit)
 
             const Square toSquare = positionToSquare(toPos);
 
-            const BitMove move = makeBitMove(
-                fromSquare,
-                toSquare,
-                Piece::EMPTY,
-                true,
-                false,
-                true,
-                false
-            );
+            const BitMove move =
+                makeBitMove(fromSquare, toSquare, Piece::EMPTY, true, false, true, false);
 
             emit(move);
         }
@@ -311,8 +270,7 @@ int generateEnPassants(const Board& board, Emit&& emit)
     return cnt;
 }
 
-template<typename Emit>
-int generateCastling(const Board& board, Emit&& emit)
+template <typename Emit> int generateCastling(const Board& board, Emit&& emit)
 {
     // fast check.
     if (board.castleRights == 0)
@@ -328,7 +286,6 @@ int generateCastling(const Board& board, Emit&& emit)
 
     // safety: king must be on e-file.
     ENGINE_ASSERT(board.at(kingPos) == makePiece(player, 'K'));
-    
 
     // king side.
     if (player == Player::WHITE)
@@ -346,13 +303,8 @@ int generateCastling(const Board& board, Emit&& emit)
                     !isSquareAttacked(board, f, Player::BLACK) &&
                     !isSquareAttacked(board, g, Player::BLACK))
                 {
-                    const BitMove move = makeBitMove(kingSquare,
-                                                positionToSquare(g),
-                                                Piece::EMPTY,
-                                                false,
-                                                true,
-                                                false,
-                                                false);
+                    const BitMove move = makeBitMove(
+                        kingSquare, positionToSquare(g), Piece::EMPTY, false, true, false, false);
 
                     emit(move);
                 }
@@ -376,14 +328,7 @@ int generateCastling(const Board& board, Emit&& emit)
                     !isSquareAttacked(board, g, Player::WHITE))
                 {
                     const BitMove move = makeBitMove(
-                        kingSquare,
-                        positionToSquare(g),
-                        Piece::EMPTY,
-                        false,
-                        true,
-                        false,
-                        false
-                    );
+                        kingSquare, positionToSquare(g), Piece::EMPTY, false, true, false, false);
 
                     emit(move);
                 }
@@ -410,14 +355,7 @@ int generateCastling(const Board& board, Emit&& emit)
                     !isSquareAttacked(board, c, Player::BLACK))
                 {
                     const BitMove move = makeBitMove(
-                        kingSquare,
-                        positionToSquare(c),
-                        Piece::EMPTY,
-                        false,
-                        true,
-                        false,
-                        false
-                    );
+                        kingSquare, positionToSquare(c), Piece::EMPTY, false, true, false, false);
 
                     emit(move);
                 }
@@ -442,14 +380,7 @@ int generateCastling(const Board& board, Emit&& emit)
                     !isSquareAttacked(board, c, Player::WHITE))
                 {
                     const BitMove move = makeBitMove(
-                        kingSquare,
-                        positionToSquare(c),
-                        Piece::EMPTY,
-                        false,
-                        true,
-                        false,
-                        false
-                    );
+                        kingSquare, positionToSquare(c), Piece::EMPTY, false, true, false, false);
 
                     emit(move);
                 }
@@ -459,7 +390,7 @@ int generateCastling(const Board& board, Emit&& emit)
     return cnt;
 }
 
-template<typename Emit>
+template <typename Emit>
 int generatePseudoLegalMoves(const Board& board, BitMove* buffer, Emit&& emit)
 {
     const Player player = board.player;
@@ -469,8 +400,8 @@ int generatePseudoLegalMoves(const Board& board, BitMove* buffer, Emit&& emit)
 
     int cnt = 0;
     const Piece pawn = makePiece(player, 'P'), knight = makePiece(player, 'N'),
-          bishop = makePiece(player, 'B'), rook = makePiece(player, 'R'),
-          queen = makePiece(player, 'Q'), king = makePiece(player, 'K');
+                bishop = makePiece(player, 'B'), rook = makePiece(player, 'R'),
+                queen = makePiece(player, 'Q'), king = makePiece(player, 'K');
 
     generatePieceMoves(board, knight, emit);
     generatePieceMoves(board, bishop, emit);
@@ -487,7 +418,7 @@ int generatePseudoLegalMoves(const Board& board, BitMove* buffer, Emit&& emit)
     return cnt;
 }
 
-template<typename Emit>
+template <typename Emit>
 int generatePseudoLegalCaptures(const Board& board, BitMove* buffer, Emit&& emit)
 {
     const Player player = board.player;
@@ -496,8 +427,8 @@ int generatePseudoLegalCaptures(const Board& board, BitMove* buffer, Emit&& emit
 
     int cnt = 0;
     const Piece pawn = makePiece(player, 'P'), knight = makePiece(player, 'N'),
-          bishop = makePiece(player, 'B'), rook = makePiece(player, 'R'),
-          queen = makePiece(player, 'Q'), king = makePiece(player, 'K');
+                bishop = makePiece(player, 'B'), rook = makePiece(player, 'R'),
+                queen = makePiece(player, 'Q'), king = makePiece(player, 'K');
 
     generatePieceCapture(board, knight, emit);
     generatePieceCapture(board, bishop, emit);
@@ -541,13 +472,15 @@ int generateAllLegalMoves(Board& board, BitMove* buffer)
     ENGINE_ASSERT(isPlayerValid(board.player));
 
     int cnt = 0;
-    generatePseudoLegalMoves(board, buffer, [&](BitMove move)
-    {
-        if (isPseudoLegalMoveLegal(board, move))
-        {
-            buffer[cnt++] = move;
-        }
-    });
+    generatePseudoLegalMoves(board,
+                             buffer,
+                             [&](BitMove move)
+                             {
+                                 if (isPseudoLegalMoveLegal(board, move))
+                                 {
+                                     buffer[cnt++] = move;
+                                 }
+                             });
 
     return cnt;
 }
@@ -555,15 +488,17 @@ int generateAllLegalMoves(Board& board, BitMove* buffer)
 int generateLegalCaptureMoves(Board& board, BitMove* buffer)
 {
     ENGINE_ASSERT(isPlayerValid(board.player));
-    
+
     int cnt = 0;
-    generatePseudoLegalCaptures(board, buffer, [&](BitMove move)
-    {
-        if (isPseudoLegalMoveLegal(board, move))
-        {
-            buffer[cnt++] = move;
-        }
-    });
+    generatePseudoLegalCaptures(board,
+                                buffer,
+                                [&](BitMove move)
+                                {
+                                    if (isPseudoLegalMoveLegal(board, move))
+                                    {
+                                        buffer[cnt++] = move;
+                                    }
+                                });
 
     return cnt;
 }

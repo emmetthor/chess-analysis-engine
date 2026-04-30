@@ -9,7 +9,8 @@
 #include "search/Search.h"
 #include "search/Zobrist.h"
 
-Engine::Engine() {
+Engine::Engine()
+{
     initZobrist();
 }
 

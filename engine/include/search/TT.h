@@ -38,4 +38,9 @@ bool probeTT(const uint64_t key,
              int& scoreOut,
              BitMove& moveOut);
 
-void storeTT(const uint64_t key, const int depth, const int ply, const int score, const TTFlag flag, const BitMove bestMove);
+void storeTT(const uint64_t key,
+             const int depth,
+             const int ply,
+             const int score,
+             const TTFlag flag,
+             const BitMove bestMove);

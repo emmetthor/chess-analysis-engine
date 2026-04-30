@@ -251,11 +251,16 @@ bool isSquareAttacked(const Board& board, Position pos, const Player player)
     // check position
     ENGINE_ASSERT(isInBoard(pos));
 
-    if (isPawnAttacking(board, pos, player)) return true;
-    if (isKnightAttacking(board, pos, player)) return true;
-    if (isDiagonalAttacking(board, pos, player)) return true;
-    if (isStraightAttacking(board, pos, player)) return true;
-    if (isKingAttacking(board, pos, player)) return true;
+    if (isPawnAttacking(board, pos, player))
+        return true;
+    if (isKnightAttacking(board, pos, player))
+        return true;
+    if (isDiagonalAttacking(board, pos, player))
+        return true;
+    if (isStraightAttacking(board, pos, player))
+        return true;
+    if (isKingAttacking(board, pos, player))
+        return true;
 
     return false;
 }

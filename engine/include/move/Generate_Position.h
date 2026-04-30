@@ -4,7 +4,12 @@
 #include "move/Move_Direction.h"
 
 template <typename Emit>
-void generatePosFromPosWithJumpPiece(const Board& board, const Position& pos, Piece movePiece, const int dr[], const int dc[], Emit&& emit)
+void generatePosFromPosWithJumpPiece(const Board& board,
+                                     const Position& pos,
+                                     Piece movePiece,
+                                     const int dr[],
+                                     const int dc[],
+                                     Emit&& emit)
 {
     ENGINE_ASSERT(isInBoard(pos));
     ENGINE_ASSERT(movePiece != Piece::EMPTY);
@@ -24,7 +29,12 @@ void generatePosFromPosWithJumpPiece(const Board& board, const Position& pos, Pi
 }
 
 template <typename Emit>
-void generatePosFromPosWithSlidePiece(const Board& board, const Position& pos, Piece movePiece, const int dr[], const int dc[], Emit&& emit)
+void generatePosFromPosWithSlidePiece(const Board& board,
+                                      const Position& pos,
+                                      Piece movePiece,
+                                      const int dr[],
+                                      const int dc[],
+                                      Emit&& emit)
 {
     ENGINE_ASSERT(isInBoard(pos));
     ENGINE_ASSERT(movePiece != Piece::EMPTY);
@@ -53,7 +63,12 @@ void generatePosFromPosWithSlidePiece(const Board& board, const Position& pos, P
 }
 
 template <typename Emit>
-void generateCaptureFromPosWithJumpPiece(const Board& board, const Position& pos, Piece movePiece, const int dr[], const int dc[], Emit&& emit)
+void generateCaptureFromPosWithJumpPiece(const Board& board,
+                                         const Position& pos,
+                                         Piece movePiece,
+                                         const int dr[],
+                                         const int dc[],
+                                         Emit&& emit)
 {
     ENGINE_ASSERT(isInBoard(pos));
     ENGINE_ASSERT(movePiece != Piece::EMPTY);
@@ -75,7 +90,12 @@ void generateCaptureFromPosWithJumpPiece(const Board& board, const Position& pos
 }
 
 template <typename Emit>
-int generateCaptureFromPosWithSlidePiece(const Board& board, const Position& pos, Piece movePiece, const int dr[], const int dc[], Emit&& emit)
+int generateCaptureFromPosWithSlidePiece(const Board& board,
+                                         const Position& pos,
+                                         Piece movePiece,
+                                         const int dr[],
+                                         const int dc[],
+                                         Emit&& emit)
 {
     ENGINE_ASSERT(isInBoard(pos));
     ENGINE_ASSERT(movePiece != Piece::EMPTY);
@@ -125,11 +145,11 @@ void generatePiecePosFromPos(const Board& board, const Position pos, const Piece
         case Piece::WBISHOP:
         case Piece::BBISHOP:
             generatePosFromPosWithSlidePiece(board,
-                                                    pos,
-                                                    p,
-                                                    MoveDirection::BISHOP_QUEEN_DR,
-                                                    MoveDirection::BISHOP_QUEEN_DC,
-                                                    emit);
+                                             pos,
+                                             p,
+                                             MoveDirection::BISHOP_QUEEN_DR,
+                                             MoveDirection::BISHOP_QUEEN_DC,
+                                             emit);
             return;
 
         case Piece::WROOK:
@@ -144,11 +164,11 @@ void generatePiecePosFromPos(const Board& board, const Position pos, const Piece
             generatePosFromPosWithSlidePiece(
                 board, pos, p, MoveDirection::ROOK_QUEEN_DR, MoveDirection::ROOK_QUEEN_DC, emit);
             generatePosFromPosWithSlidePiece(board,
-                                                      pos,
-                                                      p,
-                                                      MoveDirection::BISHOP_QUEEN_DR,
-                                                      MoveDirection::BISHOP_QUEEN_DC,
-                                                      emit);
+                                             pos,
+                                             p,
+                                             MoveDirection::BISHOP_QUEEN_DR,
+                                             MoveDirection::BISHOP_QUEEN_DC,
+                                             emit);
         }
             return;
 
@@ -157,7 +177,7 @@ void generatePiecePosFromPos(const Board& board, const Position pos, const Piece
             generatePosFromPosWithJumpPiece(
                 board, pos, p, MoveDirection::KING_DR, MoveDirection::KING_DC, emit);
             return;
-    
+
         case Piece::WPAWN:
         case Piece::BPAWN:
             ENGINE_FATAL("generate position", "pawns are not pieces.");
@@ -185,11 +205,11 @@ void generatePieceCaptureFromPos(const Board& board, const Position pos, const P
         case Piece::WBISHOP:
         case Piece::BBISHOP:
             generateCaptureFromPosWithSlidePiece(board,
-                                                        pos,
-                                                        p,
-                                                        MoveDirection::BISHOP_QUEEN_DR,
-                                                        MoveDirection::BISHOP_QUEEN_DC,
-                                                        emit);
+                                                 pos,
+                                                 p,
+                                                 MoveDirection::BISHOP_QUEEN_DR,
+                                                 MoveDirection::BISHOP_QUEEN_DC,
+                                                 emit);
             return;
 
         case Piece::WROOK:
@@ -203,11 +223,11 @@ void generatePieceCaptureFromPos(const Board& board, const Position pos, const P
             generateCaptureFromPosWithSlidePiece(
                 board, pos, p, MoveDirection::ROOK_QUEEN_DR, MoveDirection::ROOK_QUEEN_DC, emit);
             generateCaptureFromPosWithSlidePiece(board,
-                                                pos,
-                                                p,
-                                                MoveDirection::BISHOP_QUEEN_DR,
-                                                MoveDirection::BISHOP_QUEEN_DC,
-                                                emit);
+                                                 pos,
+                                                 p,
+                                                 MoveDirection::BISHOP_QUEEN_DR,
+                                                 MoveDirection::BISHOP_QUEEN_DC,
+                                                 emit);
             return;
 
         case Piece::WKING:
