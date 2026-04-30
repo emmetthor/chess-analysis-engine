@@ -285,7 +285,10 @@ template <typename Emit> int generateCastling(const Board& board, Emit&& emit)
     const Square kingSquare = positionToSquare(kingPos);
 
     // safety: king must be on e-file.
-    ENGINE_ASSERT(board.at(kingPos) == makePiece(player, 'K'));
+    if (board.at(kingPos) != makePiece(player, 'K'))
+    {
+        return 0;
+    }
 
     // king side.
     if (player == Player::WHITE)
