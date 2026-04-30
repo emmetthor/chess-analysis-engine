@@ -17,7 +17,8 @@ void computePiecePos(Board& board)
                 continue;
 
             int pIndex = pieceToIndex(p);
-            board.piecePos[pIndex][board.pieceCount[pIndex]++] = {r, c};        }
+            board.piecePos[pIndex][board.pieceCount[pIndex]++] = {r, c};
+        }
     }
 }
 

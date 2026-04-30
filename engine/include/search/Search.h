@@ -53,6 +53,8 @@ private:
 
     UndoState undoState[SearchVarialble::MAX_PLY + 5];
 
+    BitMove moveBuffer[SearchVarialble::MAX_PLY + 5][256] = {INVALID_BITMOVE};
+
     struct SearchState
     {
         bool stopped = false;
