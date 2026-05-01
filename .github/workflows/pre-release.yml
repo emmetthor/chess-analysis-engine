@@ -61,7 +61,7 @@ jobs:
         if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
-          $commitMessage = git log -1 --pretty=%B
+          $commitMessage = (git log -1 --pretty=%B) -join "`n"
 
           $notes = @(
             "$commitMessage"
