@@ -64,12 +64,7 @@ jobs:
           $commitMessage = git log -1 --pretty=%B
 
           $notes = @(
-            "````text"
-            "This is a pre-release: $env:TAG_NAME with commit $env:SHORT_SHA"
-            ""
             "$commitMessage"
-            ""
-            "````"
           ) -join "`n"
 
           $notes | Set-Content -Path release-notes.md -Encoding utf8
