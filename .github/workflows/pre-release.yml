@@ -25,6 +25,10 @@ jobs:
         run: |
           $commitMessage = git log -1 --pretty=%B
 
+          Write-Host "========== Commit message start =========="
+          Write-Host $commitMessage
+          Write-Host "========== Commit message end =========="
+
           $match = [regex]::Match(
             $commitMessage,
             '(?im)^\s*Pre[- ]Release\s*[:：]\s*(v\d+\.\d+\.\d+-(alpha|beta|rc)\.\d+)\s*$'
@@ -39,7 +43,6 @@ jobs:
           $tagName = $match.Groups[1].Value
           $shortSha = git rev-parse --short=8 HEAD
           $fullSha = git rev-parse HEAD
-          $commitSubject = git log -1 --pretty=%s
 
           Write-Host "Detected pre-release tag: $tagName"
 
@@ -47,21 +50,6 @@ jobs:
           "TAG_NAME=$tagName" >> $env:GITHUB_ENV
           "SHORT_SHA=$shortSha" >> $env:GITHUB_ENV
           "FULL_SHA=$fullSha" >> $env:GITHUB_ENV
-          "COMMIT_SUBJECT=$commitSubject" >> $env:GITHUB_ENV
-
-          @"
-          ## Hynobius $tagName
-
-          ## Commit
-
-          - Commit: $fullSha
-          - Short SHA: $shortSha
-          - Branch: ${{ github.ref_name }}
-
-          ## Commit message
-
-          $commitMessage
-          "@ | Set-Content -Path release-notes.md -Encoding utf8
 
       - name: Stop if no pre-release requested
         if: env.SHOULD_RELEASE != 'true'
