@@ -1,21 +1,16 @@
-name: Pre-release
+name: Auto Pre-release
 
 on:
   push:
-    tags:
-      - "v*.*.*-alpha.*"
-      - "v*.*.*-beta.*"
-      - "v*.*.*-rc.*"
+    branches:
+      - dev
 
 permissions:
   contents: write
 
 jobs:
-  full-tests:
-    uses: ./.github/workflows/pr-test.yml
-
-  build-windows:
-    name: Build Windows engine
+  auto-prerelease:
+    name: Auto pre-release from commit message
     runs-on: windows-latest
 
     steps:
@@ -24,22 +19,89 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Detect pre-release request
+        id: detect
+        shell: pwsh
+        run: |
+          $commitMessage = git log -1 --pretty=%B
+
+          $match = [regex]::Match(
+            $commitMessage,
+            '(?im)^Pre-Release:\s*(v\d+\.\d+\.\d+-(alpha|beta|rc)\.\d+)\s*$'
+          )
+
+          if (-not $match.Success) {
+            Write-Host "No Pre-Release field found. Skipping."
+            "SHOULD_RELEASE=false" >> $env:GITHUB_ENV
+            exit 0
+          }
+
+          $tagName = $match.Groups[1].Value
+          $shortSha = git rev-parse --short=8 HEAD
+          $fullSha = git rev-parse HEAD
+          $commitSubject = git log -1 --pretty=%s
+
+          Write-Host "Detected pre-release tag: $tagName"
+
+          "SHOULD_RELEASE=true" >> $env:GITHUB_ENV
+          "TAG_NAME=$tagName" >> $env:GITHUB_ENV
+          "SHORT_SHA=$shortSha" >> $env:GITHUB_ENV
+          "FULL_SHA=$fullSha" >> $env:GITHUB_ENV
+          "COMMIT_SUBJECT=$commitSubject" >> $env:GITHUB_ENV
+
+          @"
+          ## Hynobius $tagName
+
+          ## Commit
+
+          - Commit: $fullSha
+          - Short SHA: $shortSha
+          - Branch: ${{ github.ref_name }}
+
+          ## Commit message
+
+          $commitMessage
+          "@ | Set-Content -Path release-notes.md -Encoding utf8
+
+      - name: Stop if no pre-release requested
+        if: env.SHOULD_RELEASE != 'true'
+        shell: pwsh
+        run: |
+          Write-Host "No pre-release requested."
+
+      - name: Check tag does not already exist
+        if: env.SHOULD_RELEASE == 'true'
+        shell: pwsh
+        run: |
+          git fetch --tags
+
+          $exists = git tag --list "$env:TAG_NAME"
+
+          if ($exists) {
+            Write-Error "Tag $env:TAG_NAME already exists. Use a new pre-release version."
+            exit 1
+          }
+
+      - name: Create annotated tag
+        if: env.SHOULD_RELEASE == 'true'
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git tag -a "$env:TAG_NAME" -F release-notes.md
+          git push origin "refs/tags/$env:TAG_NAME"
+
       - name: Configure CMake
+        if: env.SHOULD_RELEASE == 'true'
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
+        if: env.SHOULD_RELEASE == 'true'
         run: cmake --build build --config Release
 
-      - name: Run tests
-        shell: pwsh
-        run: |
-          if (Test-Path ".\tests") {
-            ctest --test-dir build --output-on-failure -C Release
-          } else {
-            Write-Host "No tests directory found, skipping ctest."
-          }
-
       - name: Prepare artifact
+        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force dist
@@ -51,47 +113,16 @@ jobs:
             exit 1
           }
 
-          Copy-Item $exe.FullName "dist/Hynobius-${{ github.ref_name }}-windows.exe"
-
-      - name: Collect info
-        shell: pwsh
-        run: |
-          $tagName = "${{ github.ref_name }}"
-          $shortSha = git rev-parse --short HEAD
-          $fullSha = git rev-parse HEAD
-          $commitSubject = git log -1 --pretty=%s
-          $commitBody = git log -1 --pretty=%b
-
-          $tagObjectType = git cat-file -t "refs/tags/$tagName"
-
-          if ($tagObjectType -eq "tag") {
-            $tagMessage = git for-each-ref "refs/tags/$tagName" --format="%(contents)"
-          } else {
-            $tagMessage = "No annotated tag message found. This is probably a lightweight tag."
-          }
-
-          "SHORT_SHA=$shortSha" >> $env:GITHUB_ENV
-
-          @"
-          ```text
-          $tagMessage
-
-          Tag: $tagName   
-          Commit: $fullSha
-
-          $commitSubject
-
-          $commitBody
-          ```
-          "@ | Set-Content -Path release-notes.md -Encoding utf8
+          Copy-Item $exe.FullName "dist/Hynobius-$env:TAG_NAME-windows.exe"
 
       - name: Create GitHub pre-release
+        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "${{ github.ref_name }}" `
-            "dist/Hynobius-${{ github.ref_name }}-windows.exe" `
-            --title "Hynobius ${{ github.ref_name }} dev-$env:SHORT_SHA" `
+          gh release create "$env:TAG_NAME" `
+            "dist/Hynobius-$env:TAG_NAME-windows.exe" `
+            --title "Hynobius $env:TAG_NAME dev-$env:SHORT_SHA" `
             --notes-file release-notes.md `
             --prerelease
