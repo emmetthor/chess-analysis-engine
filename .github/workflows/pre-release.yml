@@ -58,7 +58,7 @@ jobs:
           Write-Host "No pre-release requested."
 
       - name: Write release-notes.md
-        if: env.SHOULD_RELEASE != 'true'
+        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
           $notes = @(
