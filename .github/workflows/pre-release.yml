@@ -65,15 +65,7 @@ jobs:
 
           $notes = @(
             "````text"
-            ""
-            "## Build info"
-            ""
-            "- Tag: $env:TAG_NAME"
-            "- Commit: $env:FULL_SHA"
-            "- Short SHA: $env:SHORT_SHA"
-            "- Branch: ${{ github.ref_name }}"
-            ""
-            "## Commit message"
+            "$env:TAG_NAME with commit $env:SHORT_SHA"
             ""
             "$commitMessage"
             ""
