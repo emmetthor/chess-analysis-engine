@@ -61,19 +61,23 @@ jobs:
         if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
+          $commitMessage = git log -1 --pretty=%B
+
           $notes = @(
-            "## Hynobius $tagName"
+            "````text"
             ""
             "## Build info"
             ""
-            "- Tag: $tagName"
-            "- Commit: $fullSha"
-            "- Short SHA: $shortSha"
+            "- Tag: $env:TAG_NAME"
+            "- Commit: $env:FULL_SHA"
+            "- Short SHA: $env:SHORT_SHA"
             "- Branch: ${{ github.ref_name }}"
             ""
             "## Commit message"
             ""
             "$commitMessage"
+            ""
+            "````"
           ) -join "`n"
 
           $notes | Set-Content -Path release-notes.md -Encoding utf8
