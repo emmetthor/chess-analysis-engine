@@ -65,7 +65,7 @@ jobs:
 
           $notes = @(
             "````text"
-            "$env:TAG_NAME with commit $env:SHORT_SHA"
+            "This is a pre-release: $env:TAG_NAME with commit $env:SHORT_SHA"
             ""
             "$commitMessage"
             ""
