@@ -16,6 +16,7 @@ on:
       - '.github/workflows/pr-small-match.yml'
       - '.github/workflows/pr-test.yml'
       - '.github/workflows/sanitizers.yml'
+  workflow_call:
 
 jobs:
   test:

@@ -1,0 +1,64 @@
+name: Pre-release
+
+on:
+  push:
+    tags:
+      - "v*.*.*-alpha.*"
+      - "v*.*.*-beta.*"
+      - "v*.*.*-rc.*"
+
+permissions:
+  contents: write
+
+jobs:
+  full-tests:
+    uses: ./.github/workflows/pr-test.yml
+
+  build-windows:
+    needs: full-tests
+    name: Build Windows engine
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          if (Test-Path ".\tests") {
+            ctest --test-dir build --output-on-failure -C Release
+          } else {
+            Write-Host "No tests directory found, skipping ctest."
+          }
+
+      - name: Prepare artifact
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist
+
+          $exe = Get-ChildItem -Path build -Recurse -Filter "Hynobius.exe" | Select-Object -First 1
+
+          if ($null -eq $exe) {
+            Write-Error "Hynobius.exe not found."
+            exit 1
+          }
+
+          Copy-Item $exe.FullName "dist/Hynobius-${{ github.ref_name }}-windows.exe"
+
+      - name: Create GitHub pre-release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" `
+            "dist/Hynobius-${{ github.ref_name }}-windows.exe" `
+            --title "Hynobius ${{ github.ref_name }}" `
+            --notes "Automated pre-release build for ${{ github.ref_name }}." `
+            --prerelease
