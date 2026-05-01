@@ -15,7 +15,6 @@ jobs:
     uses: ./.github/workflows/pr-test.yml
 
   build-windows:
-    needs: full-tests
     name: Build Windows engine
     runs-on: windows-latest
 
