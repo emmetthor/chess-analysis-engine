@@ -27,7 +27,7 @@ jobs:
 
           $match = [regex]::Match(
             $commitMessage,
-            '(?im)^Pre-Release:\s*(v\d+\.\d+\.\d+-(alpha|beta|rc)\.\d+)\s*$'
+            '(?im)^\s*Pre[- ]Release\s*[:：]\s*(v\d+\.\d+\.\d+-(alpha|beta|rc)\.\d+)\s*$'
           )
 
           if (-not $match.Success) {
