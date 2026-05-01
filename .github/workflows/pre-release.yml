@@ -57,6 +57,30 @@ jobs:
         run: |
           Write-Host "No pre-release requested."
 
+      - name: Write release-notes.md
+        if: env.SHOULD_RELEASE != 'true'
+        shell: pwsh
+        run: |
+          $notes = @(
+            "## Hynobius $tagName"
+            ""
+            "## Build info"
+            ""
+            "- Tag: $tagName"
+            "- Commit: $fullSha"
+            "- Short SHA: $shortSha"
+            "- Branch: ${{ github.ref_name }}"
+            ""
+            "## Commit message"
+            ""
+            "$commitMessage"
+          ) -join "`n"
+
+          $notes | Set-Content -Path release-notes.md -Encoding utf8
+
+          Write-Host "release-notes.md created."
+          Get-Content release-notes.md
+
       - name: Check tag does not already exist
         if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
