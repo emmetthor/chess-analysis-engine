@@ -2,7 +2,9 @@
 #include "Structure_IO.h"
 #include "board/Board.h"
 #include "board/Check.h"
+#include "debug/log.h"
 #include "evaluate/Evaluate.h"
+#include "evaluate/Material_Point.h"
 #include "move/Generate_Move.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
@@ -10,6 +12,56 @@
 #include "search/Search_Variables.h"
 #include "search/TT.h"
 #include <chrono>
+
+const int TT_SCORE = 600000;
+const int PVMOVE_SCORE = 500000;
+const int PROMOTION_SCORE = 400000;
+const int CAPTURE_SCORE = 300000;
+const int KILLER_1_SCORE = 200000;
+const int KILLER_2_SCORE = 100000;
+
+int Search::scoreMove(const Board& board, const BitMove move, const advanceMoves& adv)
+{
+    int score = 0;
+
+    if (adv.PVMove == move)
+        return PVMOVE_SCORE;
+
+    if (adv.TTMove == move)
+        return TT_SCORE;
+
+    if (getPromotion(move))
+    {
+        // 最先看
+        score += PROMOTION_SCORE;
+        score += pieceValue(getPromotePiece(move));
+    }
+
+    if (getCapture(move))
+    {
+        Piece capturePiece = getCapturePiece(board, move);
+
+        ENGINE_ASSERT(capturePiece != Piece::EMPTY);
+
+        Piece movePiece = getMovePiece(board, move);
+
+        score += CAPTURE_SCORE;
+        score += pieceValue(capturePiece) * 100 - pieceValue(movePiece);
+
+        return score;
+    }
+
+    if (adv.killerMove1 == move)
+        score += KILLER_1_SCORE;
+
+    if (adv.killerMove2 == move)
+        score += KILLER_2_SCORE;
+
+    // history heuristic
+    score += state.history.getHistory(board.player, move);
+
+    return score;
+}
 
 void printInfo(const SearchInfo& info)
 {
@@ -213,7 +265,7 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
     // sort moves
     advanceMoves adv = {
         pvMove, INVALID_BITMOVE, state.kill.table[0][ply], state.kill.table[1][ply]};
-    sortMove(board, moves, nMoves, adv);
+    sortMove(board, moves, nMoves, [&](BitMove move) { return scoreMove(board, move, adv); });
 
     for (int i = 0; i < nMoves; i++)
     {
@@ -304,7 +356,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
     // Sort moves.
     advanceMoves adv = {pvMove, ttMove, state.kill.table[0][ply], state.kill.table[1][ply]};
-    sortMove(board, moves, nMoves, adv);
+    sortMove(board, moves, nMoves, [&](BitMove move) { return scoreMove(board, move, adv); });
 
     // check checkmate / stalemate
     if (nMoves == 0)
@@ -381,11 +433,12 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
             state.pv.update(ply, move);
         }
 
-        if (alpha >= beta)
+        if (score >= beta)
         {
-            if (!undoState[ply].isCapture && !undoState[ply].isPromotion)
+            if (!undoState[ply].isCapture)
             {
                 state.kill.addKillerMove(move, ply);
+                state.history.updateHisroty(undoState[ply].player, move, depth);
             }
             break;
         }
@@ -457,7 +510,7 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
         INVALID_BITMOVE,
         INVALID_BITMOVE,
     };
-    sortMove(board, moves, nMoves, adv);
+    sortMove(board, moves, nMoves, [&](BitMove move) { return scoreMove(board, move, adv); });
 
     for (int i = 0; i < nMoves; i++)
     {

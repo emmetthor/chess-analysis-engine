@@ -1,5 +1,6 @@
 #pragma once
 
+#include "History_Heuristic.h"
 #include "Killer_Move.h"
 #include "PV_Table.h"
 #include "Search_Variables.h"
@@ -7,6 +8,7 @@
 #include "evaluate/Evaluate.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
+#include "move/Move_Order.h"
 #include <chrono>
 
 constexpr int MATE_SCORE = 1e6;
@@ -73,8 +75,12 @@ private:
 
         killerMove kill;
 
+        HistoryHeuristic history;
+
         int prevScore = 0;
     } state;
 
     bool shouldStop();
+
+    int scoreMove(const Board& board, const BitMove move, const advanceMoves& adv);
 };

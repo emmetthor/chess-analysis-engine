@@ -34,6 +34,7 @@ nav:
     - Code reviews: engine\code-reviews\index.md
     - Optimizations:
       - Early Optimization Recode: engine\optimization\engine-improvement.md
+      - History Heuristic: engine\optimization\20260503_summary.md
 
 plugins:
   - search
