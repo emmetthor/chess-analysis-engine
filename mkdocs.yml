@@ -28,6 +28,7 @@ nav:
       - Opening Book: user-guide\testing\Opening.md
       - Perft Test: user-guide\testing\Perft.md
   - Tutorials:
+    - Engine Introduction: tutorials\gitbub_usage\engine_introduce.md
     - GitHub Usage: tutorials\gitbub_usage\index.md
   - Engine Development Docs:
     - Code reviews: engine\code-reviews\index.md

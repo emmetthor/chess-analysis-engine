@@ -25,11 +25,13 @@ Traditional chess engines like Stockfish, the most powerful chess engines in the
 For a board like the picture below:
 
 ![startpos by chess.com](../../img/startpos.png)
+
 (The picture comes from chess.com.)
 
 It will **generate moves**, which means the engine will play **every possible moves in its mind**:
 
 ![depth1 by chess.com](../../img/depth1.gif)
+
 (The picture comes from chess.com.)
 
 And evaluate them to analyze which move is the best.
@@ -38,6 +40,8 @@ Although the GIF only represents every move we can play as white, but the engine
 The engine will also search from the board when the previous move has made, which means:
 
 ![all possible moves by chess.com](../../img/all_possible_moves.png)
+
+(The picture comes from chess.com.)
 
 That is how the engine will recurse itself and keep searching.
 
