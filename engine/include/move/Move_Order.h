@@ -15,7 +15,7 @@ struct advanceMoves
     BitMove PVMove, TTMove, killerMove1, killerMove2;
 };
 
-template<typename scoreMoveFunction>
+template <typename scoreMoveFunction>
 void sortMove(const Board& board, BitMove* moves, const int nMoves, scoreMoveFunction&& scoreMove)
 {
     ScoreMove tmp[256];

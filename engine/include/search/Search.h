@@ -8,8 +8,8 @@
 #include "evaluate/Evaluate.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
-#include <chrono>
 #include "move/Move_Order.h"
+#include <chrono>
 
 constexpr int MATE_SCORE = 1e6;
 constexpr int TIMEOUT_SCORE = 123456789;

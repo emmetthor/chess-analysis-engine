@@ -4,13 +4,13 @@
 #include "board/Check.h"
 #include "debug/log.h"
 #include "evaluate/Evaluate.h"
+#include "evaluate/Material_Point.h"
 #include "move/Generate_Move.h"
 #include "move/Make_BitMove.h"
 #include "move/Move.h"
 #include "move/Move_Order.h"
 #include "search/Search_Variables.h"
 #include "search/TT.h"
-#include "evaluate/Material_Point.h"
 #include <chrono>
 
 const int TT_SCORE = 600000;
@@ -265,9 +265,7 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
     // sort moves
     advanceMoves adv = {
         pvMove, INVALID_BITMOVE, state.kill.table[0][ply], state.kill.table[1][ply]};
-    sortMove(board, moves, nMoves, [&](BitMove move) {
-        return scoreMove(board, move, adv);
-    });
+    sortMove(board, moves, nMoves, [&](BitMove move) { return scoreMove(board, move, adv); });
 
     for (int i = 0; i < nMoves; i++)
     {
@@ -358,9 +356,7 @@ int Search::negamax(Board& board, int depth, int alpha, int beta, int ply)
 
     // Sort moves.
     advanceMoves adv = {pvMove, ttMove, state.kill.table[0][ply], state.kill.table[1][ply]};
-    sortMove(board, moves, nMoves, [&](BitMove move) {
-        return scoreMove(board, move, adv);
-    });
+    sortMove(board, moves, nMoves, [&](BitMove move) { return scoreMove(board, move, adv); });
 
     // check checkmate / stalemate
     if (nMoves == 0)
@@ -514,9 +510,7 @@ int Search::quietscence(Board& board, int alpha, int beta, int ply)
         INVALID_BITMOVE,
         INVALID_BITMOVE,
     };
-    sortMove(board, moves, nMoves, [&](BitMove move) {
-        return scoreMove(board, move, adv);
-    });
+    sortMove(board, moves, nMoves, [&](BitMove move) { return scoreMove(board, move, adv); });
 
     for (int i = 0; i < nMoves; i++)
     {
