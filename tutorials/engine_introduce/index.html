@@ -959,10 +959,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#monte-carlo-search-neural-nets" class="md-nav__link">
+  <a href="#monte-carlo-tree-search-neural-networks" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Monte Carlo Search + Neural Nets
+        Monte Carlo Tree Search + Neural Networks
       
     </span>
   </a>
@@ -1350,13 +1350,38 @@ The engine will also search from the board when the previous move has made, whic
 <p><img alt="alpha-beta search tree by chess.com" src="../../img/alpha_beta_search_tree.png" /></p>
 <p>(The picture comes from chess.com.)</p>
 <p>Just like a tree, that is how the engine will recurse itself and keep searching.</p>
-<p>As for what alpha-beta search really is, please see <a href="\Hynobius\tutorials\alpha_beta_search">alpha-beta search</a>.</p>
-<h4 id="monte-carlo-search-neural-nets">Monte Carlo Search + Neural Nets<a class="headerlink" href="#monte-carlo-search-neural-nets" title="Permanent link">&para;</a></h4>
-<p>(Due to the main subject of this project is for traditional search engines, thus this part might be inaccuate.)</p>
-<p>AI-based engines, such as Lc0, uses policy and value based priority search and neural nets to play chess.</p>
-<p>What does Monte Carlo search do? First, it will search as similar as the alpha-beta search above.</p>
-<p>Then, every board position will return <strong>a policy list</strong> and <strong>a value</strong>, which means how good a move generated from the current position is, and how good the position is.</p>
-<p>This information is generated from the nerual network, thus it searches slower than the traditional search engines, but it looks farther than them.</p>
+<p>As for what alpha-beta search really is, it is a algorithm to cut off bad branches and reduce search nodes.</p>
+<p>Please check out the picture below.</p>
+<p><img alt="Alphabeta.gif" src="https://www.chessprogramming.org/images/b/b4/Alphabeta.gif" /></p>
+<p>(The picture is from chessprogramming.org)</p>
+<p>This is a short example of how alpha-beta search can help cut bad branches. For futher information, please check out <a href="\Hynobius\tutorials\alpha_beta_search.md">alpha-beta search</a>.</p>
+<h4 id="monte-carlo-tree-search-neural-networks">Monte Carlo Tree Search + Neural Networks<a class="headerlink" href="#monte-carlo-tree-search-neural-networks" title="Permanent link">&para;</a></h4>
+<p>Because the main focus of this project is traditional search engines, this section only gives a simplified overview of AI-based chess engines.</p>
+<p>AI-based engines, such as Leela Chess Zero (Lc0), use a neural network together with Monte Carlo Tree Search (MCTS). Instead of using a hand-made evaluation function and alpha-beta pruning, the neural network guides the search by providing two main outputs: a policy and a value.</p>
+<p>The <strong>policy</strong> suggests which moves are promising and should be explored first. It does not directly prove that a move is good; it only gives the search an initial preference.</p>
+<p>The <strong>value</strong> estimates how good the current position is, usually in terms of expected game result or winning chances.</p>
+<p>MCTS works by repeatedly running search iterations from the current position. Each iteration usually contains four steps:</p>
+<ol>
+<li>
+<p><strong>Selection</strong><br />
+   Starting from the root position, the engine follows the most promising path according to the current search statistics.</p>
+</li>
+<li>
+<p><strong>Expansion</strong><br />
+   When the search reaches a new position, the engine adds new child nodes to the search tree.</p>
+</li>
+<li>
+<p><strong>Evaluation</strong><br />
+   The neural network evaluates the new position and returns a policy and a value.</p>
+</li>
+<li>
+<p><strong>Backup</strong><br />
+   The value is propagated back through the visited path, updating statistics such as visit count and average value.</p>
+</li>
+</ol>
+<p>Over many iterations, MCTS gradually spends more search effort on moves that look promising. A move with a high policy may be explored early, but the final move choice is usually based on accumulated search statistics, especially visit count and evaluated value.</p>
+<p>This is different from alpha-beta search. Alpha-beta search is usually a depth-first search with pruning, while MCTS is a selective, statistics-based search. It does not search every branch equally. Instead, it tries to allocate more computation to the branches that are more likely to matter.</p>
+<p>Because neural network evaluation is computationally expensive, AI-based engines usually search fewer nodes per second than traditional engines. However, each evaluated node contains richer positional information from the neural network, allowing the engine to guide its search more selectively.</p>
 <h4 id="combination">Combination?<a class="headerlink" href="#combination" title="Permanent link">&para;</a></h4>
 <p>A technique called <strong>Efficiently updatable neural network</strong> was invented in around 2018.
 It is a neural net but it can update fast, which means <strong>it is stronger than hand-made evaluation algorithms</strong>. Thus it has been used in almost every top chess engines.</p>
