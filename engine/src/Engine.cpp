@@ -77,3 +77,8 @@ SearchResult Engine::fullInfoSearch(int depth)
 }
 
 void Engine::quit() const {}
+
+void Engine::newGame()
+{
+    // Do nothing for now.
+}

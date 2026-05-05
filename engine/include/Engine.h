@@ -17,6 +17,7 @@ public:
     void setStartPosition();
     void setPositionWithFen(const std::string& fen);
     void checkReady() const;
+    void newGame();
 
     Move goDepth(int depth, bool isPrintInfo = 1);
     Move goClock(const TimeManage& tm);

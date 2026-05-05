@@ -191,9 +191,9 @@ void uciLoop(Engine& engine)
         {
             std::cout << engine.board << '\n';
         }
-        else if (token == "bench")
+        else if (token == "ucinewgame")
         {
-            handleBench(iss, engine);
+            engine.newGame();
         }
         else
         {
