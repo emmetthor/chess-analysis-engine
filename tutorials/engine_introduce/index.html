@@ -1332,7 +1332,7 @@
 Instead, It <strong>represents the board using data structures, generate legal moves, search for future possibilities, and evaluate positions using math</strong>.</p>
 <h3 id="how-it-works">How it works?<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
 <p>There are basically two kinds of engine.
-One uses <strong>alpha-beta search and hand-made evaluate algorithms</strong>, the other uses <strong>Monte Carlo search and neural nets</strong> to play chess.</p>
+One uses <strong>alpha-beta search and hand-made evaluation algorithms</strong>, the other uses <strong>Monte Carlo search and neural nets</strong> to play chess.</p>
 <h4 id="alpha-beta-search-hand-made-evaluation">Alpha-beta Search + Hand-made Evaluation<a class="headerlink" href="#alpha-beta-search-hand-made-evaluation" title="Permanent link">&para;</a></h4>
 <p>Traditional chess engines, such as Stockfish, use search algorithms and evaluate algorithms to play chess.</p>
 <p>For a board like the picture below:</p>
@@ -1350,7 +1350,7 @@ The engine will also search from the board when the previous move has made, whic
 <p><img alt="alpha-beta search tree by chess.com" src="../../img/alpha_beta_search_tree.png" /></p>
 <p>(The picture comes from chess.com.)</p>
 <p>Just like a tree, that is how the engine will recurse itself and keep searching.</p>
-<p>As for what alpha-beta search really is, please see <a href="\Hynobius\tutorials\gitbub_usage\alpha_beta_search">alpha-beta search</a>.</p>
+<p>As for what alpha-beta search really is, please see <a href="\Hynobius\tutorials\alpha_beta_search">alpha-beta search</a>.</p>
 <h4 id="monte-carlo-search-neural-nets">Monte Carlo Search + Neural Nets<a class="headerlink" href="#monte-carlo-search-neural-nets" title="Permanent link">&para;</a></h4>
 <p>(Due to the main subject of this project is for traditional search engines, thus this part might be inaccuate.)</p>
 <p>AI-based engines, such as Lc0, uses policy and value based priority search and neural nets to play chess.</p>
