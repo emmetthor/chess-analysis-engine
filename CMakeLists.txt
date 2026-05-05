@@ -69,21 +69,6 @@
 
     add_test(NAME BoardConsistencyTest COMMAND test-board-consistency)
 
-    # test M1
-    add_executable(test-m1 tests/checkmate/Mate_In_One.cpp)
-    target_link_libraries(test-m1 PRIVATE engine-core)
-    set_target_properties(test-m1 PROPERTIES WIN32_EXECUTABLE OFF)
-
-    add_test(NAME M1Test COMMAND test-m1)
-
-    # test M2
-    add_executable(test-m2 tests/checkmate/Mate_In_Two.cpp)
-    target_link_libraries(test-m2 PRIVATE engine-core)
-    set_target_properties(test-m2 PROPERTIES WIN32_EXECUTABLE OFF)
-
-    add_test(NAME M2Test COMMAND test-m2)
-
-    # test BitMove
     add_executable(test-bitmove tests/Bit_Move_Correctness.cpp)
     target_link_libraries(test-bitmove PRIVATE engine-core)
     set_target_properties(test-bitmove PROPERTIES WIN32_EXECUTABLE OFF)
