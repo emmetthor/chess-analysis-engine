@@ -22,7 +22,6 @@ r1b1r1k1/1pp1ppbp/p5p1/4P3/4BBP1/4P2P/PPP2P2/3RK2R b K - 0 13
 8/3k4/7P/8/8/5K2/8/1R6 b - - 0 53
 7Q/8/2k5/8/8/5K2/8/1R6 w - - 1 56
 8/2Q1k3/1R6/8/8/5K2/8/8 b - - 6 58
-1R3k2/2Q5/8/8/8/5K2/8/8 b - - 8 59
 r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1
 r3k2r/p6p/P6P/8/8/p6p/P6P/R3K2R w KQkq - 0 1
 r3k2r/p6p/P6P/8/8/p6p/P6P/R3K2R b KQkq - 0 1
