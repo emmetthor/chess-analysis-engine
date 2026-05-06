@@ -26,6 +26,9 @@ def load_mate_test(path: Path, mate_depth: int) -> List[MateCase]:
             # empty line
             if not line:
                 continue
+
+            if line.startswith("#"):
+                continue
             
             cases.append(MateCase(fen=line))
     

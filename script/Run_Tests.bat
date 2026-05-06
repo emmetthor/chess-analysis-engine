@@ -12,3 +12,8 @@ echo ===
 echo Running Checkmate test...
 
 python tests\checkmate.py --engine build/Hynobius.exe --file tests/checkmate/Mate_In_Two.txt --mate-depth 2 --detail
+
+echo ===
+echo Running Board Consistency test...
+
+python tests\board_consistency.py --engine build/Hynobius.exe --file tests/board_consistency/stress_bc.txt --depth 2 --detail
