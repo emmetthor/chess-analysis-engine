@@ -26,28 +26,28 @@ jobs:
 
       - name: Opening Board Consistency
         run: |
-          python tests/board_consistency/board_consistency.py \
+          python tests/board_consistency.py \
             --engine build-debug/Hynobius \
             --file tests/board_consistency/openings_bc.txt \
             --depth 7
 
       - name: Middle Game Board Consistency
         run: |
-          python tests/board_consistency/board_consistency.py \
+          python tests/board_consistency.py \
             --engine build-debug/Hynobius \
             --file tests/board_consistency/middle_game_bc.txt \
             --depth 5
 
       - name: End Game Board Consistency
         run: |
-          python tests/board_consistency/board_consistency.py \
+          python tests/board_consistency.py \
             --engine build-debug/Hynobius \
             --file tests/board_consistency/end_game_bc.txt \
             --depth 8
 
       - name: Stress Board Consistency
         run: |
-          python tests/board_consistency/board_consistency.py \
+          python tests/board_consistency.py \
             --engine build-debug/Hynobius \
             --file tests/board_consistency/stress_bc.txt \
             --depth 2
