@@ -32,7 +32,7 @@ jobs:
 
           $match = [regex]::Match(
             $commitMessage,
-            '(?im)^\s*functional\s+changes?\b'
+            '(?i)\bfunctional\s+changes?\b'
           )
 
           if (-not $match.Success) {
