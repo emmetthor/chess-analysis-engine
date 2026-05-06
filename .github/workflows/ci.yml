@@ -6,6 +6,9 @@ on:
       - main
       - dev
 
+permissions:
+  contents: write
+
 jobs:
   check:
     name: Detect requests
