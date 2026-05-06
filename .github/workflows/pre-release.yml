@@ -1,9 +1,11 @@
 name: Auto Pre-release
 
 on:
-  push:
-    branches:
-      - dev
+  workflow_call:
+    inputs:
+      tag_name:
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -19,46 +21,21 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect pre-release request
+      - name: Collect information
         id: detect
         shell: pwsh
         run: |
-          $commitMessage = git log -1 --pretty=%B
-
-          Write-Host "========== Commit message start =========="
-          Write-Host $commitMessage
-          Write-Host "========== Commit message end =========="
-
-          $match = [regex]::Match(
-            $commitMessage,
-            '(?i)\bPre[- ]Release\s*[:：]\s*(v\d+\.\d+\.\d+-(alpha|beta|rc)\.\d+)\b'
-          )
-
-          if (-not $match.Success) {
-            Write-Host "No Pre-Release field found. Skipping."
-            "SHOULD_RELEASE=false" >> $env:GITHUB_ENV
-            exit 0
-          }
-
-          $tagName = $match.Groups[1].Value
+          $tagName = '${{ inputs.tag_name }}'
           $shortSha = git rev-parse --short=8 HEAD
           $fullSha = git rev-parse HEAD
 
           Write-Host "Detected pre-release tag: $tagName"
 
-          "SHOULD_RELEASE=true" >> $env:GITHUB_ENV
           "TAG_NAME=$tagName" >> $env:GITHUB_ENV
           "SHORT_SHA=$shortSha" >> $env:GITHUB_ENV
           "FULL_SHA=$fullSha" >> $env:GITHUB_ENV
 
-      - name: Stop if no pre-release requested
-        if: env.SHOULD_RELEASE != 'true'
-        shell: pwsh
-        run: |
-          Write-Host "No pre-release requested."
-
       - name: Write release-notes.md
-        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
           $commitMessage = (git log -1 --pretty=%B) -join "`n"
@@ -73,7 +50,6 @@ jobs:
           Get-Content release-notes.md
 
       - name: Check tag does not already exist
-        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
           git fetch --tags
@@ -86,7 +62,6 @@ jobs:
           }
 
       - name: Create annotated tag
-        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
           git config user.name "github-actions[bot]"
@@ -96,15 +71,12 @@ jobs:
           git push origin "refs/tags/$env:TAG_NAME"
 
       - name: Configure CMake
-        if: env.SHOULD_RELEASE == 'true'
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
-        if: env.SHOULD_RELEASE == 'true'
         run: cmake --build build --config Release
 
       - name: Prepare artifact
-        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force dist
@@ -119,7 +91,6 @@ jobs:
           Copy-Item $exe.FullName "dist/Hynobius-$env:TAG_NAME-windows.exe"
 
       - name: Create GitHub pre-release
-        if: env.SHOULD_RELEASE == 'true'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
