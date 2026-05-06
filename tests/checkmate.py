@@ -14,7 +14,6 @@ cmd = Cmd()
 
 @dataclass
 class MateCase:
-    mate_depth: List[int] = field(default_factory=list)
     fen: str = ""
 
 def load_mate_test(path: Path, mate_depth: int) -> List[MateCase]:
@@ -28,7 +27,7 @@ def load_mate_test(path: Path, mate_depth: int) -> List[MateCase]:
             if not line:
                 continue
             
-            cases.append(MateCase(fen=line, mate_depth=[mate_depth]))
+            cases.append(MateCase(fen=line))
     
     return cases
 
