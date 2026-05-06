@@ -1,4 +1,4 @@
-name: Regression
+name: Board Consistency Test
 
 on:
   workflow_call:
