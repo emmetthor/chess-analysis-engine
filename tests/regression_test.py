@@ -1,36 +1,68 @@
-import subprocess
-import sys
-import re
+from __future__ import annotations
 from pathlib import Path
 import argparse
+import subprocess
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Dict, List
+from cmd_output import Cmd
+from uci_engine import UciEngine
 
-BASE_DIR = Path(__file__).parent
-DEFAULT_ENGINE_PATH = r"./build/Hynobius.exe"
-REGRESSION_FILE = BASE_DIR / "regressions.txt"
-SEARCH_DEPTH = 8
+@dataclass
+class RegressionCase:
+    name: str
+    fen: str
+    depth: int
+    bestmoves: List[str] = field(default_factory=List)
 
-def parse_regression_file(path: str | Path):
-    text = Path(path).read_text(encoding="utf-8")
-    lines = text.splitlines()
 
-    cases = []
+def load_regression_file(path: str | Path) -> List[RegressionCase]:
+    lines = Path(path).read_text(encoding="utf-8").splitlines()
+
+    cases: List[RegressionCase] = []
+
     current_name = ""
-    current_fen = None
-    current_bestmoves = None
+    current_fen: str | None = None
+    current_bestmoves: List[str] = []
+    current_depth: int = 0
 
-    for raw_line in lines:
+    def flush_case(line_no: int) -> None:
+        nonlocal current_name, current_fen, current_bestmoves, current_depth
+
+        # Empty block: ignore.
+        if not current_name and current_fen is None and not current_bestmoves:
+            return
+
+        if current_fen is None:
+            raise ValueError(f"missing fen before line {line_no}")
+        
+        if not current_depth:
+            raise ValueError(f"missing depth before line {line_no}")
+
+        if not current_bestmoves:
+            raise ValueError(f"missing bestmove before line {line_no}")
+
+        case_name = current_name or f"case_{len(cases) + 1}"
+
+        cases.append(
+            RegressionCase(
+                name=case_name,
+                fen=current_fen,
+                depth=current_depth,
+                bestmoves=current_bestmoves,
+            )
+        )
+
+        current_name = ""
+        current_fen = None
+        current_depth = 0
+        current_bestmoves = []
+
+    for line_no, raw_line in enumerate(lines, start=1):
         line = raw_line.strip()
 
         if not line:
-            if current_fen and current_bestmoves:
-                cases.append({
-                    "name": current_name or f"case_{len(cases)+1}",
-                    "fen": current_fen,
-                    "bestmoves": current_bestmoves,
-                })
-            current_name = ""
-            current_fen = None
-            current_bestmoves = None
+            flush_case(line_no)
             continue
 
         if line.startswith("#"):
@@ -41,132 +73,91 @@ def parse_regression_file(path: str | Path):
             current_fen = line[len("fen:"):].strip()
             continue
 
+        if line.startswith("depth:"):
+            current_depth = int(line[len("depth:"):].strip())
+            continue
+
         if line.startswith("bestmove:"):
             moves_str = line[len("bestmove:"):].strip()
             current_bestmoves = moves_str.split()
             continue
 
-    # 檔尾最後一筆沒有空行時也要補進去
-    if current_fen and current_bestmoves:
-        cases.append({
-            "name": current_name or f"case_{len(cases)+1}",
-            "fen": current_fen,
-            "bestmoves": current_bestmoves,
-        })
+        raise ValueError(f"unknown line format at line {line_no}: {line}")
+
+    # Flush last case if file does not end with an empty line.
+    flush_case(len(lines) + 1)
 
     return cases
 
+cmd = Cmd()
 
-def run_engine(engine_path: str, fen: str, depth: int):
-    cmd = [
-        engine_path,
-        "--fen", fen,
-        "--search-with-info", str(depth),
-    ]
+def run_test_cases(engine_path: Path, cases : List[RegressionCase], detail: bool) -> bool:
+    print(f"Loaded {len(cases)} regression cases")
+    print()
 
-    proc = subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-    )
-    return proc.returncode, proc.stdout, proc.stderr
+    pass_count = 0
 
+    with UciEngine(engine_path) as engine:
+        for index, case in enumerate(cases, start = 1):
+            if (detail):
+                print(f"[{index}] {case.fen} with depth {case.depth}")
 
-def parse_bestmove(stdout: str):
-    patterns = [
-        r"bestmove\s*=\s*([a-h][1-8][a-h][1-8][qrbn]?)",
-        r"\bbestmove\s+([a-h][1-8][a-h][1-8][qrbn]?)",
-    ]
+            engine.set_position(case.fen)
+            result = engine.go_depth(case.depth)
 
-    for pattern in patterns:
-        m = re.search(pattern, stdout)
-        if m:
-            return m.group(1)
+            if result.bestmove in case.bestmoves:
+                pass_count += 1
+                if (detail):
+                    cmd.print_pass("pass")
+            else:
+                if (detail):
+                    cmd.print_fail("fail")
+                    cmd.print_fail(f"expected moves: {case.bestmoves}")
+                    cmd.print_fail(f"actual mate score: {result.mate_score}")
+                    cmd.print_fail(f"actual score cp: {result.cp_score}")
+                    cmd.print_fail(f"actual move: {result.bestmove}")
 
-    return None
+    print(f"Test completed with [{pass_count} / {len(cases)}], pass rate: {pass_count / len(cases) * 100}")
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Chess Engine Regression Test")
+    return True
 
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Run perft tests against engine CLI")
     parser.add_argument(
         "--engine",
-        type=str,
-        default=DEFAULT_ENGINE_PATH,
-        help="Path to engine executable"
+        required=True,
+        help="Path to engine executable, e.g. build/Hynobius.exe",
     )
-
-    parser.add_argument(
-        "--depth",
-        type=int,
-        default=SEARCH_DEPTH,
-        help="Search depth"
-    )
-
     parser.add_argument(
         "--file",
-        type=str,
-        default=str(REGRESSION_FILE),
-        help="Regression file path"
+        required=True,
+        help="Path to regresstion test file. Note that only fen is allowed.",
+    )
+    parser.add_argument(
+        "--detail",
+        action="store_true",
+        help="Output detailed result.",
     )
 
-    return parser.parse_args()
+    args = parser.parse_args()
 
-def main():
-    args = parse_args()
+    engine_path = Path(args.engine)
+    file_path = Path(args.file)
+    detail = bool(args.detail)
 
-    engine_path = args.engine
-    depth = args.depth
-    regression_file = args.file
-
-    cases = parse_regression_file(regression_file)
+    if not engine_path.exists():
+        raise FileNotFoundError(f"engine not found: {engine_path}")
+    if not file_path.exists():
+        raise FileNotFoundError(f"test file not found: {file_path}")
+    
+    cases = load_regression_file(file_path)
 
     if not cases:
-        print("No regression cases found.")
-        return 1
-    
-    if not Path(engine_path).exists():
-        print(f"Engine not found: {engine_path}")
-        return 1
+        raise ValueError(f"no mate test cases found: {file_path}")
 
-    print(f"Loaded {len(cases)} regression cases from {REGRESSION_FILE}")
-    print("=" * 60)
+    ok = run_test_cases(engine_path, cases, detail)
 
-    passed = 0
-
-    for idx, case in enumerate(cases, start=1):
-        name = case["name"]
-        fen = case["fen"]
-        expected_moves = case["bestmoves"]
-
-        code, stdout, stderr = run_engine(engine_path, fen, depth)
-        actual_move = parse_bestmove(stdout)
-
-        ok = (code == 0) and (actual_move in expected_moves)
-
-        print(f"[{idx}/{len(cases)}] {'PASS' if ok else 'FAIL'} - {name}")
-        print(f"  FEN      : {fen}")
-        print(f"  Expected : {' '.join(expected_moves)}")
-        print(f"  Actual   : {actual_move}")
-        print(f"  ExitCode : {code}")
-
-        if not ok:
-            if stdout.strip():
-                print("  STDOUT:")
-                for line in stdout.strip().splitlines():
-                    print(f"    {line}")
-            if stderr.strip():
-                print("  STDERR:")
-                for line in stderr.strip().splitlines():
-                    print(f"    {line}")
-        else:
-            passed += 1
-
-        print("-" * 60)
-
-    print(f"Summary: {passed}/{len(cases)} passed")
-    return 0 if passed == len(cases) else 1
-
+    return 0 if ok else 1
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())
