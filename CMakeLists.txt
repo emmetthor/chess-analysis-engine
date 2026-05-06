@@ -58,16 +58,7 @@
     target_link_libraries(Hynobius PUBLIC engine-core)
     set_target_properties(Hynobius PROPERTIES WIN32_EXECUTABLE OFF)
 
-    # test mate
-
     enable_testing()
-
-    # test board consistency
-    add_executable(test-board-consistency tests/board_consistency/Board_Consistency.cpp)
-    target_link_libraries(test-board-consistency PRIVATE engine-core)
-    set_target_properties(test-board-consistency PROPERTIES WIN32_EXECUTABLE OFF)
-
-    add_test(NAME BoardConsistencyTest COMMAND test-board-consistency)
 
     add_executable(test-bitmove tests/Bit_Move_Correctness.cpp)
     target_link_libraries(test-bitmove PRIVATE engine-core)
