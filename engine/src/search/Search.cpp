@@ -167,7 +167,7 @@ SearchResult Search::findBestMove(const Board& board)
     {
         result.isValid = true;
         result.bestBitMove = INVALID_BITMOVE;
-        
+
         if (isInCheck(board, board.player))
             result.bestScore = -MATE_SCORE;
         else if (isInCheck(board, opponent(board.player)))
