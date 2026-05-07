@@ -1,5 +1,4 @@
 #include "search/Search.h"
-#include "Structure_IO.h"
 #include "board/Board.h"
 #include "board/Check.h"
 #include "debug/log.h"
