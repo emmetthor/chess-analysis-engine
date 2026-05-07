@@ -70,6 +70,10 @@ jobs:
     if: needs.check.outputs.should_test == 'true'
     uses: ./.github/workflows/run-tests.yml
 
+  format:
+    needs: check
+    uses: ./.github/workflows/format-check.yml
+
   pre-release:
     name: Pre Release
     needs: check
