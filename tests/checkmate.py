@@ -31,8 +31,10 @@ def load_mate_test(path: Path, mate_depth: int) -> List[MateCase]:
     
     return cases
 
-def run_test_cases(engine_path: Path, cases : List[MateCase], mate_depth: int, detail: bool) -> bool:
+def run_test_cases(engine_path: Path, cases : List[MateCase], mate_depth: int, detail: bool, max_testcases: int) -> bool:
     print(f"Loaded {len(cases)} mate test cases")
+    if max_testcases:
+        print(f"Running front {max_testcases} mate test cases")
     print(f"Testing mate in {mate_depth}")
     print()
 
@@ -58,8 +60,14 @@ def run_test_cases(engine_path: Path, cases : List[MateCase], mate_depth: int, d
                     cmd.print_fail(f"actual mate score: {result.mate_score}")
                     cmd.print_fail(f"actual score cp: {result.cp_score}")
                     cmd.print_fail(f"actual move: {result.bestmove}")
+            
+            if index >= max_testcases:
+                break
 
-    print(f"Test completed with [{pass_count} / {len(cases)}], pass rate: {pass_count / len(cases) * 100}")
+    if max_testcases:
+        print(f"Test completed with [{pass_count} / {max_testcases}], pass rate: {pass_count / max_testcases* 100}")
+    else:
+        print(f"Test completed with [{pass_count} / {len(cases)}], pass rate: {pass_count / len(cases) * 100}")
     print(f"using depth {test_depth} to test M{mate_depth}")
 
     return True
@@ -86,6 +94,10 @@ def main() -> int:
         action="store_true",
         help="Output detailed result.",
     )
+    parser.add_argument(
+        "--max-testcases",
+        help="Set the maximum test cases you want to test."
+    )
 
     args = parser.parse_args()
 
@@ -93,6 +105,7 @@ def main() -> int:
     file_path = Path(args.file)
     mate_depth = int(args.mate_depth)
     detail = bool(args.detail)
+    max_testcases = int(args.max_testcases)
 
     if not engine_path.exists():
         raise FileNotFoundError(f"engine not found: {engine_path}")
@@ -100,13 +113,15 @@ def main() -> int:
         raise FileNotFoundError(f"test file not found: {file_path}")
     if mate_depth <= 0:
         raise ValueError(f"mate depth should be greater than one: {mate_depth}")
+    if not max_testcases:
+        raise ValueError("max testcases must be a interger")
     
     cases = load_mate_test(file_path, mate_depth)
 
     if not cases:
         raise ValueError(f"no mate test cases found: {file_path}")
 
-    ok = run_test_cases(engine_path, cases, mate_depth, detail)
+    ok = run_test_cases(engine_path, cases, mate_depth, detail, max_testcases)
 
     return 0 if ok else 1
 
