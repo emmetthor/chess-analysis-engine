@@ -26,14 +26,14 @@ jobs:
 
       - name: Mate In One
         run: |
-          python tests\checkmate.py \
+          python tests/checkmate.py \
             --engine build-debug/Hynobius \
-            --file tests\checkmate\Mate_In_One.txt \
+            --file tests/checkmate/Mate_In_One.txt \
             --mate-depth 1
 
       - name: Mate In Two
         run: |
-          python tests\checkmate.py \
+          python tests/checkmate.py \
             --engine build-debug/Hynobius \
-            --file tests\checkmate\Mate_In_Two.txt \
+            --file tests/checkmate/Mate_In_Two.txt \
             --mate-depth 2
