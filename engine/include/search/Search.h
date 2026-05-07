@@ -18,7 +18,6 @@ constexpr int MAX_SCORE = 1e9;
 struct SearchResult
 {
     bool isValid = 0;
-    Move bestMove;
     int bestScore;
     BitMove bestBitMove = INVALID_BITMOVE;
 };

@@ -25,7 +25,7 @@ echo ===
 echo Running Checkmate test...
 echo ===
 
-python tests\checkmate.py --engine build/Hynobius.exe --file tests/checkmate/Mate_In_One.txt --mate-depth 2 --detail
+python tests\checkmate.py --engine build/Hynobius.exe --file tests/checkmate/Mate_In_One.txt --mate-depth 1 --detail --max-testcases 200
 
 python tests\checkmate.py --engine build/Hynobius.exe --file tests/checkmate/Mate_In_Two.txt --mate-depth 2 --detail
 

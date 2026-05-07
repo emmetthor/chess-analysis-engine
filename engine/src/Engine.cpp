@@ -51,21 +51,21 @@ void Engine::setPlayer(Player player)
     board.player = player;
 }
 
-Move Engine::goDepth(int depth, bool isPrintInfo)
+BitMove Engine::goDepth(int depth, bool isPrintInfo)
 {
     Search search(eval, {depth, MAX_THINK_TIME});
     auto res = search.findBestMove(board);
 
-    return res.bestMove;
+    return res.bestBitMove;
 }
 
-Move Engine::goClock(const TimeManage& tm)
+BitMove Engine::goClock(const TimeManage& tm)
 {
     Search search(eval, timeManager(tm, board.player));
 
     auto res = search.findBestMove(board);
 
-    return res.bestMove;
+    return res.bestBitMove;
 }
 
 SearchResult Engine::fullInfoSearch(int depth)
