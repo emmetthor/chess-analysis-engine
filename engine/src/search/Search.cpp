@@ -151,7 +151,7 @@ SearchResult Search::findBestMove(const Board& board)
     copyBoard.pushRepetitionKey();
 
     // current result is invalid
-    SearchResult result = {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
+    SearchResult result = {false, -MAX_SCORE, INVALID_BITMOVE};
 
     // At least output a valid move
     BitMove rootMoves[256];
@@ -159,8 +159,24 @@ SearchResult Search::findBestMove(const Board& board)
     if (nRootMoves > 0)
     {
         result.isValid = true;
-        result.bestMove = bitMovetoOriMove(copyBoard, rootMoves[0]);
+        result.bestBitMove = rootMoves[0];
         result.bestScore = -MAX_SCORE;
+    }
+
+    // No valid moves
+    if (nRootMoves == 0)
+    {
+        result.isValid = true;
+        result.bestBitMove = INVALID_BITMOVE;
+        
+        if (isInCheck(board, board.player))
+            result.bestScore = -MATE_SCORE;
+        else if (isInCheck(board, opponent(board.player)))
+            result.bestScore = MATE_SCORE;
+        else
+            result.bestScore = 0;
+
+        return result;
     }
 
     // set max depth.
@@ -248,7 +264,7 @@ SearchResult Search::findBestMove(const Board& board)
 SearchResult
 Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const BitMove PVMove)
 {
-    SearchResult result = {false, inValidMove, -MAX_SCORE};
+    SearchResult result = {false, -MAX_SCORE, INVALID_BITMOVE};
 
     // Clear currecnt PV line
     state.pv.clearLine(ply);
@@ -272,7 +288,7 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
         // time check.
         if (shouldStop())
         {
-            return {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
+            return {false, -MAX_SCORE, INVALID_BITMOVE};
         }
 
         const BitMove move = moves[i];
@@ -290,12 +306,11 @@ Search::chooseMove(Board& board, int depth, int alpha, int beta, int ply, const 
 
         if (score == -TIMEOUT_SCORE)
         {
-            return {false, inValidMove, -MAX_SCORE, INVALID_BITMOVE};
+            return {false, -MAX_SCORE, INVALID_BITMOVE};
         }
         if (score > result.bestScore)
         {
             result.isValid = true;
-            result.bestMove = oriMove;
             result.bestScore = score;
             result.bestBitMove = move;
         }

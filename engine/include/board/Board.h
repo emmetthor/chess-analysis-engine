@@ -167,7 +167,7 @@ struct Board
     }
 
     // Store piece positions by their piece type.
-    Position piecePos[13][20];
+    Position piecePos[13][64];
 
     // Store the number of every pieces.
     int pieceCount[13] = {};

@@ -19,8 +19,8 @@ public:
     void checkReady() const;
     void newGame();
 
-    Move goDepth(int depth, bool isPrintInfo = 1);
-    Move goClock(const TimeManage& tm);
+    BitMove goDepth(int depth, bool isPrintInfo = 1);
+    BitMove goClock(const TimeManage& tm);
     SearchResult fullInfoSearch(int depth);
     void move(Move move);
     void quit() const;

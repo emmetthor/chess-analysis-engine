@@ -89,7 +89,7 @@ void handleGo(std::istringstream& iss, Engine& engine)
         }
     }
 
-    Move move;
+    BitMove move;
 
     if (tm.depth != -1)
     {
@@ -101,7 +101,13 @@ void handleGo(std::istringstream& iss, Engine& engine)
         move = engine.goClock(tm);
     }
 
-    std::cout << "bestmove " << UCIMoveToString(move) << '\n';
+    if (move == INVALID_BITMOVE)
+    {
+        std::cout << "bestmove 0000\n";
+        return;
+    }
+
+    std::cout << "bestmove " << UCIMoveToString(bitMovetoOriMove(engine.board, move)) << '\n';
 }
 
 void handlePosition(std::istringstream& iss, Engine& engine)
