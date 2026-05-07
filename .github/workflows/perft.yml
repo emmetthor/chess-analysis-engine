@@ -25,7 +25,7 @@ jobs:
 
       - name: Perft regression
         run: |
-          python tests/perft/Perft_Test.py \
+          python tests/Perft_Test.py \
             --engine build-release/Hynobius \
             --file tests/perft/Perft_Tests.txt \
             --max-depth 5
