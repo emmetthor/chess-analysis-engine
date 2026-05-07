@@ -30,7 +30,7 @@ jobs:
             --engine build-debug/Hynobius \
             --file tests/checkmate/Mate_In_One.txt \
             --mate-depth 1 \
-            --detail
+            --detail \
             --max-testcases 200
 
       - name: Mate In Two
